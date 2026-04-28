@@ -43,7 +43,7 @@ public class MissionController {
     }
 
     @PatchMapping("/v1/missions/{missionId}/complete")
-    public ApiResponse<MissionResDTO.MissionComplete> completeMissions(){
+    public ApiResponse<MissionResDTO.MissionComplete> completeMission(){
         BaseSuccessCode code = MissionSuccessCode.OK;
         return ApiResponse.onSuccess(code, missionService.completeMission());
     }
