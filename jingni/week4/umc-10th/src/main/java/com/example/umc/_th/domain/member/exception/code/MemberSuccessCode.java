@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum MemberSuccessCode implements BaseSuccessCode {
-    OK(HttpStatus.OK, "MEMBER200_1", "성공적으로 사용자를 조회했습니다.");
+    OK(HttpStatus.OK, "MEMBER200_1", "성공적으로 사용자 요청을 처리했습니다.");
 
     private final HttpStatus status;
     private final String code;

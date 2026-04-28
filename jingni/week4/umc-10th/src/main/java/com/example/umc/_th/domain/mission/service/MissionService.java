@@ -1,4 +1,9 @@
 package com.example.umc._th.domain.mission.service;
 
+import com.example.umc._th.domain.mission.dto.MissionResDTO;
+
 public class MissionService {
+    public MissionResDTO.GetMissions getMissions(){
+        return null;
+    }
 }

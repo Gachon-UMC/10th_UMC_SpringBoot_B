@@ -13,7 +13,7 @@ public class MemberResDTO {
     ){}
 
     public record Signup(
-        String id
+        Long id
     ){}
 
 }
