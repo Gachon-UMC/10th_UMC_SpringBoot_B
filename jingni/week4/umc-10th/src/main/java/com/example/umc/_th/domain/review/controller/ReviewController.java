@@ -18,7 +18,7 @@ public class ReviewController {
 
     @PostMapping("/v1/stores/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
-            @PathVariable Long storeId,
+            @PathVariable("storeId")  Long storeId,
             @RequestBody ReviewReqDTO.CreateReview dto
             ){
         BaseSuccessCode code = ReviewSuccessCode.OK;
