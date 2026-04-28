@@ -5,8 +5,12 @@ import lombok.Builder;
 import java.util.List;
 
 public class MissionResDTO {
-    @Builder
     public record GetMissions(
         List<MissionDTO> missions
     ){}
+
+    public record GetCompleteMissionsCnt(
+        Integer count
+    ){}
 }
+

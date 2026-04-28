@@ -10,4 +10,8 @@ public class MissionService {
     public MissionResDTO.GetMissions getMyMissions() {
         return null;
     }
+
+    public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt() {
+        return null;
+    }
 }
