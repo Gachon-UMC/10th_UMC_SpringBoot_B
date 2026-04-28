@@ -1,5 +1,6 @@
 package com.example.umc._th.domain.mission.controller;
 
+import com.example.umc._th.domain.mission.dto.MissionDTO;
 import com.example.umc._th.domain.mission.dto.MissionResDTO;
 import com.example.umc._th.domain.mission.enums.Status;
 import com.example.umc._th.domain.mission.exception.code.MissionSuccessCode;
@@ -8,10 +9,7 @@ import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc._th.global.enums.SortType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class MissionController {
     }
 
     @GetMapping("/v1/missions/my")
-    public ApiResponse<MissionResDTO.GetMissions> getMissions(
+    public ApiResponse<MissionResDTO.GetMissions> getMyMissions(
             @RequestParam Status status, Integer page, Integer size, SortType sortType
             ){
         BaseSuccessCode code = MissionSuccessCode.OK;
@@ -42,5 +40,11 @@ public class MissionController {
             ){
         BaseSuccessCode code = MissionSuccessCode.OK;
         return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt());
+    }
+
+    @PatchMapping("/v1/missions/{missionId}/complete")
+    public ApiResponse<MissionResDTO.MissionComplete> completeMissions(){
+        BaseSuccessCode code = MissionSuccessCode.OK;
+        return ApiResponse.onSuccess(code, missionService.completeMission());
     }
 }

@@ -14,4 +14,8 @@ public class MissionService {
     public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt() {
         return null;
     }
+
+    public MissionResDTO.MissionComplete completeMission() {
+        return null;
+    }
 }
