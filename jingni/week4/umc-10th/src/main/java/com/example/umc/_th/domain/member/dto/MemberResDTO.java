@@ -6,10 +6,14 @@ public class MemberResDTO {
 
     @Builder
     public record GetInfo(
-            String name,
-            String profileUrl,
-            String email,
-            String phoneNumber,
-            Integer point
+        String name,
+        String email,
+        String phone,
+        Integer point
     ){}
+
+    public record Signup(
+        String id
+    ){}
+
 }

@@ -7,10 +7,7 @@ import com.example.umc._th.domain.member.service.MemberService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,11 +16,17 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/v1/members/me")
-    public ApiResponse<MemberResDTO.GetInfo> getInfo (
-            @RequestBody MemberReqDTO.GetInfo dto
-    ){
+    @PostMapping("v1/members/signup")
+    public ApiResponse<MemberResDTO.Signup> signup (
+            @RequestBody MemberReqDTO.Signup dto
+            ){
         BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getInfo(dto));
+        return ApiResponse.onSuccess(code, memberService.signup());
+    }
+
+    @GetMapping("/v1/members/me")
+    public ApiResponse<MemberResDTO.GetInfo> getInfo (){
+        BaseSuccessCode code = MemberSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberService.getInfo());
     }
 }

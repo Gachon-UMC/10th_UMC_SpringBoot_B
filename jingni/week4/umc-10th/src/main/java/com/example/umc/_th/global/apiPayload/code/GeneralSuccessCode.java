@@ -13,3 +13,4 @@ public enum GeneralSuccessCode implements BaseSuccessCode{
     private final String code;
     private final String message;
 }
+

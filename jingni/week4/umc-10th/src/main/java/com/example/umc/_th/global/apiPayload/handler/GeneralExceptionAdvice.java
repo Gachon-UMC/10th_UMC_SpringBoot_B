@@ -24,3 +24,4 @@ public class GeneralExceptionAdvice {
                 .body(ApiResponse.onFailure(code, ex.getMessage()));
     }
 }
+

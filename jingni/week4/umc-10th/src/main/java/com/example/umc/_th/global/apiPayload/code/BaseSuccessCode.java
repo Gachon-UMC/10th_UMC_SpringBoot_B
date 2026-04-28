@@ -7,3 +7,4 @@ public interface BaseSuccessCode {
     String getCode();
     String getMessage();
 }
+
