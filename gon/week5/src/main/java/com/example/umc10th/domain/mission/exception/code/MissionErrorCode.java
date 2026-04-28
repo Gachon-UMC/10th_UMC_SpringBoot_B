@@ -1,0 +1,23 @@
+package com.example.umc10th.domain.mission.exception.code;
+
+import com.example.umc10th.global.apiPayload.code.BaseErrorCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum MissionErrorCode implements BaseErrorCode {
+
+    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION404_1", "해당 미션을 찾을 수 없습니다. "),
+    MISSION_ALREADY_COMPLETED(HttpStatus.CONFLICT, "MISSION409_1", "이미 완료한 미션입니다. "),
+    MISSION_ALREADY_IN_PROGRESS(HttpStatus.CONFLICT, "MISSION409_2", "이미 진행 중인 미션입니다. "),
+    MISSION_NOT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "MISSION400_1", "진행 중인 미션이 아닙니다. "),
+    MISSION_DEADLINE_EXPIRED(HttpStatus.BAD_REQUEST, "MISSION400_2", "미션 수행 기한이 지났습니다. "),
+    MISSION_CONDITION_NOT_MET(HttpStatus.BAD_REQUEST, "MISSION400_3", "미션 수행 조건을 만족하지 않습니다. "),
+    MISSION_FULL(HttpStatus.CONFLICT, "MISSION409_3", "미션 정원이 가득 찼습니다. ");
+
+    private final HttpStatus status;
+    private final String code;
+    private final String message;
+}
