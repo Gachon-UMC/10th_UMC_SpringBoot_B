@@ -6,4 +6,8 @@ public class MissionService {
     public MissionResDTO.GetMissions getMissions(){
         return null;
     }
+
+    public MissionResDTO.GetMissions getMyMissions() {
+        return null;
+    }
 }

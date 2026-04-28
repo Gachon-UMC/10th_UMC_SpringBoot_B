@@ -2,11 +2,11 @@ package com.example.umc._th.domain.mission.dto;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MissionResDTO {
     @Builder
     public record GetMissions(
-        ArrayList<MissionDTO> missions
+        List<MissionDTO> missions
     ){}
 }

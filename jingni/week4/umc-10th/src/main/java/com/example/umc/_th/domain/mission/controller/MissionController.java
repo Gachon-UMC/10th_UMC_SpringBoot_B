@@ -1,12 +1,15 @@
 package com.example.umc._th.domain.mission.controller;
 
+import com.example.umc._th.domain.mission.dto.MissionReqDTO;
 import com.example.umc._th.domain.mission.dto.MissionResDTO;
+import com.example.umc._th.domain.mission.enums.Status;
 import com.example.umc._th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc._th.domain.mission.service.MissionService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc._th.global.enums.SortType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,5 +28,13 @@ public class MissionController {
     ){
         BaseSuccessCode code = MissionSuccessCode.OK;
         return ApiResponse.onSuccess(code, missionService.getMissions());
+    }
+
+    @GetMapping("/v1/missions/my")
+    public ApiResponse<MissionResDTO.GetMissions> getMissions(
+            @RequestParam Status status, Integer page, Integer size, SortType sortType
+            ){
+        BaseSuccessCode code = MissionSuccessCode.OK;
+        return ApiResponse.onSuccess(code, missionService.getMyMissions());
     }
 }

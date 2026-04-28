@@ -11,6 +11,6 @@ public class MissionDTO {
         String deadline,
         Integer point,
         Status status,
-        StoreDTO.storeInMission store
+        StoreDTO.StoreInMission store
     ){}
 }
