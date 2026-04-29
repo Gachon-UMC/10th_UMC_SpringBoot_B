@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.umc10thyongjae.global.apiPayload.code.BaseErrorCode;
+import org.example.umc10thyongjae.global.apiPayload.code.BaseSuccessCode;
 
 @Getter
 @AllArgsConstructor
@@ -20,13 +21,13 @@ public class ApiResponse<T> {
     private final String message;
 
     @JsonPropertyOrder("result")
-    private T result;
+    private final T result;
 
-    public static <T> ApiResponse<T> onSuccess(BaseErrorCode code, T result) {
-        return new ApiResponse<T>(true, code.getCode(), code.getMessage(), result);
+    public static <T> ApiResponse<T> onSuccess(BaseSuccessCode code, T result) {
+        return new ApiResponse<>(true, code.getCode(), code.getMessage(), result);
     }
 
     public static <T> ApiResponse<T> onFailure(BaseErrorCode code, T result) {
-        return new ApiResponse<T>(false, code.getCode(), code.getMessage(), result);
+        return new ApiResponse<>(false, code.getCode(), code.getMessage(), result);
     }
 }
