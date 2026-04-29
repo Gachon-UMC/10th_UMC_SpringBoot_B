@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.mission.entity;
 
 import com.example.umc10th.domain.store.entity.Store;
+import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -8,33 +9,27 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class Mission {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "mission")
+public class Mission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long missionId;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
     private Store store;
 
-    @Column(nullable = false)
+    @Column(name = "deadline")
     private LocalDateTime deadline;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "mission_condition")
     private String missionCondition;
 
-    @Column(nullable = false)
+    @Column(name = "reward")
     private Integer reward;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
 }

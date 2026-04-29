@@ -1,37 +1,58 @@
 package com.example.umc10th.domain.mission.service;
 
+import com.example.umc10th.domain.member.repository.MemberRepository;
+import com.example.umc10th.domain.member_mission.repository.MemberMissionRepository;
+import com.example.umc10th.domain.mission.converter.MissionConverter;
 import com.example.umc10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
+import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
+import com.example.umc10th.domain.mission.enums.Status;
+import com.example.umc10th.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MissionService {
+    private final MissionRepository missionRepository;
+    private final MemberMissionRepository memberMissionRepository;
+    private final MemberRepository memberRepository;
 
-    public MissionResDTO.MissionList getMissions(String status, int page, int size) {
-        MissionResDTO.MissionItem item = MissionResDTO.MissionItem.builder()
-                .missionId(1L)
-                .title("미션 제목")
-                .reward("1000P")
-                .createdAt(LocalDateTime.now().toString())
-                .build();
+    public MissionResDTO.MissionList missionList(Status status, int page, int size) {
+        // 1. 페이징 객체 생성
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        return MissionResDTO.MissionList.builder()
-                .missions(List.of(item))
-                .page(page)
-                .size(size)
-                .hasNext(false)
+        // 2. DB에서 상태에 따른 미션 조회 (MemberMission 기준)
+        // ※ findAllByStatus 메서드가 Repository에 정의되어 있어야 함
+        Page<MemberMission> memberMissions = memberMissionRepository.findAllByStatus(status, pageRequest);
+
+        // 3. DTO로 변환하여 반환 (Converter 활용)
+        return MissionConverter.toMissionList(memberMissions);
+    }
+
+    @Transactional
+    public MissionResDTO.ChallengeMission challengeMission(Long missionId, MissionReqDTO.ChallengeMission dto) {
+        return MissionResDTO.ChallengeMission.builder()
+                .missionId(missionId)
+                .message("임시: 미션 도전 시작 로직 구현 예정")
                 .build();
     }
 
-    public MissionResDTO.Challenge challengeMission(Long missionId, MissionReqDTO.Challenge dto) {
-        return MissionResDTO.Challenge.builder()
-                .missionId(missionId)
-                .message("미션 도전이 시작되었습니다.")
+    public MissionResDTO.CompleteMission completeMission(Long userMissionId) {
+        return MissionResDTO.CompleteMission.builder()
+                .userMissionId(userMissionId)
+                .status(Status.ONGOING) // 임시 상태
+                .build();
+    }
+
+    @Transactional
+    public MissionResDTO.VerifyMission verifyMission(Long missionId, MissionReqDTO.VerifyMission dto) {
+        return MissionResDTO.VerifyMission.builder()
+                .message("미션 성공 인증 성공")
                 .build();
     }
 }

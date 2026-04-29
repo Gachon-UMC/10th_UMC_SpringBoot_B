@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ReviewResDTO {
     @Builder
-    public record Create(
+    public record CreateReview(
             Long reviewId,
             String message,
             String createdAt

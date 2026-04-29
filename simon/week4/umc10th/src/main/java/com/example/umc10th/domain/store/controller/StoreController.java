@@ -16,7 +16,7 @@ public class StoreController {
 
     // 식당 정보 조회
     @GetMapping("/{storeId}")
-    public ApiResponse<StoreResDTO.Detail> getStoreDetail(
+    public ApiResponse<StoreResDTO.GetStoreDetail> getStoreDetail(
             @PathVariable Long storeId
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;

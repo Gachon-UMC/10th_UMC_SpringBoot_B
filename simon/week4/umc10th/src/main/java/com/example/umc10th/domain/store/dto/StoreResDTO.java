@@ -4,7 +4,7 @@ import lombok.Builder;
 
 public class StoreResDTO {
     @Builder
-    public record Detail(
+    public record GetStoreDetail(
             Long storeId,
             String storeName,
             Long regionId, // Added regionId field

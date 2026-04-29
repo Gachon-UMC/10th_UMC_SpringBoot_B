@@ -17,22 +17,21 @@ public class ReviewController {
 
     // 리뷰 작성
     @PostMapping("/{storeId}/reviews")
-    public ApiResponse<ReviewResDTO.Create> createReview(
-            @PathVariable Long storeId,
-            @RequestHeader("Authorization") String accessToken,
-            @RequestBody ReviewReqDTO.Create dto
+    public ApiResponse<ReviewResDTO.CreateReview> createReview(
+            @PathVariable(name = "storeId") Long storeId,
+            @RequestBody ReviewReqDTO.CreateReview dto
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, reviewService.createReview(storeId, dto));
     }
 
-    // 특정 가게 리뷰 조회
+    // 특정 식당 리뷰 조회
     @GetMapping("/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.ReviewList> getStoreReviews(
-            @PathVariable Long storeId,
+            @PathVariable(name = "storeId") Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-    ) {
+    ) { 
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, reviewService.getStoreReviews(storeId, page, size));
     }

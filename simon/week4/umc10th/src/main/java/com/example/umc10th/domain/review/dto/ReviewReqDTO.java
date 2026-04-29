@@ -6,9 +6,10 @@ import java.util.List;
 
 public class ReviewReqDTO {
     @Builder
-    public record Create(
+    public record CreateReview(
             String content,
             Float score,
+            Long memberId,
             List<String> photoUrls
     ) {}
 }
