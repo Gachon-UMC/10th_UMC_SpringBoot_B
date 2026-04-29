@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService {
-    public ReviewResDTO.CreateReview createReview(ReviewReqDTO.CreateReview dto) {
+    public ReviewResDTO.CreateReview createReview(Long storeId,ReviewReqDTO.CreateReview dto) {
         return null;
     }
 }
