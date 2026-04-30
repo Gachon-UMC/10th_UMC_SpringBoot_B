@@ -1,4 +1,4 @@
-package org.example.umc10thyongjae.domain.auth.dto;
+package org.example.umc10thyongjae.domain.auth.dto.request;
 
 import java.util.List;
 
