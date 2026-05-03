@@ -3,7 +3,9 @@ package com.example.umc._th.domain.member.dto;
 import com.example.umc._th.domain.member.enums.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MemberReqDTO {
 
@@ -13,9 +15,9 @@ public class MemberReqDTO {
         String name,
         String email,
         Gender gender,
-        String birth,
+        LocalDate birth,
         String address,
-        ArrayList<Integer> favoriteFoodIds
+        List<Long> favoriteFoodIds
 
     ){}
 }
