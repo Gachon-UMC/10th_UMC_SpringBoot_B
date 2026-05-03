@@ -18,7 +18,7 @@ public class AuthController {
     private final MemberService memberService;
 
     // 회원가입
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public ApiResponse<MemberResDTO.Register> register(
             @RequestBody MemberResDTO.Register dto
     ) {
@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     // 로그인
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ApiResponse<MemberResDTO.Login> login(
             @RequestBody MemberResDTO.Login dto
     ) {
