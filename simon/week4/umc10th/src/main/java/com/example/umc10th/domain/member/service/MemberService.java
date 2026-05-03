@@ -25,13 +25,6 @@ public class MemberService {
         return singleParameter;
     }
 
-    // Request Body
-    public MemberResDTO.RequestBody requestBody(
-            MemberReqDTO.RequestBody dto
-    ) {
-        return MemberConverter.toRequestBody(dto.stringTest(), dto.longTest());
-    }
-
     @Transactional
     public String createUser(
     ) {

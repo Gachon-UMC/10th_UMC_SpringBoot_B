@@ -9,12 +9,6 @@ import java.time.LocalDateTime;
 
 public class MemberResDTO {
     @Builder
-    public record RequestBody(
-            String stringTest,
-            Long longTest
-    ) {}
-
-    @Builder
     public record Register(
             String email,
             String password,

@@ -17,15 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/members")
 public class MemberController {
     private final MemberService memberService;
-
-    // 아무것도 받지 않은 경우
-    @GetMapping("/test")
-    public ApiResponse<String> test(
-
-    ) throws Exception {
-        throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
-    }
-
     // Query Parameter
     @PostMapping("/query-parameter")
     public ApiResponse<String> exception(
@@ -33,15 +24,6 @@ public class MemberController {
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.singleParameter(queryParameter));
-    }
-
-    // Request Body
-    @PostMapping("/request-body")
-    public ApiResponse<MemberResDTO.RequestBody> requestBody(
-            @RequestBody MemberReqDTO.RequestBody dto
-    ) {
-        BaseSuccessCode code = GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.requestBody(dto));
     }
 
     // Path Variable
@@ -63,7 +45,7 @@ public class MemberController {
     // 마이페이지
     @GetMapping("/me")
     public ApiResponse<MemberResDTO.GetInfo> getInfo(
-            @RequestBody MemberReqDTO.GetInfo dto
+            @ModelAttribute MemberReqDTO.GetInfo dto
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.getInfo(dto));
