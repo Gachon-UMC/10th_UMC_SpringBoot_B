@@ -2,6 +2,7 @@ package com.example.umc10th.domain.review.dto;
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReviewResDTO {
@@ -9,7 +10,7 @@ public class ReviewResDTO {
     public record CreateReview(
             Long reviewId,
             String message,
-            String createdAt
+            LocalDateTime createdAt
     ) {}
 
     @Builder
@@ -18,7 +19,7 @@ public class ReviewResDTO {
             String content,
             Float score,
             String reviewerNickname,
-            String createdAt,
+            LocalDateTime createdAt,
             List<String> photoUrls
     ) {}
 

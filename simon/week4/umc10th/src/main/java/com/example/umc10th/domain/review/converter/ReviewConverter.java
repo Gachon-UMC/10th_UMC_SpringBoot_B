@@ -32,7 +32,7 @@ public class ReviewConverter {
     public static ReviewResDTO.CreateReview toCreateReviewResult(Review review) {
         return ReviewResDTO.CreateReview.builder()
                 .reviewId(review.getId())
-                .createdAt(review.getCreatedAt().toString())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 }

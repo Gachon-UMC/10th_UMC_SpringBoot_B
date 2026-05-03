@@ -24,7 +24,7 @@ public class ReviewService {
         return ReviewResDTO.CreateReview.builder()
                 .reviewId(1L)
                 .message("리뷰가 등록되었습니다.")
-                .createdAt(LocalDateTime.now().toString())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class ReviewService {
                 .content("맛있어요")
                 .score(4.5f)
                 .reviewerNickname("홍길동")
-                .createdAt(LocalDateTime.now().toString())
+                .createdAt(LocalDateTime.now())
                 .photoUrls(List.of("https://example.com/review-photo.jpg"))
                 .build();
 
