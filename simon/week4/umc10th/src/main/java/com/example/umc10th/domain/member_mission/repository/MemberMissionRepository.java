@@ -30,4 +30,8 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             Status status,
             Pageable pageable
     );
+
+    long countByMemberIdAndStatus(Long memberId, Status status);
+
+    Page<MemberMission> findAllByMemberIdAndStatus(Long memberId, Status status, Pageable pageable);
 }
