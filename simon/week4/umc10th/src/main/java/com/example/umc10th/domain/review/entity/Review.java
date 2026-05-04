@@ -35,8 +35,10 @@ public class Review extends BaseEntity {
     private Float score;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ReviewPhoto> reviewPhotoList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Reply> replyList = new ArrayList<>();
 }
