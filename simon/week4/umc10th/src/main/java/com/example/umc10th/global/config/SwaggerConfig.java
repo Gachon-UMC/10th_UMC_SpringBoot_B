@@ -20,7 +20,7 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityScheme);
 
         Components components = new Components()
-            .addSecuritySchemes(securityScheme, new SecurityScheme()
+                .addSecuritySchemes(securityScheme, new SecurityScheme()
                 .name(securityScheme)
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("Bearer")
