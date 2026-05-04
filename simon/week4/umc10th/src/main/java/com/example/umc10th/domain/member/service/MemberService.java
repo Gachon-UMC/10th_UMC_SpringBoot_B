@@ -18,13 +18,6 @@ import java.time.LocalDateTime;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    // Query Parameter
-    public String singleParameter(
-            String singleParameter
-    ) {
-        return singleParameter;
-    }
-
     // 회원가입
     public MemberResDTO.Register register() {
         return null;
