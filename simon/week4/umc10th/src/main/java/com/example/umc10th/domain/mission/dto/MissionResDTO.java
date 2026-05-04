@@ -48,4 +48,22 @@ public class MissionResDTO {
             String message,
             String createdAt
     ) {}
+
+    @Builder
+    public record MemberMissionItem(
+            String storeName,
+            Integer reward,
+            Status status,
+            String missionCondition
+    ) {}
+
+    @Builder
+    public record MemberMissionList(
+            List<MemberMissionItem> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
 }

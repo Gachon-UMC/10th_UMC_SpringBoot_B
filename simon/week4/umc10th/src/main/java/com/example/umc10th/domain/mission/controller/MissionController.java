@@ -53,4 +53,16 @@ public class MissionController {
     ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.verifyMission(missionId, dto));
     }
+
+    // 내 미션 목록 조회 (진행 중 / 완료)
+    @GetMapping("/members/{memberId}/missions")
+    public ApiResponse<MissionResDTO.MemberMissionList> memberMissionList(
+            @PathVariable Long memberId,
+            @RequestParam(name = "status") Status status,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
+    ) {
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, missionService.memberMissionList(memberId, status, page, size));
+    }
 }

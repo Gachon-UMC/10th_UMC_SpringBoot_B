@@ -55,4 +55,20 @@ public class MissionService {
                 .message("미션 성공 인증 성공")
                 .build();
     }
+
+    public MissionResDTO.MemberMissionList memberMissionList(Long memberId, Status status, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<MissionResDTO.MemberMissionItem> memberMissions =
+                memberMissionRepository.findMemberMissionsByMemberIdAndStatus(memberId, status, pageRequest);
+
+        return MissionResDTO.MemberMissionList.builder()
+                .missionList(memberMissions.getContent())
+                .listSize(memberMissions.getNumberOfElements())
+                .totalPage(memberMissions.getTotalPages())
+                .totalElements(memberMissions.getTotalElements())
+                .isFirst(memberMissions.isFirst())
+                .isLast(memberMissions.isLast())
+                .build();
+    }
 }
