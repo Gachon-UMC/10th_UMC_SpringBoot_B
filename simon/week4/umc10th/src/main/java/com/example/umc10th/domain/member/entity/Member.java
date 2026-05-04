@@ -59,7 +59,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private Integer point = 0;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
