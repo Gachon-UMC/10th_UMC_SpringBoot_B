@@ -29,6 +29,7 @@ public class MemberMission extends BaseEntity {
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     @Builder.Default
     private Status status = Status.BASIC;
