@@ -25,23 +25,6 @@ public class MemberService {
         return singleParameter;
     }
 
-    @Transactional
-    public String createUser(
-    ) {
-        Member member = Member.builder()
-                .name("test")
-                .build();
-        memberRepository.save(member);
-        return "OK";
-    }
-
-    @Transactional
-    public String deleteUser(
-    ) {
-        memberRepository.deleteByName("test");
-        return "OK";
-    }
-
     // 회원가입
     public MemberResDTO.Register register() {
         return null;
