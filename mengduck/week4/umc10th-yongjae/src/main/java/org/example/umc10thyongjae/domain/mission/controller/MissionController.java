@@ -1,6 +1,6 @@
 package org.example.umc10thyongjae.domain.mission.controller;
 
-import org.example.umc10thyongjae.domain.mission.dto.enums.MissionStatus;
+import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.domain.mission.dto.request.ReqMissionCompleteRequestDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.MissionResponseDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.ReqMissionCompleteResponseDto;
