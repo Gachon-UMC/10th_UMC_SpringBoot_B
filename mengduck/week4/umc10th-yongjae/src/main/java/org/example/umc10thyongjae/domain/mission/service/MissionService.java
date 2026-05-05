@@ -27,14 +27,14 @@ public class MissionService {
         List<UserMissionResponseDto> result =
                 userMissionRepository.findUserMissionByUserId(userId, paramStatus, size, page * size)
                         .stream()
-                        .map(MissionService::from)
+                        .map(MissionService::convertUserMission)
                         .toList();
 
         return result;
     }
 
 
-    public static UserMissionResponseDto from(UserMission um) {
+    public static UserMissionResponseDto convertUserMission(UserMission um) {
         Mission mission = um.getMission();
         return UserMissionResponseDto.builder()
                 .missionKey(mission.getMissionId())
