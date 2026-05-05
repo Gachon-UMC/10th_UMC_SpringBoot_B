@@ -22,6 +22,9 @@ public class Mission extends BaseEntity {
     @Column(name = "mission_id")
     private Long missionId;
 
+    @Column(name = "location")
+    private String location;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;

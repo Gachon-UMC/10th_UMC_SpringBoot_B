@@ -26,17 +26,10 @@ public class MissionController {
             @RequestParam int page,
             @RequestParam int size
     ) {
-        MissionResponseDto resultDto = MissionResponseDto.builder()
-                .missionKey(123)
-                .storeKey(7123)
-                .storeName("마라탕")
-                .storeCategory("중식")
-                .reward(777)
-                .rewardCondition(10000)
-                .expireDate("2025-05-05").build();
+        //UserId로 location 설정
+        String location = "mapo";
 
-        List<MissionResponseDto> result = new ArrayList<>();
-        result.add(resultDto);
+        List<MissionResponseDto> result = missionService.getMission(location, page, size);
 
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }

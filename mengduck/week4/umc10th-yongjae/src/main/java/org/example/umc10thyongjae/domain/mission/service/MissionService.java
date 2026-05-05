@@ -1,10 +1,12 @@
 package org.example.umc10thyongjae.domain.mission.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.umc10thyongjae.domain.mission.dto.response.MissionResponseDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.UserMissionResponseDto;
 import org.example.umc10thyongjae.domain.mission.entity.Mission;
 import org.example.umc10thyongjae.domain.mission.entity.UserMission;
 import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
+import org.example.umc10thyongjae.domain.mission.repository.MissionRepository;
 import org.example.umc10thyongjae.domain.mission.repository.UserMissionRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MissionService {
     private final UserMissionRepository userMissionRepository;
+    private final MissionRepository missionRepository;
 
     public List<UserMissionResponseDto> getUserMission(long userId, int page, int size, String status) {
         MissionStatus paramStatus = null;
@@ -33,6 +36,15 @@ public class MissionService {
         return result;
     }
 
+    public List<MissionResponseDto> getMission(String location, int page, int size) {
+        List<MissionResponseDto> result =
+                missionRepository.findMissionByLocation(location, size, page * size)
+                        .stream()
+                        .map(MissionService::convertMission)
+                        .toList();
+
+        return result;
+    }
 
     public static UserMissionResponseDto convertUserMission(UserMission um) {
         Mission mission = um.getMission();
@@ -44,6 +56,17 @@ public class MissionService {
                 .reward(mission.getReward())
                 .expireDate(mission.getExpireDate().toString())
                 .status(um.getStatus())
+                .build();
+    }
+
+    public static MissionResponseDto convertMission(Mission m) {
+        return MissionResponseDto.builder()
+                .missionId(m.getMissionId())
+                .storeId(m.getStore().getStoreId())
+                .storeName(m.getStore().getName())
+                .storeCategory(m.getStore().getCategory())
+                .reward(m.getReward())
+                .expireDate(m.getExpireDate().toString())
                 .build();
     }
 }
