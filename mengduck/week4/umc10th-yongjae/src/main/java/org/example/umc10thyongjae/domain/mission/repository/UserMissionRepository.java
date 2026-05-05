@@ -14,7 +14,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
                     FROM user_mission UM
                 WHERE UM.user_id = :userId
                     AND (:status IS NULL OR UM.status = :status)
-                ORDER BY UM.user_mission_id DESC
+                ORDER BY UM.created_at DESC
                 LIMIT :size OFFSET :offset
             """, nativeQuery = true)
     List<UserMission> findUserMissionByUserId(
