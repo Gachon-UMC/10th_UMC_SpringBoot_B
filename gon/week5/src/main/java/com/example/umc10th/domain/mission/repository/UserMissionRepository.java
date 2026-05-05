@@ -1,6 +1,5 @@
 package com.example.umc10th.domain.mission.repository;
 
-import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.mapping.UserMission;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,25 +11,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
-public interface MissionRepository  extends JpaRepository<Mission,Long> {
-
+public interface UserMissionRepository extends JpaRepository<UserMission,Long> {
     @Query(
             value = """
-                    select m
-                    from Mission m
+                    select um
+                    from UserMission um
+                    join fetch um.mission m
                     join fetch m.store s
-                    where s.region.id = :regionId
-                    order by m.id desc
+                    where um.user.id = :userId
+                    order by um.id desc
                     """,
             countQuery = """
-                    select count(m)
-                    from Mission m
-                    join m.store s
-                    where s.region.id = :regionId
+                    select count(um)
+                    from UserMission um
+                    where um.user.id = :userId
                     """
     )
-    Page<Mission> findAvailableMissionsByRegionId(
-            @Param("regionId") Long regionId,
+    Page<UserMission> findMissionsByUserId(
+            @Param("userId") Long userId,
             Pageable pageable
     );
 }
