@@ -12,7 +12,7 @@ public enum FoodType {
 
     CAFE,
 
-    FASTFOOD,
+    FAST_FOOD,
 
     DESSERT
 

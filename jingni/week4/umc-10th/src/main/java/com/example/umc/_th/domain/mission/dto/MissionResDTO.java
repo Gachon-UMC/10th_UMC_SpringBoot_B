@@ -11,7 +11,7 @@ import java.util.List;
 public class MissionResDTO {
     @Schema(name = "GetMissionsResponse")
     public record GetMissions(
-        List<MissionDTO> missions
+        List<MissionDTO.Mission> missions
     ){}
 
     @Schema(name = "GetCompleteMissionsCntResponse")
