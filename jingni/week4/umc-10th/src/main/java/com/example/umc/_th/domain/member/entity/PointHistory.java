@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class PointHistory extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "point")

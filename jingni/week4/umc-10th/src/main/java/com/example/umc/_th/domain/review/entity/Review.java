@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class Review extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "content", columnDefinition = "TEXT")

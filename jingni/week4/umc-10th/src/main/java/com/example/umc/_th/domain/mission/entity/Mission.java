@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Mission extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "content", columnDefinition = "TEXT")

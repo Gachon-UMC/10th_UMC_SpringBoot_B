@@ -1,4 +1,17 @@
-package com.example.umc._th.domain.review.exception.code;
+package com.example.umc._th.domain.store.exception.code;
 
-public enum ReviewErrorCode {
+import com.example.umc._th.global.apiPayload.code.BaseErrorCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum ReviewErrorCode implements BaseErrorCode {
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW404_1", "해당 리뷰를 찾을 수 없습니다."),
+    INVALID_REVIEW_REQUEST(HttpStatus.BAD_REQUEST, "REVIEW400_1", "잘못된 리뷰 요청입니다.");
+
+    private final HttpStatus status;
+    private final String code;
+    private final String message;
 }
