@@ -3,6 +3,8 @@ package com.example.umc._th.domain.member.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.time.LocalDate;
+
 public class MemberResDTO {
 
     @Builder
@@ -10,8 +12,10 @@ public class MemberResDTO {
     public record GetInfo(
         String name,
         String email,
-        String phone,
-        Integer point
+        String phoneNum,
+        Integer point,
+        LocalDate birth,
+        String address
     ){}
 
     @Schema(name = "MemberSignupResponse")

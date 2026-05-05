@@ -20,11 +20,17 @@ import java.time.LocalDate;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="name")
     private String name;
+
+    @Column(name="email", unique = true)
+    private String email;
+
+    @Column (name="phone_num")
+    private String phoneNum;
 
     @Column(name="gender")
     @Enumerated(EnumType.STRING)
@@ -41,8 +47,10 @@ public class Member extends BaseEntity {
     private SocialType socialType;
 
     @Column(name="is_active")
-    private Boolean isActive;
+    @Builder.Default
+    private Boolean isActive = true;
 
     @Column(name="point")
-    private Integer point;
+    @Builder.Default
+    private Integer point = 0;
 }
