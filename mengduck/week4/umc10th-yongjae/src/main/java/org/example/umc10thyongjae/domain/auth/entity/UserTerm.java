@@ -22,7 +22,7 @@ public class UserTerm extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "term_id")
     private Term term;
 }

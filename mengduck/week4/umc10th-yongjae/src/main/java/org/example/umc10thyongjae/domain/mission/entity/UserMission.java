@@ -23,7 +23,7 @@ public class UserMission extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission missionId;
 
