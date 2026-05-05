@@ -10,10 +10,8 @@ public record UserMissionResponseDto(
         String storeName,
         String storeCategory,
         int reward,
-        int rewardCondition,
         String expireDate,
         MissionStatus status
-
 ) {
 }
 

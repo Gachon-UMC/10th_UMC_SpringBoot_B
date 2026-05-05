@@ -33,6 +33,9 @@ public class Store extends BaseEntity {
     @Column(name = "address_detail")
     private String addressDetail;
 
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "main_image_url")
     private String mainImageUrl;
 

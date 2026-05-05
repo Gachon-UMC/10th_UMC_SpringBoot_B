@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.umc10thyongjae.domain.store.entity.Store;
 import org.example.umc10thyongjae.global.entity.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -21,11 +22,15 @@ public class Mission extends BaseEntity {
     @Column(name = "mission_id")
     private Long missionId;
 
-    @Column(name = "store_id")
-    private Long storeId;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @Column(name = "deleted_yn")
     private String deletedYn;
+
+    @Column(name = "reward")
+    private Integer reward;
 
     @Column(name = "desc")
     private String desc;

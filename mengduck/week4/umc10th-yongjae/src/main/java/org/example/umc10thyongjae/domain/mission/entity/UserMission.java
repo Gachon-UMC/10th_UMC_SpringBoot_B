@@ -25,7 +25,7 @@ public class UserMission extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
-    private Mission missionId;
+    private Mission mission;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
