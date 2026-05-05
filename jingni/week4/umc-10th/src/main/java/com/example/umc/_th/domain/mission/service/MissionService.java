@@ -1,5 +1,9 @@
 package com.example.umc._th.domain.mission.service;
 
+import com.example.umc._th.domain.member.entity.mapping.MemberMission;
+import com.example.umc._th.domain.member.exception.MemberException;
+import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
+import com.example.umc._th.domain.member.repository.MemberRepository;
 import com.example.umc._th.domain.mission.dto.MissionDTO;
 import com.example.umc._th.domain.mission.dto.MissionResDTO;
 import com.example.umc._th.domain.mission.entity.Mission;
@@ -7,6 +11,7 @@ import com.example.umc._th.domain.mission.enums.Status;
 import com.example.umc._th.domain.mission.exception.MissionException;
 import com.example.umc._th.domain.mission.exception.code.MissionErrorCode;
 import com.example.umc._th.domain.mission.repository.MissionRepository;
+import com.example.umc._th.domain.mission.repository.mapping.MemberMissionRepository;
 import com.example.umc._th.domain.region.exception.RegionException;
 import com.example.umc._th.domain.region.exception.code.RegionErrorCode;
 import com.example.umc._th.domain.region.repository.RegionRepository;
@@ -23,6 +28,9 @@ public class MissionService {
 
     private final MissionRepository missionRepository;
     private final RegionRepository regionRepository;
+    private final MemberRepository memberRepository;
+    private final MemberMissionRepository memberMissionRepository;
+
     public MissionResDTO.GetMissions getMissions(Long regionId, Integer page, Integer size, SortType sortType){
         int offset = page * size;
 
@@ -57,9 +65,13 @@ public class MissionService {
     public MissionResDTO.GetMissions getMyMissions(Long memberId, Status status, Integer page, Integer size, SortType sortType) {
         int offset = page * size;
 
+        if(!memberRepository.existsById(memberId)){
+            throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
         List<Mission> missions = missionRepository.findMyMissions(
                 memberId,
-                status,
+                status != null ? status.name() : null,
                 size,
                 offset
         );
@@ -84,11 +96,39 @@ public class MissionService {
         return new MissionResDTO.GetMissions(result);
     }
 
-    public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt() {
-        return null;
+    public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt(Long regionId, Long memberId) {
+
+        if(!memberRepository.existsById(memberId)){
+            throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        if (!regionRepository.existsById(regionId)) {
+            throw new RegionException(RegionErrorCode.REGION_NOT_FOUND);
+        }
+
+        Integer count = missionRepository.countCompletedMissionsByRegion(
+                memberId,
+                regionId
+        );
+        return new MissionResDTO.GetCompleteMissionsCnt(count);
     }
 
-    public MissionResDTO.MissionComplete completeMission() {
-        return null;
+    public MissionResDTO.MissionComplete completeMission(Long memberMissionId) {
+
+        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
+                .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
+
+        memberMission.(); // status 변경 (엔티티 메서드 추천)
+
+        Mission mission = mm.getMission();
+        Mem member = mm.getMember();
+
+        member.addPoint(mission.getPoint());
+
+        return new MissionResDTO.MissionComplete(
+                mission.getId(),
+                mm.getStatus(),
+                mm.getUpdatedAt()
+        );
     }
 }

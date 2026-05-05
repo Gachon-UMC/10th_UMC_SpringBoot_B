@@ -28,7 +28,7 @@ public class MemberController {
     public ApiResponse<MemberResDTO.GetInfo> getInfo (){
         BaseSuccessCode code = MemberSuccessCode.OK;
         // 일단은 userId를 1로 고정 (추후 JWT 토큰에서 꺼내도록 구현)
-        Long userId = 100L;
-        return ApiResponse.onSuccess(code, memberService.getInfo(userId));
+        Long memberId = 100L;
+        return ApiResponse.onSuccess(code, memberService.getInfo(memberId));
     }
 }

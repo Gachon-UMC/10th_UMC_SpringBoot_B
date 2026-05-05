@@ -16,8 +16,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     @Transactional()
-    public MemberResDTO.GetInfo getInfo(Long id) {
-            Member member = memberRepository.findById(id)
+    public MemberResDTO.GetInfo getInfo(Long memberId) {
+            Member member = memberRepository.findById(memberId)
                     .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
             return MemberResDTO.GetInfo.builder()

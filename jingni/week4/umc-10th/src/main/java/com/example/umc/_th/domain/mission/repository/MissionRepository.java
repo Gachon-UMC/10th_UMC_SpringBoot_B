@@ -59,4 +59,18 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
+    @Query(value = """
+    SELECT COUNT(*)
+    FROM member_mission mm
+    JOIN mission m ON mm.mission_id = m.id
+    JOIN store s ON m.store_id = s.id
+    WHERE mm.member_id = :memberId
+      AND mm.status = 'COMPLETED'
+      AND s.region_id = :regionId
+""", nativeQuery = true)
+    Integer countCompletedMissionsByRegion(
+            @Param("memberId") Long memberId,
+            @Param("regionId") Long regionId
+    );
 }

@@ -32,21 +32,25 @@ public class MissionController {
 
     @GetMapping("/v1/missions/my")
     public ApiResponse<MissionResDTO.GetMissions> getMyMissions(
-            @RequestParam("status") Status status,
+            @RequestParam(value = "status", required = false) Status status,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sortType", defaultValue = "LATEST") SortType sortType
             ){
+
+        Long memberId = 1L;
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMyMissions(status, page, size, sortType));
+        return ApiResponse.onSuccess(code, missionService.getMyMissions(memberId, status, page, size, sortType));
     }
 
     @GetMapping("/v1/missions/complete/count")
     public ApiResponse<MissionResDTO.GetCompleteMissionsCnt> getCompleteMissionsCnt(
             @RequestParam("regionId") Long regionId
             ){
+
+        Long memberId = 1L;
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt());
+        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt(regionId, memberId));
     }
 
     @PatchMapping("/v1/missions/{missionId}/complete")
