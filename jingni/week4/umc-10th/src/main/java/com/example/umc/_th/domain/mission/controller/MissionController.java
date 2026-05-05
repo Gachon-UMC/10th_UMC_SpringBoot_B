@@ -52,12 +52,4 @@ public class MissionController {
         BaseSuccessCode code = MissionSuccessCode.OK;
         return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt(regionId, memberId));
     }
-
-    @PatchMapping("/v1/missions/{missionId}/complete")
-    public ApiResponse<MissionResDTO.MissionComplete> completeMission(
-        @PathVariable("missionId") Long missionId
-    ){
-        BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.completeMission());
-    }
 }

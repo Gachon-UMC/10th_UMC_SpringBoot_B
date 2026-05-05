@@ -112,23 +112,4 @@ public class MissionService {
         );
         return new MissionResDTO.GetCompleteMissionsCnt(count);
     }
-
-    public MissionResDTO.MissionComplete completeMission(Long memberMissionId) {
-
-        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
-                .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
-
-        memberMission.(); // status 변경 (엔티티 메서드 추천)
-
-        Mission mission = mm.getMission();
-        Mem member = mm.getMember();
-
-        member.addPoint(mission.getPoint());
-
-        return new MissionResDTO.MissionComplete(
-                mission.getId(),
-                mm.getStatus(),
-                mm.getUpdatedAt()
-        );
-    }
 }
