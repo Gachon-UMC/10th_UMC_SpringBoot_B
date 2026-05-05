@@ -1,7 +1,9 @@
 package com.example.umc10th.domain.mission.controller;
 
+import com.example.umc10th.domain.mission.api.MissionApiSpecification;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
+import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,14 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users/{userId}/missions")
-public class MissionController {
+public class MissionController implements MissionApiSpecification {
+
+    private final MissionService missionService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<MissionResDTO.MissionListResponse>> getMissions(
             @PathVariable Long userId,
-            @RequestParam(defaultValue = "progress") String status
+            @RequestParam(defaultValue = "progress") String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        MissionResDTO.MissionListResponse response = null;
+        MissionResDTO.MissionListResponse response = missionService.getMissions(userId, status, page, size);
         return ResponseEntity
                 .status(MissionSuccessCode.MISSION_LIST_SUCCESS.getStatus())
                 .body(ApiResponse.onSuccess(MissionSuccessCode.MISSION_LIST_SUCCESS, response));
@@ -28,7 +34,7 @@ public class MissionController {
             @PathVariable Long userId,
             @PathVariable Long missionId
     ) {
-        MissionResDTO.MissionCompleteResponse response = null;
+        MissionResDTO.MissionCompleteResponse response = missionService.completeMission(userId, missionId);
         return ResponseEntity
                 .status(MissionSuccessCode.MISSION_COMPLETE_SUCCESS.getStatus())
                 .body(ApiResponse.onSuccess(MissionSuccessCode.MISSION_COMPLETE_SUCCESS, response));

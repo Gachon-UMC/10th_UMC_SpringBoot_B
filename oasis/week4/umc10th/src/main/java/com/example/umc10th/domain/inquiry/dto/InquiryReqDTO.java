@@ -1,4 +1,4 @@
 package com.example.umc10th.domain.inquiry.dto;
 
-public class InquriryResDTO {
+public class InquiryReqDTO {
 }
