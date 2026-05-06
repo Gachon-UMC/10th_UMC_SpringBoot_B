@@ -4,6 +4,7 @@ import com.example.umc._th.domain.member.entity.mapping.MemberMission;
 import com.example.umc._th.domain.member.exception.MemberException;
 import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc._th.domain.member.repository.MemberRepository;
+import com.example.umc._th.domain.mission.converter.MissionConverter;
 import com.example.umc._th.domain.mission.dto.MissionDTO;
 import com.example.umc._th.domain.mission.dto.MissionResDTO;
 import com.example.umc._th.domain.mission.entity.Mission;
@@ -48,16 +49,7 @@ public class MissionService {
         }
 
         List<MissionDTO.Mission> result = missions.stream()
-                .map(m -> new MissionDTO.Mission(
-                        m.getId(),
-                        m.getDeadline(),
-                        m.getPoint(),
-                        null,
-                        new StoreDTO.StoreSummary(
-                                m.getStore().getName(),
-                                m.getStore().getFood().getType()
-                        )
-                ))
+                .map(m -> MissionConverter.toMissionDTO(m, null))
                 .toList();
         return new MissionResDTO.GetMissions(result);
     }
@@ -81,17 +73,7 @@ public class MissionService {
         }
 
         List<MissionDTO.Mission> result = missions.stream()
-                .map(m -> new MissionDTO.Mission(
-                        m.getId(),
-                        m.getDeadline(),
-                        m.getPoint(),
-                        status,
-
-                        new StoreDTO.StoreSummary(
-                                m.getStore().getName(),
-                                m.getStore().getFood().getType()
-                        )
-                ))
+                .map(m -> MissionConverter.toMissionDTO(m, status))
                 .toList();
         return new MissionResDTO.GetMissions(result);
     }

@@ -4,6 +4,7 @@ import com.example.umc._th.domain.member.entity.Member;
 import com.example.umc._th.domain.member.exception.MemberException;
 import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc._th.domain.member.repository.MemberRepository;
+import com.example.umc._th.domain.review.converter.ReviewConverter;
 import com.example.umc._th.domain.review.dto.ReviewReqDTO;
 import com.example.umc._th.domain.review.dto.ReviewResDTO;
 import com.example.umc._th.domain.review.entity.Review;
@@ -41,25 +42,17 @@ public class ReviewService {
         ){
             throw new ReviewException(ReviewErrorCode.INVALID_REVIEW_REQUEST);
         }
+
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(()-> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Review review = Review.builder()
-                .content(request.content())
-                .star(BigDecimal.valueOf(request.star()))
-                .store(store)
-                .member(member)
-                .build();
+        Review review = ReviewConverter.toEntity(request, store, member);
 
         Review saved = reviewRepository.save(review);
 
-        return new ReviewResDTO.CreateReview(
-                saved.getId(),
-                store.getId(),
-                saved.getCreatedAt()
-        );
+        return ReviewConverter.toCreateReviewDTO(saved);
     }
 }
