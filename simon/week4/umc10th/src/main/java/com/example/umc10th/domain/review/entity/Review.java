@@ -28,17 +28,17 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @Column(name = "content", columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT",  nullable = false)
     private String content;
 
     @Column(name = "score", nullable = false)
     private Float score;
 
-    @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ReviewPhoto> reviewPhotoList = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Reply> replyList = new ArrayList<>();
 }

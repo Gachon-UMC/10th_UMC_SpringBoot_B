@@ -15,16 +15,16 @@ public class Store extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "store_name")
+    @Column(name = "store_name", nullable = false)
     private String storeName;
 
-    @Column(name = "manager_number")
+    @Column(name = "manager_number", nullable = false)
     private Long managerNumber;
 
-    @Column(name = "detailed_address")
+    @Column(name = "detailed_address", nullable = false)
     private String detailedAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
+    @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 }

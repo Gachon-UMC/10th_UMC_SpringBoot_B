@@ -1,9 +1,7 @@
 package com.example.umc10th.domain.member.service;
 
-import com.example.umc10th.domain.member.converter.MemberConverter;
 import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
-import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
@@ -18,30 +16,6 @@ import java.time.LocalDateTime;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    // Query Parameter
-    public String singleParameter(
-            String singleParameter
-    ) {
-        return singleParameter;
-    }
-
-    @Transactional
-    public String createUser(
-    ) {
-        Member member = Member.builder()
-                .name("test")
-                .build();
-        memberRepository.save(member);
-        return "OK";
-    }
-
-    @Transactional
-    public String deleteUser(
-    ) {
-        memberRepository.deleteByName("test");
-        return "OK";
-    }
-
     // 회원가입
     public MemberResDTO.Register register() {
         return null;
@@ -54,15 +28,10 @@ public class MemberService {
 
     // 마이페이지
     public MemberResDTO.GetInfo getInfo(MemberReqDTO.GetInfo dto) {
-        // DTO에서 유저 ID를 추출
         Long memberId = dto.id();
 
-        // DB에서 해당 유저 ID로 데이터 조회
-        Member member = memberRepository.findById(memberId)
+        return memberRepository.findGetInfoById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-
-        // 컨버터를 이용해서 응답 DTO 생성 & return
-        return MemberConverter.toGetInfo(member);
     }
 
     // 회원정보 수정

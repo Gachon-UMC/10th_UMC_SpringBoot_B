@@ -8,6 +8,7 @@ import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc10th.domain.mission.enums.Status;
 import com.example.umc10th.domain.mission.repository.MissionRepository;
+import com.example.umc10th.domain.store.enums.RegionName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +23,13 @@ public class MissionService {
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
 
-    public MissionResDTO.MissionList missionList(Status status, int page, int size) {
+    public MissionResDTO.MissionList missionList(Long memberId, Status status, int page, int size) {
         // 1. 페이징 객체 생성
         PageRequest pageRequest = PageRequest.of(page, size);
 
         // 2. DB에서 상태에 따른 미션 조회 (MemberMission 기준)
-        // ※ findAllByStatus 메서드가 Repository에 정의되어 있어야 함
-        Page<MemberMission> memberMissions = memberMissionRepository.findAllByStatus(status, pageRequest);
+        Page<MemberMission> memberMissions =
+                memberMissionRepository.findAllByMemberIdAndStatus(memberId, status, pageRequest);
 
         // 3. DTO로 변환하여 반환 (Converter 활용)
         return MissionConverter.toMissionList(memberMissions);
@@ -53,6 +54,47 @@ public class MissionService {
     public MissionResDTO.VerifyMission verifyMission(Long missionId, MissionReqDTO.VerifyMission dto) {
         return MissionResDTO.VerifyMission.builder()
                 .message("미션 성공 인증 성공")
+                .build();
+    }
+
+    public MissionResDTO.MemberMissionList memberMissionList(Long memberId, Status status, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<MissionResDTO.MemberMissionItem> memberMissions =
+                memberMissionRepository.findMemberMissionsByMemberIdAndStatus(memberId, status, pageRequest);
+
+        return MissionResDTO.MemberMissionList.builder()
+                .missionList(memberMissions.getContent())
+                .listSize(memberMissions.getNumberOfElements())
+                .totalPage(memberMissions.getTotalPages())
+                .totalElements(memberMissions.getTotalElements())
+                .isFirst(memberMissions.isFirst())
+                .isLast(memberMissions.isLast())
+                .build();
+    }
+
+    public MissionResDTO.HomeMissionList homeMissionList(
+            Long memberId,
+            RegionName regionName,
+            Status status,
+            int page,
+            int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<MissionResDTO.HomeMissionItem> missions =
+                missionRepository.findHomeMissionsByRegionAndMember(memberId, regionName, pageRequest);
+
+        long activeMissionCount = memberMissionRepository.countByMemberIdAndStatus(memberId, status);
+
+        return MissionResDTO.HomeMissionList.builder()
+                .missionList(missions.getContent())
+                .listSize(missions.getNumberOfElements())
+                .totalPage(missions.getTotalPages())
+                .totalElements(missions.getTotalElements())
+                .isFirst(missions.isFirst())
+                .isLast(missions.isLast())
+                .activeMissionCount(activeMissionCount)
                 .build();
     }
 }

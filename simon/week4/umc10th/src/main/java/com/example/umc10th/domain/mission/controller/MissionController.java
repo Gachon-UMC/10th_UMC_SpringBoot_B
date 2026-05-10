@@ -4,6 +4,7 @@ import com.example.umc10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.enums.Status;
 import com.example.umc10th.domain.mission.service.MissionService;
+import com.example.umc10th.domain.store.enums.RegionName;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
@@ -19,12 +20,13 @@ public class MissionController {
     // 미션 목록 조회 (진행 중 / 완료)
     @GetMapping("/missions")
     public ApiResponse<MissionResDTO.MissionList> missionList(
+            @RequestParam(name = "memberId") Long memberId,
             @RequestParam(name = "status") Status status,                       // basic / ongoing / done
             @RequestParam(name = "page", defaultValue = "0") Integer page,      // 0부터 시작
             @RequestParam(name = "size", defaultValue = "10") Integer size      // 기본 10
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.missionList(status, page, size));
+        return ApiResponse.onSuccess(code, missionService.missionList(memberId, status, page, size));
     }
 
     // 미션 도전하기
@@ -52,5 +54,31 @@ public class MissionController {
             @RequestBody MissionReqDTO.VerifyMission dto
     ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.verifyMission(missionId, dto));
+    }
+
+    // 내 미션 목록 조회 (진행 중 / 완료)
+    @GetMapping("/members/{memberId}/missions")
+    public ApiResponse<MissionResDTO.MemberMissionList> memberMissionList(
+            @PathVariable Long memberId,
+            @RequestParam(name = "status") Status status,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
+    ) {
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, missionService.memberMissionList(memberId, status, page, size));
+    }
+
+    // 홈 화면 미션 목록 조회 (지역 기준)
+    @GetMapping("/home")
+    public ApiResponse<MissionResDTO.HomeMissionList> homeMissionList(
+            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam(name = "regionName") RegionName regionName,
+            @RequestParam(name = "status") Status status,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
+    ) {
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code,
+                missionService.homeMissionList(memberId, regionName, status, page, size));
     }
 }

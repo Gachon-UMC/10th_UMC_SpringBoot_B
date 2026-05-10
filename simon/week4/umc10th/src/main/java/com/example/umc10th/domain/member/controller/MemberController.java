@@ -17,31 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/members")
 public class MemberController {
     private final MemberService memberService;
-    // Query Parameter
-    @PostMapping("/query-parameter")
-    public ApiResponse<String> exception(
-            @RequestParam String queryParameter
-    ) {
-        BaseSuccessCode code = GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.singleParameter(queryParameter));
-    }
-
-    // Path Variable
-    @PostMapping("/{pathVariable}")
-    public String pathVariable(
-            @PathVariable String pathVariable
-    ) {
-        return memberService.singleParameter(pathVariable);
-    }
-
-    // Header
-    @PostMapping("/header")
-    public String header(
-            @RequestHeader("test") String test
-    ) {
-        return memberService.singleParameter(test);
-    }
-
     // 마이페이지
     @GetMapping("/me")
     public ApiResponse<MemberResDTO.GetInfo> getInfo(

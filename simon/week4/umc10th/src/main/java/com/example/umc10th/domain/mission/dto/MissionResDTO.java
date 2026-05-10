@@ -1,9 +1,11 @@
 package com.example.umc10th.domain.mission.dto;
 
 import com.example.umc10th.domain.mission.enums.Status;
+import com.example.umc10th.domain.store.enums.RegionName;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MissionResDTO {
@@ -47,5 +49,44 @@ public class MissionResDTO {
             Long proofId,
             String message,
             String createdAt
+    ) {}
+
+    @Builder
+    public record MemberMissionItem(
+            String storeName,
+            Integer reward,
+            Status status,
+            String missionCondition
+    ) {}
+
+    @Builder
+    public record MemberMissionList(
+            List<MemberMissionItem> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+
+    @Builder
+    public record HomeMissionItem(
+            Long missionId,
+            String storeName,
+            RegionName regionName,
+            String missionCondition,
+            Integer reward,
+            LocalDateTime deadline
+    ) {}
+
+    @Builder
+    public record HomeMissionList(
+            List<HomeMissionItem> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast,
+            Long activeMissionCount
     ) {}
 }
