@@ -8,6 +8,7 @@ import com.example.umc._th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc._th.domain.mission.service.MissionService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
+import com.example.umc._th.global.dto.PaginationDTO;
 import com.example.umc._th.global.enums.SortType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class MissionController {
     }
 
     @PostMapping("/v1/missions/my")
-    public ApiResponse<MissionResDTO.GetMissions> getMyMissions(
+    public ApiResponse<PaginationDTO.OffsetPaginationDTO<MissionDTO.Mission>> getMyMissions(
             @RequestParam(value = "status", required = false) Status status,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,

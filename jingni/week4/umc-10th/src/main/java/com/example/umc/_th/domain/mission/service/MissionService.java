@@ -17,6 +17,7 @@ import com.example.umc._th.domain.region.exception.RegionException;
 import com.example.umc._th.domain.region.exception.code.RegionErrorCode;
 import com.example.umc._th.domain.region.repository.RegionRepository;
 import com.example.umc._th.domain.store.dto.StoreDTO;
+import com.example.umc._th.global.dto.PaginationDTO;
 import com.example.umc._th.global.enums.SortType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,13 +62,24 @@ public class MissionService {
         return new MissionResDTO.GetMissions(result);
     }
 
-    public MissionResDTO.GetMissions getMyMissions(Long memberId, Status status, Integer page, Integer size, SortType sortType) {
+    public PaginationDTO.OffsetPaginationDTO<MissionDTO.Mission> getMyMissions(
+            Long memberId,
+            Status status,
+            Integer page,
+            Integer size,
+            SortType sortType
+    ) {
 
-        if(!memberRepository.existsById(memberId)){
+        if (!memberRepository.existsById(memberId)) {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = switch (sortType){
+            case REWARD -> Sort.by(Sort.Direction.DESC, "point");
+            case LATEST -> Sort.by(Sort.Direction.DESC, "deadline");
+        };
+
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Mission> missions = missionRepository.findMyMissions(
                 memberId,
@@ -75,14 +87,15 @@ public class MissionService {
                 pageable
         );
 
-        if(missions.isEmpty()){
-            throw new MissionException(MissionErrorCode.MISSION_NOT_FOUND);
-        }
-
-        List<MissionDTO.Mission> result = missions.stream()
+        List<MissionDTO.Mission> result = missions.getContent().stream()
                 .map(MissionConverter::toMissionDTO)
                 .toList();
-        return new MissionResDTO.GetMissions(result);
+
+        return new PaginationDTO.OffsetPaginationDTO<>(
+                result,
+                missions.getNumber(),
+                missions.getSize()
+        );
     }
 
     public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt(Long regionId, Long memberId) {
