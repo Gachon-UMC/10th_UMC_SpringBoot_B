@@ -34,13 +34,6 @@ public class ReviewService {
             ReviewReqDTO.CreateReview request
     ){
 
-        if(
-                request.content() == null || request.content().isBlank()
-                || request.star() == null || request.star().isNaN()
-        ){
-            throw new ReviewException(ReviewErrorCode.INVALID_REVIEW_REQUEST);
-        }
-
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 

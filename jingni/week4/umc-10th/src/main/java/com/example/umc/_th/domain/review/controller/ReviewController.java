@@ -6,6 +6,7 @@ import com.example.umc._th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc._th.domain.review.service.ReviewService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ReviewController {
     @PostMapping("/v1/stores/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
             @PathVariable("storeId")  Long storeId,
-            @RequestBody ReviewReqDTO.CreateReview dto
+            @RequestBody @Valid ReviewReqDTO.CreateReview dto
             ){
         Long memberId = 1L;
         BaseSuccessCode code = ReviewSuccessCode.CREATED;
