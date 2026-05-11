@@ -13,7 +13,7 @@ public class PaginationDTO {
     public record CursorPaginationDTO<T>(
             List<T> data,
             Boolean hasNext,
-            String nextCursor,
+            Long nextCursor,
             Integer pageSize
     ){}
 }

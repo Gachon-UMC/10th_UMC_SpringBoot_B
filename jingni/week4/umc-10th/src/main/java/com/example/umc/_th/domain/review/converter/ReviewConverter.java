@@ -30,4 +30,17 @@ public class ReviewConverter {
                 review.getCreatedAt()
         );
     }
+
+    public static ReviewResDTO.ReviewInfo toReviewInfo(Review review) {
+
+        return new ReviewResDTO.ReviewInfo(
+                review.getId(),
+                review.getStore().getName(),
+                review.getMember().getName(),
+                review.getContent(),
+                review.getStar(),
+                review.getCreatedAt()
+        );
+
+    }
 }
