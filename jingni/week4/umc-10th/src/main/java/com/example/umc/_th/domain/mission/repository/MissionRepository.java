@@ -33,20 +33,25 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     );
 
     @Query(value = """
-        SELECT m.*
-        FROM mission m
-        JOIN member_mission mm ON mm.mission_id = m.id
-        WHERE mm.member_id = :memberId
-          AND (:status IS NULL OR mm.status = :status)
-        ORDER BY m.id DESC
-        LIMIT :limit OFFSET :offset
-    """, nativeQuery = true)
-
-    List<Mission> findMyMissions(
+    SELECT m.*
+    FROM mission m
+    JOIN member_mission mm ON mm.mission_id = m.id
+    WHERE mm.member_id = :memberId
+      AND (:status IS NULL OR mm.status = :status)
+    """,
+            countQuery = """
+    SELECT COUNT(*)
+    FROM mission m
+    JOIN member_mission mm ON mm.mission_id = m.id
+    WHERE mm.member_id = :memberId
+      AND (:status IS NULL OR mm.status = :status)
+    """,
+            nativeQuery = true
+    )
+    Page<Mission> findMyMissions(
             @Param("memberId") Long memberId,
             @Param("status") String status,
-            @Param("limit") int limit,
-            @Param("offset") int offset
+            Pageable pageable
     );
 
     @Query(value = """

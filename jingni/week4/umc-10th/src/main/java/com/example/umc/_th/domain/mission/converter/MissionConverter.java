@@ -13,7 +13,7 @@ public class MissionConverter {
     public static MissionDTO.Mission toMissionDTO(Mission mission) {
 
         return new MissionDTO.Mission(
-                mission.getMissionId(),
+                mission.getId(),
                 mission.getDeadline(),
                 mission.getPoint(),
 
@@ -25,3 +25,4 @@ public class MissionConverter {
         );
     }
 }
+

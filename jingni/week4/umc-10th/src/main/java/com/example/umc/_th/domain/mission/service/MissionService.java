@@ -62,17 +62,17 @@ public class MissionService {
     }
 
     public MissionResDTO.GetMissions getMyMissions(Long memberId, Status status, Integer page, Integer size, SortType sortType) {
-        int offset = page * size;
 
         if(!memberRepository.existsById(memberId)){
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        List<Mission> missions = missionRepository.findMyMissions(
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Mission> missions = missionRepository.findMyMissions(
                 memberId,
                 status != null ? status.name() : null,
-                size,
-                offset
+                pageable
         );
 
         if(missions.isEmpty()){

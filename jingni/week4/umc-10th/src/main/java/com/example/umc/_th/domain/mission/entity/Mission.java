@@ -20,7 +20,7 @@ public class Mission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long missionId;
+    private Long id;
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
