@@ -8,9 +8,13 @@ public class HomeResDTO {
 
     @Builder
     public record HomeResponse(
+            String regionName,
             int point,
             MissionProgressDTO missionProgress,
-            List<MissionDTO> missions
+            List<MissionDTO> missions,
+            int currentPage,
+            int totalPages,
+            long totalElements
     ) {}
 
     @Builder
@@ -22,12 +26,11 @@ public class HomeResDTO {
 
     @Builder
     public record MissionDTO(
-            Long id,
-            String restaurantName,
+            Long missionId,
+            String storeName,
             String category,
             String condition,
             int rewardPoint,
-            int dDay,
-            String status
+            int dDay
     ) {}
 }

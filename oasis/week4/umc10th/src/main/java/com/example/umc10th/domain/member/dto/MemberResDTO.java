@@ -13,10 +13,10 @@ public class MemberResDTO {
 
     @Builder
     public record MypageResponse(
-            String profileImage,
             String nickname,
             String email,
-            String phoneNumber,
+            String phone,
+            boolean phoneVerified,
             int point
     ) {}
 }

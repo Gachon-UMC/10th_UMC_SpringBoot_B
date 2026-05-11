@@ -1,4 +1,4 @@
 package com.example.umc10th.domain.inquiry.repository;
 
-public interface InquriryRepository {
+public interface InquiryRepository {
 }

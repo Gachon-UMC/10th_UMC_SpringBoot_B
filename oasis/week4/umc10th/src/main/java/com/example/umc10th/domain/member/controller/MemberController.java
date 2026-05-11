@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.member.controller;
 
+import com.example.umc10th.domain.member.api.MemberApiSpecification;
 import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.exception.code.MemberSuccessCode;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public class MemberController {
+public class MemberController implements MemberApiSpecification {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<MemberResDTO.SignupResponse>> signup(
