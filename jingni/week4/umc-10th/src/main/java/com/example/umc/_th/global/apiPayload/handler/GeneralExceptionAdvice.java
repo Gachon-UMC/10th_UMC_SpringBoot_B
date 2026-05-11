@@ -28,7 +28,7 @@ public class GeneralExceptionAdvice {
                 .body(ApiResponse.onFailure(code, ex.getMessage()));
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e
     ){

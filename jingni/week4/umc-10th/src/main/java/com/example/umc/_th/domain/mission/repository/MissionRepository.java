@@ -1,6 +1,8 @@
 package com.example.umc._th.domain.mission.repository;
 
 import com.example.umc._th.domain.mission.entity.Mission;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,38 +11,25 @@ import java.util.List;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
-    // 마감 순
     @Query(value = """
-        SELECT m.*
-        FROM mission m
-        JOIN store s ON m.store_id = s.id
-        WHERE s.region_id = :regionId
-          AND m.is_active = 1
-        ORDER BY m.deadline DESC
-        LIMIT :limit OFFSET :offset
-    """, nativeQuery = true)
-
-    List<Mission> findByRegion(
+    SELECT m.*
+    FROM mission m
+    JOIN store s ON m.store_id = s.id
+    WHERE s.region_id = :regionId
+      AND m.is_active = 1
+    """,
+            countQuery = """
+    SELECT COUNT(*)
+    FROM mission m
+    JOIN store s ON m.store_id = s.id
+    WHERE s.region_id = :regionId
+      AND m.is_active = 1
+    """,
+            nativeQuery = true
+    )
+    Page<Mission> findByRegion(
             @Param("regionId") Long regionId,
-            @Param("limit") int limit,
-            @Param("offset") int offset
-    );
-
-    // 포인트 순
-    @Query(value = """
-        SELECT m.*
-        FROM mission m
-        JOIN store s ON m.store_id = s.id
-        WHERE s.region_id = :regionId
-          AND m.is_active = 1
-        ORDER BY m.point DESC
-        LIMIT :limit OFFSET :offset
-    """, nativeQuery = true)
-
-    List<Mission> findByRegionOrderByPoint(
-            @Param("regionId") Long regionId,
-            @Param("limit") int limit,
-            @Param("offset") int offset
+            Pageable pageable
     );
 
     @Query(value = """

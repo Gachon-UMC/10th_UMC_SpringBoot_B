@@ -10,13 +10,12 @@ import com.example.umc._th.domain.store.dto.StoreDTO;
 
 public class MissionConverter {
 
-    public static MissionDTO.Mission toMissionDTO(Mission mission, Status status) {
+    public static MissionDTO.Mission toMissionDTO(Mission mission) {
 
         return new MissionDTO.Mission(
                 mission.getMissionId(),
                 mission.getDeadline(),
                 mission.getPoint(),
-                status,
 
                 new StoreDTO.StoreSummary(
                         mission.getStore().getName(),
