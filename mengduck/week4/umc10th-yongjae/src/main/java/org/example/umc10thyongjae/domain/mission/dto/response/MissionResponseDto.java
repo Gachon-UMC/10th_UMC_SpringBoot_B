@@ -4,12 +4,11 @@ import lombok.Builder;
 
 @Builder
 public record MissionResponseDto(
-        long missionKey,
-        long storeKey,
+        long missionId,
+        long storeId,
         String storeName,
         String storeCategory,
         int reward,
-        int rewardCondition,
         String expireDate
 ) {
 }

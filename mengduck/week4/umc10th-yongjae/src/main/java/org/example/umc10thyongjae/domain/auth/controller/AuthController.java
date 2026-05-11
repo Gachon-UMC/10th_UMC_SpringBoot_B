@@ -1,35 +1,32 @@
 package org.example.umc10thyongjae.domain.auth.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
+import org.example.umc10thyongjae.domain.auth.service.AuthService;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;
 import org.example.umc10thyongjae.global.apiPayload.code.GeneralSuccessCode;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+    private final AuthService authService;
+
     @PostMapping("/signUp")
     public ApiResponse<Void> signUp(
             @RequestBody SignUpRequestDto dto
     ) {
-
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
 
     }
 
     @GetMapping("/users/me")
     public ApiResponse<UserInfoResponseDto> retrieveUserInfo(
-            @RequestAttribute int userKey
+            @RequestAttribute long userId
     ) {
-        UserInfoResponseDto result = UserInfoResponseDto.builder()
-                .userKey(userKey)
-                .name("용재")
-                .mail("yj@yj.kr")
-                .phoneNumber("010-1111-2222")
-                .phoneNumberVerified(false)
-                .point(5000)
-                .build();
+        UserInfoResponseDto result = authService.getUserInfo(userId);
 
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }

@@ -4,7 +4,6 @@ import lombok.Builder;
 
 @Builder
 public record UserInfoResponseDto(
-        long userKey,
         String name,
         String mail,
         String phoneNumber,

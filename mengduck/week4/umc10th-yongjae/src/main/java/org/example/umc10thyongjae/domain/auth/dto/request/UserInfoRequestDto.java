@@ -1,6 +1,7 @@
 package org.example.umc10thyongjae.domain.auth.dto.request;
 
-import org.example.umc10thyongjae.domain.auth.dto.enums.Gender;
+
+import org.example.umc10thyongjae.domain.auth.enums.Gender;
 
 public record UserInfoRequestDto(
         String name,
