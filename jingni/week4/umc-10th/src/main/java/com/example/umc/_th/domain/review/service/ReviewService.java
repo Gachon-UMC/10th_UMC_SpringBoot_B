@@ -66,7 +66,6 @@ public class ReviewService {
         }
 
         Pageable pageable = PageRequest.of(0, pageSize + 1);
-
         Slice<Review> reviews = reviewRepository.findMyReviews(
                 memberId,
                 cursor,
@@ -75,17 +74,17 @@ public class ReviewService {
 
         boolean hasNext = reviews.hasNext();
 
-        List<Review> content = reviews.getContent();
+        List<Review> review = reviews.getContent();
 
-        if (content.size() > pageSize) {
-            content = content.subList(0, pageSize);
+        if (review.size() > pageSize) {
+            review = review.subList(0, pageSize);
         }
 
         Long nextCursor = hasNext
-                ? content.get(content.size() - 1).getId()
+                ? review.get(review.size() - 1).getId()
                 : null;
 
-        List<ReviewResDTO.ReviewInfo> result = content.stream()
+        List<ReviewResDTO.ReviewInfo> result = review.stream()
                 .map(ReviewConverter::toReviewInfo)
                 .toList();
 
