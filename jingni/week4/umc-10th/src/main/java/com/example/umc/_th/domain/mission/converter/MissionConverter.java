@@ -13,25 +13,16 @@ public class MissionConverter {
     public static MissionDTO.Mission toMissionDTO(Mission mission, Status status) {
 
         return new MissionDTO.Mission(
-
                 mission.getMissionId(),
-
                 mission.getDeadline(),
-
                 mission.getPoint(),
-
                 status,
 
                 new StoreDTO.StoreSummary(
-
                         mission.getStore().getName(),
-
                         mission.getStore().getFood().getType()
 
                 )
-
         );
-
     }
-
 }

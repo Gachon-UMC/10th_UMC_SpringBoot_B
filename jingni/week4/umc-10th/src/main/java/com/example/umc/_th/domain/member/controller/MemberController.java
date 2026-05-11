@@ -20,7 +20,7 @@ public class MemberController {
     public ApiResponse<MemberResDTO.Signup> signup (
             @RequestBody MemberReqDTO.Signup dto
             ){
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = MemberSuccessCode.CREATED;
         return ApiResponse.onSuccess(code, memberService.signup(dto));
     }
 

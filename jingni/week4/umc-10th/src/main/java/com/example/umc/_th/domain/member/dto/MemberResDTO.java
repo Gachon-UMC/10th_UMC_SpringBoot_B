@@ -10,6 +10,7 @@ public class MemberResDTO {
     @Builder
     @Schema(name = "MemberGetInfoResponse")
     public record GetInfo(
+
         String name,
         String email,
         String phoneNum,
