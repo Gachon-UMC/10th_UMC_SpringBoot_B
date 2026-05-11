@@ -21,7 +21,8 @@ public class ReviewController {
             @PathVariable("storeId")  Long storeId,
             @RequestBody ReviewReqDTO.CreateReview dto
             ){
-        BaseSuccessCode code = ReviewSuccessCode.OK;
-        return ApiResponse.onSuccess(code, reviewService.createReview());
+        Long memberId = 1L;
+        BaseSuccessCode code = ReviewSuccessCode.CREATED;
+        return ApiResponse.onSuccess(code, reviewService.createReview(storeId, memberId, dto));
     }
 }

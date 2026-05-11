@@ -21,12 +21,14 @@ public class MemberController {
             @RequestBody MemberReqDTO.Signup dto
             ){
         BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.signup());
+        return ApiResponse.onSuccess(code, memberService.signup(dto));
     }
 
     @GetMapping("/v1/members/me")
     public ApiResponse<MemberResDTO.GetInfo> getInfo (){
         BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getInfo());
+        // 일단은 userId를 1로 고정 (추후 JWT 토큰에서 꺼내도록 구현)
+        Long memberId = 100L;
+        return ApiResponse.onSuccess(code, memberService.getInfo(memberId));
     }
 }

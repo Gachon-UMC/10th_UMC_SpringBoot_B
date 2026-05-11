@@ -1,6 +1,6 @@
 package com.example.umc._th.domain.store.enums;
 
-public enum StoreType {
+public enum FoodType {
 
     KOREAN,
 
@@ -12,7 +12,7 @@ public enum StoreType {
 
     CAFE,
 
-    FASTFOOD,
+    FAST_FOOD,
 
     DESSERT
 

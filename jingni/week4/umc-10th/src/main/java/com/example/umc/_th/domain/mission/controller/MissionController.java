@@ -9,6 +9,7 @@ import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc._th.global.enums.SortType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,38 +22,34 @@ public class MissionController {
     @GetMapping("/v1/missions")
     public ApiResponse<MissionResDTO.GetMissions> getMissions(
             @RequestParam("regionId") Long regionId,
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sortType", defaultValue = "LATEST") SortType sortType
     ){
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMissions());
+        return ApiResponse.onSuccess(code, missionService.getMissions(regionId, page, size, sortType));
     }
 
     @GetMapping("/v1/missions/my")
     public ApiResponse<MissionResDTO.GetMissions> getMyMissions(
-            @RequestParam("status") Status status,
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "status", required = false) Status status,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sortType", defaultValue = "LATEST") SortType sortType
             ){
+
+        Long memberId = 1L;
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMyMissions());
+        return ApiResponse.onSuccess(code, missionService.getMyMissions(memberId, status, page, size, sortType));
     }
 
     @GetMapping("/v1/missions/complete/count")
     public ApiResponse<MissionResDTO.GetCompleteMissionsCnt> getCompleteMissionsCnt(
             @RequestParam("regionId") Long regionId
             ){
-        BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt());
-    }
 
-    @PatchMapping("/v1/missions/{missionId}/complete")
-    public ApiResponse<MissionResDTO.MissionComplete> completeMission(
-        @PathVariable("missionId") Long missionId
-    ){
+        Long memberId = 1L;
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.completeMission());
+        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt(regionId, memberId));
     }
 }

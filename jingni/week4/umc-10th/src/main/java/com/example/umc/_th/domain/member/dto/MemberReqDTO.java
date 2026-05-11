@@ -1,6 +1,7 @@
 package com.example.umc._th.domain.member.dto;
 
 import com.example.umc._th.domain.member.enums.Gender;
+import com.example.umc._th.domain.member.enums.SocialType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -14,9 +15,11 @@ public class MemberReqDTO {
     public record Signup (
         String name,
         String email,
+        String phoneNum,
         Gender gender,
         LocalDate birth,
         String address,
+        SocialType socialType,
         List<Long> favoriteFoodIds
 
     ){}
