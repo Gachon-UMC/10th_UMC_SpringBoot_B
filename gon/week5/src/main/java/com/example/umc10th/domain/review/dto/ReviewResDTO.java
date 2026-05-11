@@ -10,6 +10,6 @@ public class ReviewResDTO {
             Long userId,
             Long storeId,
             String reviewComment,
-            Integer star
+            int star
     ){}
 }

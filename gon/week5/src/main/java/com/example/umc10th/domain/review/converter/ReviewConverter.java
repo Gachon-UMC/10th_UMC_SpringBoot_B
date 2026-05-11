@@ -12,7 +12,7 @@ public class ReviewConverter {
                 .reviewId(review.getId())
                 .userId(review.getUser().getId())
                 .storeId(review.getStore().getId())
-                .reviewComment(review.getReviewContent())
+                .reviewComment(review.getReviewComment())
                 .star(review.getStar())
                 .build();
     }

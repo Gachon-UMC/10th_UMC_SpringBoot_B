@@ -1,12 +1,13 @@
 package com.example.umc10th.domain.review.dto;
 
+import lombok.Getter;
+
 public class ReviewReqDTO {
 
     public record CreateReview(
-            Long userId,
-            Long storeId,
-            String reviewContent,
-            Integer star
+            String reviewComment,
+            int star
+    ){
 
-    ){}
+    }
 }

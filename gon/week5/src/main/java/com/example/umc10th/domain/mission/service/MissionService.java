@@ -1,15 +1,16 @@
 package com.example.umc10th.domain.mission.service;
 
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-@Service
-public class MissionService {
-    public MissionResDTO.GetMission GetMission(Long missionId) {
-        return null;
-    }
+import java.awt.print.Pageable;
 
-    public MissionResDTO.SuccessMission SeuccessMission(Long userMissionId) {
-        return null;
-    }
+public interface MissionService {
+    Page<MissionResDTO.GetMission> getMissions(
+            Long userId, int page, int size);
+
+    Page<MissionResDTO.HomeMission> getHomeMissions(
+            Long regionId, int page, int size);
+
+
 }
