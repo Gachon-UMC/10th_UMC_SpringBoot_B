@@ -32,8 +32,8 @@ public class Review extends BaseEntity {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "rating", nullable = false)
-    private Float rating;
+    @Column(name = "score", nullable = false)
+    private Float score;
 
     @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)

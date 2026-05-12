@@ -40,7 +40,7 @@ public class ReviewService {
                 .orElseThrow(() -> new MemberException(ReviewErrorCode.MEMBER_NOT_FOUND));
 
         // 별점 유효성 검증
-        if (dto.rating() < 0 || dto.rating() > 5) {
+        if (dto.score() < 0 || dto.score() > 5) {
             throw new ReviewException(ReviewErrorCode.INVALID_RATING);
         }
 
@@ -124,7 +124,7 @@ public class ReviewService {
             // 조회된 데이터 리스트의 마지막 항목 정보를 추출
             Review lastReview = reviewSlice.getContent().get(reviewSlice.getNumberOfElements() - 1);
             nextCursor = "rating".equals(sortType)
-                    ? lastReview.getRating() + ":" + lastReview.getId()     // 별점순은 복합 커서
+                    ? lastReview.getScore() + ":" + lastReview.getId()     // 별점순은 복합 커서
                     : String.valueOf(lastReview.getId());                   // 최신순은 ID 커서
         }
 

@@ -39,10 +39,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
       AND r.store.id = :storeId
       AND (
             :cursorRating IS NULL
-            OR r.rating < :cursorRating
-            OR (r.rating = :cursorRating AND r.id < :cursorId)
+            OR r.score < :cursorRating
+            OR (r.score = :cursorRating AND r.id < :cursorId)
           )
-    ORDER BY r.rating DESC, r.id DESC
+    ORDER BY r.score DESC, r.id DESC
     """)
     Slice<Review> findAllByMemberIdAndStoreIdAndRatingCursorOrder(
             @Param("memberId") Long memberId,

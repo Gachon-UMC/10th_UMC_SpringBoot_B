@@ -24,7 +24,7 @@ public class ReviewConverter {
     public static Review toReview(ReviewReqDTO.CreateReview request) {
         return Review.builder()
                 .content(request.content())
-                .rating(request.rating())
+                .score(request.score())
                 .reviewPhotoList(new ArrayList<>())
                 .replyList(new ArrayList<>())
                 .build();
@@ -56,7 +56,7 @@ public class ReviewConverter {
                 .map(review -> ReviewResDTO.ReviewItem.builder()
                         .reviewId(review.getId())
                         .content(review.getContent())
-                        .rating(review.getRating())
+                        .score(review.getScore())
                         .reviewerNickname(review.getMember().getName())
                         .createdAt(review.getCreatedAt())
                         .photoUrls(review.getReviewPhotoList().stream()

@@ -24,7 +24,7 @@ public class ReviewResDTO {
     public record ReviewItem(
             Long reviewId,
             String content,
-            Float rating,
+            Float score,
             String reviewerNickname,
             LocalDateTime createdAt,
             List<String> photoUrls
