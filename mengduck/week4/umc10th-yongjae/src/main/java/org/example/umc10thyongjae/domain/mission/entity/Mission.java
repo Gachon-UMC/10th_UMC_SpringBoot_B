@@ -35,8 +35,8 @@ public class Mission extends BaseEntity {
     @Column(name = "reward")
     private Integer reward;
 
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "user_id")
     private LocalDateTime expireDate;
