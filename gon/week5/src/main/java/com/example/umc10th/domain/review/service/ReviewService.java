@@ -9,4 +9,11 @@ public interface ReviewService {
             Long storeId,
             Long userId,
             ReviewReqDTO.CreateReview request);
+
+    ReviewResDTO.CursorPagination<ReviewResDTO.GetReview> getReviews(
+            Long userId,
+            int size,
+            String cursor,
+            String query
+    );
 }

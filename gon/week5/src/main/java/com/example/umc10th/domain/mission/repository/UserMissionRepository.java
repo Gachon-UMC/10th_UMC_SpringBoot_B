@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.mission.repository;
 
 import com.example.umc10th.domain.mission.entity.mapping.UserMission;
+import com.example.umc10th.domain.mission.enums.UserMissionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UserMissionRepository extends JpaRepository<UserMission,Long> {
+   //유저 기반 조회
     @Query(
             value = """
                     select um
@@ -31,4 +33,27 @@ public interface UserMissionRepository extends JpaRepository<UserMission,Long> {
             @Param("userId") Long userId,
             Pageable pageable
     );
+    //상태 기반 조회
+    @Query(
+            value = """
+                    select um
+                    from UserMission um
+                    join fetch um.mission m
+                    join fetch m.store s
+                    where um.user.id = :userId
+                    order by um.id desc
+                    """,
+            countQuery = """
+                    select count(um)
+                    from UserMission um
+                    where um.user.id = :userId
+                          and um.status = :status
+                    """
+    )
+    Page<UserMission> findMissionsByUserIdAndStatus(
+            @Param("userId") Long userId,
+            @Param("status") UserMissionStatus status,
+            Pageable pageable
+    );
+
 }
