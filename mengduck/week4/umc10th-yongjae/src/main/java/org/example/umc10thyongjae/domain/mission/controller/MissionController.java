@@ -1,5 +1,6 @@
 package org.example.umc10thyongjae.domain.mission.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.mission.dto.request.ReqMissionCompleteRequestDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.MissionResponseDto;
@@ -59,9 +60,9 @@ public class MissionController {
 
     @PostMapping("/{missionKey}/complete")
     public ApiResponse<Void> missionComplete(
-            @RequestAttribute int userKey,
+            @RequestAttribute long userId,
             @PathVariable long missionKey,
-            @RequestBody ReqMissionCompleteRequestDto dto
+            @RequestBody @Valid ReqMissionCompleteRequestDto dto
             ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
     }

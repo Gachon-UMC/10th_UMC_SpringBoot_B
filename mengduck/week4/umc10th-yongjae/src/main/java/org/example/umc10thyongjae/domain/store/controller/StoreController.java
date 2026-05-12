@@ -1,5 +1,6 @@
 package org.example.umc10thyongjae.domain.store.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.store.dto.request.WriteReviewRequestDto;
 import org.example.umc10thyongjae.domain.store.dto.response.StoreReviewResponseDto;
@@ -23,7 +24,7 @@ public class StoreController {
     @PostMapping("/{storeId}/review")
     public ApiResponse<Void> writeReview(
             @PathVariable long storeId,
-            @RequestBody WriteReviewRequestDto dto,
+            @RequestBody @Valid WriteReviewRequestDto dto,
             @RequestAttribute long userId
     ) {
         storeService.saveStoreReview(userId, storeId, dto);
