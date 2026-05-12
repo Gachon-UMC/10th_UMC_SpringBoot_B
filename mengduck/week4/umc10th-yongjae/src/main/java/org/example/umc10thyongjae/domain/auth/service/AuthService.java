@@ -19,7 +19,7 @@ public class AuthService {
         return convertUserInfo(entity);
     }
 
-    public static UserInfoResponseDto convertUserInfo(User user) {
+    private static UserInfoResponseDto convertUserInfo(User user) {
         return UserInfoResponseDto.builder()
                 .name(user.getName())
                 .mail(user.getMail())

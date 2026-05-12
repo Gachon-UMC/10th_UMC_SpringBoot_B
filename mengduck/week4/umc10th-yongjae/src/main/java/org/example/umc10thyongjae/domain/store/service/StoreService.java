@@ -1,5 +1,6 @@
 package org.example.umc10thyongjae.domain.store.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.store.dto.request.WriteReviewRequestDto;
 import org.example.umc10thyongjae.domain.store.entity.Store;
@@ -15,6 +16,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final StoreReviewRepository storeReviewRepository;
 
+    @Transactional
     public void saveStoreReview(long userId, long storeId, WriteReviewRequestDto dto) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new NotDataFoundException("Store"));

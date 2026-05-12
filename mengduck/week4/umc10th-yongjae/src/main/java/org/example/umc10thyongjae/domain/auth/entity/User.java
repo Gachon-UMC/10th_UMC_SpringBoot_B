@@ -14,13 +14,13 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;
+    private Long id;
 
     @Column(name = "oauth_uid")
     private String oauthUid;
@@ -57,6 +57,6 @@ public class User extends BaseEntity {
     @Column(name = "point")
     private Integer point;
 
-    @Column(name = "deleted_yn")
-    private String deletedYn;
+    @Column(name = "deleted")
+    private String deleted;
 }

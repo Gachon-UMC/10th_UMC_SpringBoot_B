@@ -15,9 +15,9 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "store_review")
 public class StoreReview extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_review_id")
-    private Long storeReviewId;
+    private Long id;
 
     @Column(name = "user_id")
     private Long userId;

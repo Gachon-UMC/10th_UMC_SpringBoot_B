@@ -15,14 +15,15 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "user_term")
 public class UserTerm extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_term_id")
-    private Long user_term_id;
+    private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "term_id")
     private Term term;
 }

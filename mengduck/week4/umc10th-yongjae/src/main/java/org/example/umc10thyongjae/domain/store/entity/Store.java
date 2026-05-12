@@ -17,9 +17,9 @@ import java.time.LocalTime;
 @Table(name = "store")
 public class Store extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Long storeId;
+    private Long id;
 
     @Column(name = "intro_content")
     private String introContent;

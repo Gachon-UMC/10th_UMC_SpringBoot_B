@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @Table(name = "mission")
 public class Mission extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mission_id")
-    private Long missionId;
+    private Long id;
 
     @Column(name = "location")
     private String location;
@@ -29,8 +29,8 @@ public class Mission extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @Column(name = "deleted_yn")
-    private String deletedYn;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @Column(name = "reward")
     private Integer reward;
@@ -38,6 +38,6 @@ public class Mission extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "user_id")
+    @Column(name = "expire_date")
     private LocalDateTime expireDate;
 }
