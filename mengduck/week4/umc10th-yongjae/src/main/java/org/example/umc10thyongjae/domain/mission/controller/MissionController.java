@@ -1,7 +1,6 @@
 package org.example.umc10thyongjae.domain.mission.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.domain.mission.dto.request.ReqMissionCompleteRequestDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.MissionResponseDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.ReqMissionCompleteResponseDto;
@@ -9,11 +8,9 @@ import org.example.umc10thyongjae.domain.mission.dto.response.UserMissionRespons
 import org.example.umc10thyongjae.domain.mission.service.MissionService;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;
 import org.example.umc10thyongjae.global.apiPayload.code.GeneralSuccessCode;
-import org.example.umc10thyongjae.global.dto.PaginationDto;
-import org.springframework.data.domain.Page;
+import org.example.umc10thyongjae.global.dto.OffsetPaginationDto;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,13 +34,13 @@ public class MissionController {
     }
 
     @GetMapping("/user-mission")
-    public ApiResponse<PaginationDto<UserMissionResponseDto>> getUserMission(
+    public ApiResponse<OffsetPaginationDto<UserMissionResponseDto>> getUserMission(
             @RequestAttribute long userId,
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String status
     ) {
-        PaginationDto<UserMissionResponseDto> result = missionService.getUserMission(userId, page, size, status);
+        OffsetPaginationDto<UserMissionResponseDto> result = missionService.getUserMission(userId, page, size, status);
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }
 

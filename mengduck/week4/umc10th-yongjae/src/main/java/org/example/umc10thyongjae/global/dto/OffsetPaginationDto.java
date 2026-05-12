@@ -5,10 +5,11 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record PaginationDto<T>(
-        List<T> data,
+public record OffsetPaginationDto<T>(
         Integer page,
         Integer size,
 
-        Boolean hasNext
+        Boolean hasNext,
+
+        List<T> data
 ) { }

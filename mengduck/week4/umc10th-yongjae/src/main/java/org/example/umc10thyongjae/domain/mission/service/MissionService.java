@@ -8,7 +8,7 @@ import org.example.umc10thyongjae.domain.mission.entity.UserMission;
 import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.domain.mission.repository.MissionRepository;
 import org.example.umc10thyongjae.domain.mission.repository.UserMissionRepository;
-import org.example.umc10thyongjae.global.dto.PaginationDto;
+import org.example.umc10thyongjae.global.dto.OffsetPaginationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class MissionService {
     private final UserMissionRepository userMissionRepository;
     private final MissionRepository missionRepository;
 
-    public PaginationDto<UserMissionResponseDto> getUserMission(long userId, int page, int size, String status) {
+    public OffsetPaginationDto<UserMissionResponseDto> getUserMission(long userId, int page, int size, String status) {
         MissionStatus paramStatus = null;
 
         try {
@@ -33,8 +33,8 @@ public class MissionService {
         Page<UserMission> pageData =
                 userMissionRepository.findUserMissionByUserId(userId, paramStatus.name(), PageRequest.of(page, size));
 
-        PaginationDto<UserMissionResponseDto> result =
-                PaginationDto.<UserMissionResponseDto>builder()
+        OffsetPaginationDto<UserMissionResponseDto> result =
+                OffsetPaginationDto.<UserMissionResponseDto>builder()
                         .page(pageData.getNumber())
                         .size(pageData.getSize())
                         .hasNext(pageData.hasNext())

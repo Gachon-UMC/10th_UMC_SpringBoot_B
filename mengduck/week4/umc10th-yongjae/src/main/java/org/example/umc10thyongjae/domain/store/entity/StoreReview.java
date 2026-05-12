@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.umc10thyongjae.domain.auth.entity.User;
 import org.example.umc10thyongjae.global.entity.BaseEntity;
 
 @Entity
@@ -19,8 +20,9 @@ public class StoreReview extends BaseEntity {
     @Column(name = "store_review_id")
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
