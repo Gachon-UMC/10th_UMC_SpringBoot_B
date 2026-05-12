@@ -8,6 +8,9 @@ import org.example.umc10thyongjae.domain.mission.entity.UserMission;
 import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.domain.mission.repository.MissionRepository;
 import org.example.umc10thyongjae.domain.mission.repository.UserMissionRepository;
+import org.example.umc10thyongjae.global.dto.PaginationDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public class MissionService {
     private final UserMissionRepository userMissionRepository;
     private final MissionRepository missionRepository;
 
-    public List<UserMissionResponseDto> getUserMission(long userId, int page, int size, String status) {
+    public PaginationDto<UserMissionResponseDto> getUserMission(long userId, int page, int size, String status) {
         MissionStatus paramStatus = null;
 
         try {
@@ -27,12 +30,19 @@ public class MissionService {
 
         }
 
-        List<UserMissionResponseDto> result =
-                userMissionRepository.findUserMissionByUserId(userId, paramStatus, size, page * size)
-                        .stream()
-                        .map(MissionService::convertUserMission)
-                        .toList();
+        Page<UserMission> pageData =
+                userMissionRepository.findUserMissionByUserId(userId, paramStatus.name(), PageRequest.of(page, size));
 
+        PaginationDto<UserMissionResponseDto> result =
+                PaginationDto.<UserMissionResponseDto>builder()
+                        .page(pageData.getNumber())
+                        .size(pageData.getSize())
+                        .hasNext(pageData.hasNext())
+                        .data(
+                                pageData.map(MissionService::convertUserMission)
+                                        .getContent()
+                        )
+                        .build();
         return result;
     }
 

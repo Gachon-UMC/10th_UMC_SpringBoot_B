@@ -1,6 +1,7 @@
 package org.example.umc10thyongjae.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
 import org.example.umc10thyongjae.domain.auth.entity.User;
 import org.example.umc10thyongjae.domain.auth.repository.AuthRepository;

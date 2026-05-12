@@ -11,13 +11,13 @@ import java.util.List;
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     @Query(value = """
-                SELECT * 
-                FROM mission M
-                WHERE M.location = :location
-                  AND M.deleted_yn = 'N'
-                ORDER BY M.created_at DESC
-                LIMIT :size OFFSET :offset
-            """, nativeQuery = true)
+        SELECT *
+        FROM mission M
+        WHERE M.location = :location
+          AND M.deleted = false
+        ORDER BY M.created_at DESC
+        LIMIT :size OFFSET :offset
+        """, nativeQuery = true)
     List<Mission> findMissionByLocation(
             @Param("location") String location,
             @Param("size") int size,

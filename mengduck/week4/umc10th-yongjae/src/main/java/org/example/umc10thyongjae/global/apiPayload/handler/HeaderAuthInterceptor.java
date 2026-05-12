@@ -10,9 +10,9 @@ public class HeaderAuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("Authorization");
 
-        long userKey = 1234;
+        long userId = 1;
 
-        request.setAttribute("userKey", userKey);
+        request.setAttribute("userId", userId);
 
         return true;
     }
