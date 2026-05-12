@@ -5,6 +5,7 @@ import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.exception.code.MemberSuccessCode;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class MemberController implements MemberApiSpecification {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<MemberResDTO.SignupResponse>> signup(
-            @RequestBody MemberReqDTO.SignupRequest request
+            @Valid @RequestBody MemberReqDTO.SignupRequest request
     ) {
         MemberResDTO.SignupResponse response = null;
         return ResponseEntity

@@ -6,6 +6,7 @@ import com.example.umc10th.domain.review.dto.ReviewResDTO;
 import com.example.umc10th.domain.review.exception.code.ReviewSuccessCode;
 import com.example.umc10th.domain.review.service.ReviewService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ReviewController implements ReviewApiSpecification {
     @PostMapping("/reviews")
     public ResponseEntity<ApiResponse<ReviewResDTO.CreateReviewResponse>> createReview(
             @PathVariable Long storeId,
-            @RequestBody ReviewReqDTO.CreateReviewRequest request
+            @Valid @RequestBody ReviewReqDTO.CreateReviewRequest request
     ) {
         ReviewResDTO.CreateReviewResponse response = reviewService.createReview(request);
         return ResponseEntity
