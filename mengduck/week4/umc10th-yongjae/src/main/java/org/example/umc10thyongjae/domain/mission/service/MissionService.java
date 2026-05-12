@@ -49,8 +49,8 @@ public class MissionService {
     private static UserMissionResponseDto convertUserMission(UserMission um) {
         Mission mission = um.getMission();
         return UserMissionResponseDto.builder()
-                .missionKey(mission.getMissionId())
-                .storeKey(mission.getStore().getStoreId())
+                .missionKey(mission.getId())
+                .storeKey(mission.getStore().getId())
                 .storeName(mission.getStore().getName())
                 .storeCategory(mission.getStore().getCategory())
                 .reward(mission.getReward())
@@ -61,8 +61,8 @@ public class MissionService {
 
     private static MissionResponseDto convertMission(Mission m) {
         return MissionResponseDto.builder()
-                .missionId(m.getMissionId())
-                .storeId(m.getStore().getStoreId())
+                .missionId(m.getId())
+                .storeId(m.getStore().getId())
                 .storeName(m.getStore().getName())
                 .storeCategory(m.getStore().getCategory())
                 .reward(m.getReward())
