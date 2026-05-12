@@ -1,6 +1,6 @@
-package com.example.umc10th.domain.member.entity;
+package com.example.umc10th.domain.food.entity;
 
-import com.example.umc10th.domain.member.enums.FoodName;
+import com.example.umc10th.domain.food.enums.FoodCategoryName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "food_name", nullable = false)
+    @Column(name = "food_category_name", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FoodName foodName;
+    private FoodCategoryName foodCategoryName;
 }

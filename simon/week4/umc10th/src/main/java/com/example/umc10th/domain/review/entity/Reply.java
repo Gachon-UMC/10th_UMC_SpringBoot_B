@@ -1,6 +1,5 @@
 package com.example.umc10th.domain.review.entity;
 
-import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +22,6 @@ public class Reply extends BaseEntity {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 }

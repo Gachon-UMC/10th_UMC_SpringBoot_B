@@ -1,17 +1,15 @@
-package com.example.umc10th.domain.mission.entity.mapping;
+package com.example.umc10th.domain.member_mission.entity;
 
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.mission.entity.Mission;
-import com.example.umc10th.domain.mission.enums.Status;
+import com.example.umc10th.domain.member_mission.enums.MissionStatus;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,16 +19,19 @@ public class MemberMission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "verification_code", length = 20, unique = true)
+    private String verificationCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mission_id", nullable = false)
+    @JoinColumn(name = "mission_id")
     private Mission mission;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "mission_status", nullable = false)
     @Builder.Default
-    private Status status = Status.BASIC;
+    private MissionStatus missionStatus = MissionStatus.BASIC;
 }

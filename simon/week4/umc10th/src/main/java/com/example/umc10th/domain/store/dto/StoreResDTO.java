@@ -1,16 +1,36 @@
 package com.example.umc10th.domain.store.dto;
 
+import com.example.umc10th.domain.food.enums.FoodCategoryName;
 import com.example.umc10th.domain.store.enums.RegionName;
 import lombok.Builder;
 
+import java.util.List;
+
 public class StoreResDTO {
     @Builder
-    public record GetStoreDetail(
+    public record GetStoreInfo(
             Long storeId,
             String storeName,
-            Long regionId, // Added regionId field
+            Long regionId,
             RegionName regionName,
-            String detailedAddress,
-            Long managerNumber
+            FoodCategoryName foodCategoryName,
+            String detailAddress
+    ) {}
+
+    @Builder
+    public record StoreSummary(
+            Long storeId,
+            String storeName,
+            String detailAddress
+    ) {}
+
+    @Builder
+    public record StoreSummaryList(
+            List<StoreSummary> storeList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
     ) {}
 }

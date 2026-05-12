@@ -17,7 +17,7 @@ public class Region extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "region_name", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "region_name", nullable = false)
     private RegionName regionName;
 }
