@@ -1,4 +1,4 @@
-package com.example.umc10th.domain.member.dto;
+package com.example.umc10th.domain.mission.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,14 @@ import lombok.Getter;
 @Builder
 // 모든 필드를 받는 생성자를 생성합니다.
 @AllArgsConstructor
-public class UserJoinResponseDTO {
+public class MissionChallengeResDTO {
 
-    // 생성된 회원 ID입니다.
-    private Long userId;
+    // 생성된 사용자 미션 ID입니다.
+    private Long userMissionId;
+
+    // 도전한 미션 ID입니다.
+    private Long missionId;
+
+    // 미션 진행 상태입니다.
+    private String status;
 }

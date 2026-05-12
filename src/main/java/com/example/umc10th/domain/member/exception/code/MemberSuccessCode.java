@@ -1,16 +1,18 @@
-package com.example.umc10th.global.apiPayload.code;
+package com.example.umc10th.domain.member.exception.code;
 
+import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-// 공통 성공 응답 코드 필드 조회를 위한 Getter를 생성합니다.
+// 회원 도메인 성공 응답 코드를 정의합니다.
 @Getter
 // 모든 필드를 받는 생성자를 생성합니다.
 @AllArgsConstructor
-public enum GeneralSuccessCode implements BaseSuccessCode {
+public enum MemberSuccessCode implements BaseSuccessCode {
 
-    OK(HttpStatus.OK, "COMMON200", "성공입니다.");
+    JOIN_SUCCESS(HttpStatus.OK, "MEMBER2001", "회원가입에 성공했습니다."),
+    GET_MEMBER_SUCCESS(HttpStatus.OK, "MEMBER2002", "회원 정보 조회에 성공했습니다.");
 
     // HTTP 응답 상태입니다.
     private final HttpStatus status;
