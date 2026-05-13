@@ -34,6 +34,32 @@ public class ReviewConverter {
                 .toList();
     }
 
+    public static ReviewResDTO.MyReviewListResponse toMyReviewListResponse(List<Review> reviews, boolean hasNext) {
+        Long nextCursor = hasNext && !reviews.isEmpty()
+                ? reviews.get(reviews.size() - 1).getId()
+                : null;
+
+        List<ReviewResDTO.MyReviewDTO> reviewDTOs = reviews.stream()
+                .map(ReviewConverter::toMyReviewDTO)
+                .toList();
+
+        return ReviewResDTO.MyReviewListResponse.builder()
+                .reviews(reviewDTOs)
+                .nextCursor(nextCursor)
+                .hasNext(hasNext)
+                .build();
+    }
+
+    public static ReviewResDTO.MyReviewDTO toMyReviewDTO(Review review) {
+        return ReviewResDTO.MyReviewDTO.builder()
+                .reviewId(review.getId())
+                .storeName(review.getStore().getStoreName())
+                .rating(review.getRating())
+                .content(review.getContent())
+                .createdAt(review.getCreatedAt())
+                .build();
+    }
+
     public static ReviewResDTO.CreateReviewResponse toCreateReviewResponse(Review review) {
         return ReviewResDTO.CreateReviewResponse.builder()
                 .reviewId(review.getId())

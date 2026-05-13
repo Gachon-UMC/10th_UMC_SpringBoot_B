@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/stores/{storeId}")
+@RequestMapping("/api")
 public class ReviewController implements ReviewApiSpecification {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/reviews")
+    @PostMapping("/stores/{storeId}/reviews")
     public ResponseEntity<ApiResponse<ReviewResDTO.CreateReviewResponse>> createReview(
             @PathVariable Long storeId,
             @Valid @RequestBody ReviewReqDTO.CreateReviewRequest request
@@ -27,5 +27,19 @@ public class ReviewController implements ReviewApiSpecification {
         return ResponseEntity
                 .status(ReviewSuccessCode.REVIEW_CREATE_SUCCESS.getStatus())
                 .body(ApiResponse.onSuccess(ReviewSuccessCode.REVIEW_CREATE_SUCCESS, response));
+    }
+
+    @PostMapping("/reviews/my")
+    public ResponseEntity<ApiResponse<ReviewResDTO.MyReviewListResponse>> getMyReviews(
+            @Valid @RequestBody ReviewReqDTO.MyReviewRequest request,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        ReviewResDTO.MyReviewListResponse response = reviewService.getMyReviews(
+                request.memberId(), cursor, size, sortBy);
+        return ResponseEntity
+                .status(ReviewSuccessCode.MY_REVIEW_LIST_SUCCESS.getStatus())
+                .body(ApiResponse.onSuccess(ReviewSuccessCode.MY_REVIEW_LIST_SUCCESS, response));
     }
 }

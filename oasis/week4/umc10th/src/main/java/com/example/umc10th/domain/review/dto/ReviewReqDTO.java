@@ -7,6 +7,13 @@ import java.util.List;
 
 public class ReviewReqDTO {
 
+    @Schema(description = "내가 작성한 리뷰 조회 요청")
+    public record MyReviewRequest(
+            @NotNull(message = "회원 ID는 필수입니다.")
+            @Schema(description = "회원 ID", example = "1")
+            Long memberId
+    ) {}
+
     @Schema(description = "리뷰 작성 요청")
     public record CreateReviewRequest(
             @NotNull(message = "회원 ID는 필수입니다.")
