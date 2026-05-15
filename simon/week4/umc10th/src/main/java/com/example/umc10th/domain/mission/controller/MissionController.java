@@ -6,8 +6,12 @@ import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.domain.store.enums.RegionName;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import com.example.umc10th.global.apiPayload.dto.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +22,31 @@ public class MissionController {
 
     // 특정 가게의 미션들 조회
     @GetMapping("/stores/{storeId}/missions")
-    public ApiResponse<MissionResDTO.Pagination<MissionResDTO.GetMission>> getMissions(
+    public ApiResponse<PageResponse<MissionResDTO.GetMission>> getMissions(
             @PathVariable Long storeId,
-            @RequestParam Integer pageSize,
-            @RequestParam Integer pageNumber,
-            @RequestParam(required = false) String sort
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ApiResponse.onSuccess(MissionSuccessCode.OK, missionService.getMissions(storeId, pageSize, pageNumber, sort));
+        return ApiResponse.onSuccess(MissionSuccessCode.OK, missionService.getMissions(storeId, pageable));
+    }
+
+    // 홈 화면 미션 목록 조회
+    @GetMapping("/home")
+    public ApiResponse<MissionResDTO.HomeMissionResponse> homeMissionList(
+            @RequestParam(name = "memberId") Long memberId,
+            @RequestParam(name = "regionName") RegionName regionName,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ApiResponse.onSuccess(MissionSuccessCode.OK,
+                missionService.homeMissionList(memberId, regionName, pageable));
+    }
+
+    // 가게 미션 생성
+    @PostMapping("/stores/{storeId}/missions")
+    public ApiResponse<Void> createMission(
+            @PathVariable Long storeId,
+            @RequestBody @Valid MissionReqDTO.CreateMission dto
+    ) {
+        return ApiResponse.onSuccess(MissionSuccessCode.CREATED, missionService.createMission(storeId, dto));
     }
 
     // 미션 도전하기
@@ -51,27 +73,5 @@ public class MissionController {
             @RequestBody @Valid MissionReqDTO.VerifyMission dto
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.MISSION_COMPLETED, missionService.verifyMission(missionId, dto));
-    }
-
-    // 가게 미션 생성
-    @PostMapping("/stores/{storeId}/missions")
-    public ApiResponse<Void> createMission(
-            @PathVariable Long storeId,
-            @RequestBody @Valid MissionReqDTO.CreateMission dto
-    ) {
-        return ApiResponse.onSuccess(MissionSuccessCode.CREATED, missionService.createMission(storeId, dto));
-    }
-
-    // 홈 화면 미션 목록 조회
-    @GetMapping("/home")
-    public ApiResponse<MissionResDTO.HomeMissionResponse> homeMissionList(
-            @RequestParam(name = "memberId") Long memberId,
-            @RequestParam(name = "regionName") RegionName regionName,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(required = false) String sort
-    ) {
-        return ApiResponse.onSuccess(MissionSuccessCode.OK,
-                missionService.homeMissionList(memberId, regionName, page, size, sort));
     }
 }

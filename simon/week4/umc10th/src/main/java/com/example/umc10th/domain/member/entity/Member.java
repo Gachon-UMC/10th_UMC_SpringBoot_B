@@ -1,11 +1,11 @@
 package com.example.umc10th.domain.member.entity;
 
 import com.example.umc10th.domain.member.entity.mapping.MemberPreferFood;
-import com.example.umc10th.domain.member.enums.MemberStatus;
-
 import com.example.umc10th.domain.member.enums.Gender;
+import com.example.umc10th.domain.member.enums.MemberStatus;
 import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.member_mission.entity.MemberMission;
+import com.example.umc10th.domain.review.entity.Review;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -75,11 +75,15 @@ public class Member extends BaseEntity {
         if (profileUrl != null) this.profileUrl = profileUrl;
     }
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Review> reviewList = new ArrayList<>();
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberPreferFood> memberPreferFoodList = new ArrayList<>();
 

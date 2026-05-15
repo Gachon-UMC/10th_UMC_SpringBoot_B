@@ -4,8 +4,6 @@ import com.example.umc10th.domain.food_category.enums.FoodCategoryName;
 import com.example.umc10th.domain.store.enums.RegionName;
 import lombok.Builder;
 
-import java.util.List;
-
 public class StoreResDTO {
     @Builder
     public record GetStoreInfo(
@@ -22,15 +20,5 @@ public class StoreResDTO {
             Long storeId,
             String storeName,
             String detailAddress
-    ) {}
-
-    @Builder
-    public record StoreSummaryList(
-            List<StoreSummary> storeList,
-            Integer listSize,
-            Integer totalPage,
-            Long totalElements,
-            Boolean isFirst,
-            Boolean isLast
     ) {}
 }

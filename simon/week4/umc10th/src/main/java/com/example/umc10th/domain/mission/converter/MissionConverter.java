@@ -4,49 +4,51 @@ import com.example.umc10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.store.entity.Store;
+import com.example.umc10th.global.apiPayload.dto.PageResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public class MissionConverter {
-    // 미션 생성, 사용자가 입력한 DTO 데이터를 Mission 엔티티로 변환
-    public static Mission toMission(
-            Store store,
-            MissionReqDTO.CreateMission dto
-    ) {
+    // 미션 생성 (DTO -> Entity)
+    public static Mission toMission(Store store, MissionReqDTO.CreateMission dto) {
         return Mission.builder()
                 .store(store)
-                .missionCondition(dto.mission_condition())
+                .missionCondition(dto.missionCondition())
                 .point(dto.point())
                 .deadline(dto.deadline())
                 .build();
     }
 
-    // 다양한 목록 데이터를 공통 페이지네이션 응답 형식으로 포장
-    // 페이지네이션 틀 생성
-    public static <T> MissionResDTO.Pagination<T> toPagination(
-            Page<?> page,  // 리스트, 페이지 번호 등이 다 들어있는 통짜 객체
-            List<T> data   // 이미 변환이 완료된 DTO 리스트
-    ) {
-        return MissionResDTO.Pagination.<T>builder()
-                .data(data)
-                .pageNumber(page.getNumber() + 1)
-                .pageSize(page.getSize())
-                .totalPage(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .isFirst(page.isFirst())
-                .isLast(page.isLast())
+    public static MissionResDTO.HomeMissionItem toHomeMissionItem(Mission mission) {
+        return MissionResDTO.HomeMissionItem.builder()
+                .missionId(mission.getId())
+                .storeName(mission.getStore().getStoreName())
+                .regionName(mission.getStore().getRegion().getRegionName())
+                .missionCondition(mission.getMissionCondition())
+                .point(mission.getPoint())
+                .deadline(mission.getDeadline())
                 .build();
     }
 
-    // 가게 내 미션 조회, 미션 엔티티를 특정 가게 상세 페이지용 응답 DTO로 변환
-    public static MissionResDTO.GetMission toGetMission(
-            Mission mission
-    ) {
+    // 단일 미션 조회 DTO 변환 (Entity -> DTO)
+    public static MissionResDTO.GetMission toGetMission(Mission mission) {
         return MissionResDTO.GetMission.builder()
-                .mission_condition(mission.getMissionCondition())
+                .missionCondition(mission.getMissionCondition())
                 .point(mission.getPoint())
                 .missionId(mission.getId())
                 .build();
+    }
+
+    // 가게 내 미션 목록 페이지 변환 (Page<Entity> -> PageResponse<DTO>)
+    public static PageResponse<MissionResDTO.GetMission> toGetMissionPage(Page<Mission> missionPage) {
+        List<MissionResDTO.GetMission> data = missionPage.map(MissionConverter::toGetMission).toList();
+
+        return PageResponse.of(missionPage, data);
+    }
+
+    // 공통 페이지네이션 응답 규격 (제네릭)
+    public static <T, E> PageResponse<T> toPageResponse(Page<E> page, List<T> data) {
+        return PageResponse.of(page, data);
     }
 }

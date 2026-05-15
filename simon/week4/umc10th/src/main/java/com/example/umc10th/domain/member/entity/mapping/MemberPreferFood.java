@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "member_prefer_food")
 public class MemberPreferFood {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

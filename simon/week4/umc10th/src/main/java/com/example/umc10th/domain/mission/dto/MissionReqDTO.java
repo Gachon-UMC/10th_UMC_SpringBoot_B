@@ -25,10 +25,14 @@ public class MissionReqDTO {
             String proofImageUrl,
 
             @NotBlank(message = "인증 내용은 필수입니다.")
-            String content
+            String content,
+
+            @NotBlank(message = "인증번호는 필수입니다.")
+            String verificationCode
     ) {}
 
     // 가게 미션 생성
+    @Builder
     public record CreateMission(
             @NotNull(message = "마감기한은 필수입니다.")
             LocalDateTime deadline,
@@ -38,6 +42,6 @@ public class MissionReqDTO {
             Integer point,
 
             @NotBlank(message = "조건은 빈칸일 수 없습니다.")
-            String mission_condition
+            String missionCondition
     ) {}
 }

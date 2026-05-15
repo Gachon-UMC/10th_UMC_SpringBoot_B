@@ -6,17 +6,19 @@ import com.example.umc10th.domain.review.converter.ReviewConverter;
 import com.example.umc10th.domain.review.dto.ReviewReqDTO;
 import com.example.umc10th.domain.review.dto.ReviewResDTO;
 import com.example.umc10th.domain.review.entity.Review;
-import com.example.umc10th.domain.review.entity.ReviewPhoto;
 import com.example.umc10th.domain.review.exception.ReviewException;
 import com.example.umc10th.domain.review.exception.code.ReviewErrorCode;
 import com.example.umc10th.domain.review.repository.ReviewRepository;
 import com.example.umc10th.domain.store.entity.Store;
 import com.example.umc10th.domain.store.exception.StoreException;
 import com.example.umc10th.domain.store.repository.StoreRepository;
+import com.example.umc10th.global.apiPayload.dto.CursorResponse;
+import com.example.umc10th.global.apiPayload.dto.PageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +50,15 @@ public class ReviewService {
 
         // DTO -> 엔티티 변환
         Review review = ReviewConverter.toReview(dto);
+
+        // 연관관계 설정 (엔티티 내부 메서드 활용)
         review.setMember(member);
         review.setStore(store);
 
-        // 사진 리스트 변환 및 연관관계 설정
-        List<ReviewPhoto> photos = ReviewConverter.toReviewPhotoList(dto.photoUrls());
-        photos.forEach(photo -> photo.setReview(review));
-        review.getReviewPhotoList().addAll(photos);
+        // 사진 추가
+        // Converter가 만들어준 사진 엔티티 리스트를 하나씩 review에 등록
+        ReviewConverter.toReviewPhotoList(dto.photoUrls())
+                .forEach(review::addPhoto);
 
         // 저장 및 결과 반환
         Review saved = reviewRepository.save(review);
@@ -66,26 +70,30 @@ public class ReviewService {
     /**
      * 특정 가게 리뷰 전체 조회, 특정 가게에 달린 모든 리뷰를 최신순으로 페이징 조회
      */
-    public ReviewResDTO.ReviewList getStoreReviews(Long storeId, int page, int size) {
+    public PageResponse<ReviewResDTO.ReviewItem> getStoreReviews(Long storeId, Pageable pageable) {
         // 가게 존재 여부 확인
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(ReviewErrorCode.STORE_NOT_FOUND));
 
-        // 데이터 조회
-        Page<Review> reviewPage = reviewRepository.findByStoreIdOrderByCreatedAtDesc(
-                store.getId(),
-                PageRequest.of(page, size)
+        // 1-based index 보정
+        Pageable adjustedPageable = PageRequest.of(
+                Math.max(0, pageable.getPageNumber() - 1),
+                pageable.getPageSize(),
+                pageable.getSort()
         );
 
+        // 데이터 조회
+        Page<Review> reviewPage = reviewRepository.findByStoreIdOrderByCreatedAtDesc(storeId, adjustedPageable);
+
         // 엔티티 리스트를 DTO 리스트로 변환
-        return ReviewConverter.toReviewListDTO(reviewPage);
+        return ReviewConverter.toReviewPageDTO(reviewPage);
     }
 
     /**
      * 나의 리뷰 목록 조회, 커서 기반 페이지네이션
      * 사용자가 특정 가게에 남긴 리뷰를 별점순 또는 최신순으로 조회
      */
-    public ReviewResDTO.CursorPagination<ReviewResDTO.ReviewItem> getMyReviewList(Long memberId, Long storeId, String cursor, String sortType, int size) {
+    public CursorResponse<ReviewResDTO.ReviewItem> getMyReviewList(Long memberId, Long storeId, String cursor, String sortType, int size) {
         // 사용자와 가게가 존재하는지 먼저 확인
         if (!memberRepository.existsById(memberId)) throw new MemberException(ReviewErrorCode.MEMBER_NOT_FOUND);
         if (!storeRepository.existsById(storeId)) throw new StoreException(ReviewErrorCode.STORE_NOT_FOUND);
@@ -135,6 +143,6 @@ public class ReviewService {
         }
 
         // 컨버터를 통해 최종 응답 규격으로 반환
-        return ReviewConverter.toCursorPagination(reviewItems, nextCursor, reviewSlice.hasNext());
+        return ReviewConverter.toCursorResponse(reviewItems, nextCursor, reviewSlice.hasNext());
     }
 }

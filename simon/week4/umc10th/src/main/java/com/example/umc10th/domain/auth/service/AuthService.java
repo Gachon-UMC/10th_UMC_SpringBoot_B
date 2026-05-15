@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.auth.service;
 
+import com.example.umc10th.domain.auth.converter.AuthConverter;
 import com.example.umc10th.domain.auth.dto.AuthReqDTO;
 import com.example.umc10th.domain.auth.dto.AuthResDTO;
 import com.example.umc10th.domain.member.converter.MemberConverter;
@@ -34,7 +35,7 @@ public class AuthService {
         Member savedMember = memberRepository.save(newMember);
 
         // 저장된 정보를 응답 규격에 맞춰 DTO로 변환하여 반환
-        return MemberConverter.toRegisterResDTO(savedMember);
+        return AuthConverter.toRegisterResDTO(savedMember);
     }
 
     /**
@@ -56,7 +57,7 @@ public class AuthService {
         }
 
         // 성공 시 DTO 반환
-        return MemberConverter.toLoginResDTO(member);
+        return AuthConverter.toLoginResDTO(member);
     }
 
     /**

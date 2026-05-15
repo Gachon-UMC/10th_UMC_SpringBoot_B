@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.member.service;
 
+import com.example.umc10th.domain.member.converter.MemberConverter;
 import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
@@ -10,21 +11,26 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    // 마이페이지
+    /**
+     * 마이페이지
+     */
     public MemberResDTO.GetInfo getInfo(Long memberId) {
-
-        return memberRepository.findGetInfoById(memberId)
+        // 엔티티 조회
+        Member member = memberRepository.findActiveMemberById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        // Converter를 통해 DTO로 변환
+        return MemberConverter.toGetInfo(member);
     }
 
-    // 회원정보 수정
+    /**
+     * 회원정보 수정
+     */
     @Transactional
     public MemberResDTO.UpdateInfo updateInfo(Long memberId, MemberReqDTO.UpdateInfo dto) {
         Member member = memberRepository.findById(memberId)
@@ -33,13 +39,12 @@ public class MemberService {
         // 더티 체킹을 통한 수정
         member.updateProfile(dto.phoneNumber(), dto.profileUrl());
 
-        return MemberResDTO.UpdateInfo.builder()
-                .memberId(member.getId())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        return MemberConverter.toUpdateInfoResDTO(member);
     }
 
-    // 회원 탈퇴
+    /**
+     * 회원 탈퇴
+     */
     @Transactional
     public void deleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId)

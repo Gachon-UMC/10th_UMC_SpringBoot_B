@@ -7,9 +7,11 @@ import com.example.umc10th.domain.store.exception.StoreException;
 import com.example.umc10th.domain.store.exception.code.StoreErrorCode;
 import com.example.umc10th.domain.store.repository.StoreRepository;
 
+import com.example.umc10th.global.apiPayload.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +24,19 @@ public class StoreService {
     /**
      * 지역별 가게 목록 페이징 조회
      */
-    public StoreResDTO.StoreSummaryList getStoreListByRegion(Long regionId, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+    public PageResponse<StoreResDTO.StoreSummary> getStoreListByRegion(Long regionId, Pageable pageable) {
+        // 1-based index 보정
+        Pageable adjustedPageable = PageRequest.of(
+                Math.max(0, pageable.getPageNumber() - 1),
+                pageable.getPageSize(),
+                pageable.getSort()
+        );
 
         // findAllByRegionId 호출
-        Page<Store> storePage = storeRepository.findAllByRegionId(regionId, pageRequest);
+        Page<Store> storePage = storeRepository.findAllByRegionId(regionId, adjustedPageable);
 
-        return StoreConverter.toStoreSummaryList(storePage);
+        // Converter를 통해 공통 PageResponse로 변환
+        return StoreConverter.toStoreSummaryPage(storePage);
     }
 
     /**

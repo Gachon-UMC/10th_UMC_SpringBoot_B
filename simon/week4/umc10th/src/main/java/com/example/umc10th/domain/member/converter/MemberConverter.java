@@ -9,18 +9,7 @@ import com.example.umc10th.domain.member.enums.MemberStatus;
 import java.time.LocalDateTime;
 
 public class MemberConverter {
-    // 조회용
-    public static MemberResDTO.GetInfo toGetInfo(Member member) {
-        return MemberResDTO.GetInfo.builder()
-                .email((member.getEmail()))
-                .name(member.getName())
-                .point(member.getPoint())
-                .phoneNumber(member.getPhoneNumber())
-                .profileUrl(member.getProfileUrl())
-                .build();
-    }
-
-    // 회원가입 요청 DTO -> Member 엔티티 변환
+    // 외부 데이터를 엔티티로 변환 (회원가입 등)
     public static Member toMember(AuthReqDTO.Register dto) {
         return Member.builder()
                 .email(dto.email())
@@ -37,26 +26,26 @@ public class MemberConverter {
                 .build();
     }
 
-    // Member 엔티티 -> 회원가입 응답 DTO 변환
-    public static AuthResDTO.Register toRegisterResDTO(Member member) {
-        return AuthResDTO.Register.builder()
-                .id(member.getId())
-                .email(member.getEmail())
+    // 엔티티를 조회용 DTO로 변환 (마이페이지 등)
+    public static MemberResDTO.GetInfo toGetInfo(Member member) {
+        return MemberResDTO.GetInfo.builder()
+                .email((member.getEmail()))
                 .name(member.getName())
-                .createdAt(member.getCreatedAt())
+                .point(member.getPoint())
+                .phoneNumber(member.getPhoneNumber())
+                .profileUrl(member.getProfileUrl())
                 .build();
     }
 
-    // 엔티티 -> 로그인 응답 변환
-    public static AuthResDTO.Login toLoginResDTO(Member member) {
-        return AuthResDTO.Login.builder()
-                .email(member.getEmail())
-                .accessToken("temp-access-token-for-test")      // 나중에 JWT 연동 시 실제 토큰으로 교체
-                .refreshToken("temp-refresh-token-for-test")    // 나중에 JWT 연동 시 실제 토큰으로 교체
+    // 수정 결과 응답 DTO로 변환
+    public static MemberResDTO.UpdateInfo toUpdateInfoResDTO(Member member) {
+        return MemberResDTO.UpdateInfo.builder()
+                .memberId(member.getId())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
-    // 로그아웃 결과 변환
+    // 로그아웃 결과 DTO로 변환
     public static AuthResDTO.LogoutResult toLogoutResultDTO(Long memberId) {
         return AuthResDTO.LogoutResult.builder()
                 .memberId(memberId)

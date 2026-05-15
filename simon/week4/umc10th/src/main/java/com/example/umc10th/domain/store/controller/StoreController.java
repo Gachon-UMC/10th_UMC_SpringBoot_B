@@ -4,8 +4,15 @@ import com.example.umc10th.domain.store.dto.StoreResDTO;
 import com.example.umc10th.domain.store.exception.code.StoreSuccessCode;
 import com.example.umc10th.domain.store.service.StoreService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import com.example.umc10th.global.apiPayload.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +28,11 @@ public class StoreController {
 
     // 특정 지역의 가게 목록 조회
     @GetMapping("/regions/{regionId}")
-    public ApiResponse<StoreResDTO.StoreSummaryList> getStoreList(
+    public ApiResponse<PageResponse<StoreResDTO.StoreSummary>> getStoreList(
             @PathVariable Long regionId,
-            @RequestParam(defaultValue = "1") Integer page
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return ApiResponse.onSuccess(StoreSuccessCode.GET_LIST_OK,
-                storeService.getStoreListByRegion(regionId, page));
+                storeService.getStoreListByRegion(regionId, pageable));
     }
 }
