@@ -1,8 +1,10 @@
 package com.example.umc10th.domain.member.service;
 
+import com.example.umc10th.domain.member.converter.MemberConverter;
 import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.enums.MemberStatus;
 import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
@@ -19,8 +21,15 @@ public class MemberService {
 
     // 마이페이지
     public MemberResDTO.GetInfo getInfo(Long memberId) {
-        return memberRepository.findGetInfoById(memberId)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        // 탈퇴한 회원인지 체크
+        if (member.getMemberStatus() == MemberStatus.INACTIVE) {
+            throw new MemberException(MemberErrorCode.MEMBER_STATUS_INACTIVE);
+        }
+
+        return MemberConverter.toGetInfo(member);
     }
 
     // 회원정보 수정
@@ -44,6 +53,6 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        memberRepository.delete(member);
+        member.withdraw();
     }
 }

@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -74,6 +73,10 @@ public class Member extends BaseEntity {
     public void updateProfile(String phoneNumber, String profileUrl) {
         if (phoneNumber != null) this.phoneNumber = phoneNumber;
         if (profileUrl != null) this.profileUrl = profileUrl;
+    }
+
+    public void withdraw() {
+        this.memberStatus = MemberStatus.INACTIVE;
     }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
