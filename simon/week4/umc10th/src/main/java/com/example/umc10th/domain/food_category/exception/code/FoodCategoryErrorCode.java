@@ -1,4 +1,4 @@
-package com.example.umc10th.domain.food.exception.code;
+package com.example.umc10th.domain.food_category.exception.code;
 
 import com.example.umc10th.global.apiPayload.code.BaseErrorCode;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum FoodErrorCode implements BaseErrorCode {
+public enum FoodCategoryErrorCode implements BaseErrorCode {
     // 이미 선호 음식으로 등록된 경우
     PREFER_FOOD_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOOD400_1", "이미 선호 음식으로 등록된 카테고리입니다.")
     ,

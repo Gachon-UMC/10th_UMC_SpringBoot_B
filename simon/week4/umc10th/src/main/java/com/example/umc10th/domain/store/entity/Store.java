@@ -1,6 +1,6 @@
 package com.example.umc10th.domain.store.entity;
 
-import com.example.umc10th.domain.food.entity.Food;
+import com.example.umc10th.domain.food_category.entity.FoodCategory;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +27,6 @@ public class Store extends BaseEntity {
     private Region region;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "food_id")
-    private Food food;
+    @JoinColumn(name = "food_category_id")
+    private FoodCategory foodCategory;
 }

@@ -14,7 +14,7 @@ public class StoreConverter {
                 .storeName(store.getStoreName())
                 .regionId(store.getRegion().getId())
                 .regionName(store.getRegion().getRegionName())
-                .foodCategoryName(store.getFood().getFoodCategoryName())
+                .foodCategoryName(store.getFoodCategory().getFoodCategoryName())
                 .detailAddress(store.getDetailAddress())
                 .build();
     }

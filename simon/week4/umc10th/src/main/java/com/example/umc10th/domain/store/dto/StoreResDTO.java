@@ -1,6 +1,6 @@
 package com.example.umc10th.domain.store.dto;
 
-import com.example.umc10th.domain.food.enums.FoodCategoryName;
+import com.example.umc10th.domain.food_category.enums.FoodCategoryName;
 import com.example.umc10th.domain.store.enums.RegionName;
 import lombok.Builder;
 

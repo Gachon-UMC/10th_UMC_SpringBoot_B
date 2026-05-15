@@ -1,11 +1,11 @@
 -- 1. 지역 데이터 (Region)
 INSERT INTO region (region_name, created_at, updated_at) VALUES ('SEONGNAM_SUJEONG', NOW(), NOW()), ('SEONGNAM_BUNDANG', NOW(), NOW()), ('SEOUL_GANGNAM', NOW(), NOW()), ('SEOUL_SONGPA', NOW(), NOW()), ('SEOUL_MAPO', NOW(), NOW());
 
--- 2. 음식 카테고리 데이터 (Food)
-INSERT INTO food (food_category_name) VALUES ('KOREAN'), ('JAPANESE'), ('CHINESE'), ('WESTERN'), ('CHICKEN'), ('BUNSIK'), ('MEAT'), ('DESSERT'), ('ASIAN_FOOD'), ('FASTFOOD');
+-- 2. 음식 카테고리 데이터 (FoodCategory)
+INSERT INTO food_category (food_category_name) VALUES ('KOREAN'), ('JAPANESE'), ('CHINESE'), ('WESTERN'), ('CHICKEN'), ('BUNSIK'), ('MEAT'), ('DESSERT'), ('ASIAN_FOOD'), ('FASTFOOD');
 
 -- 3. 가게 데이터 (Store) - 20개 (주로 1번 지역인 '성남시 수정구'에 집중 배치해서 페이징 테스트 용이하게)
-INSERT INTO store (store_name, detail_address, region_id, food_id, created_at, updated_at) VALUES
+INSERT INTO store (store_name, detail_address, region_id, food_category_id, created_at, updated_at) VALUES
                                                                                                ('미소라멘 수정점', '성남시 수정구 복정로 1', 1, 2, NOW(), NOW()),
                                                                                                ('복정김치찜', '성남시 수정구 복정로 2', 1, 1, NOW(), NOW()),
                                                                                                ('만다린 중식', '성남시 수정구 복정로 3', 1, 3, NOW(), NOW()),

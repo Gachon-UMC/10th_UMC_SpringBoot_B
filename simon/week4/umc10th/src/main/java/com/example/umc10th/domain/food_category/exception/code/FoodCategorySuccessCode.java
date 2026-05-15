@@ -1,4 +1,4 @@
-package com.example.umc10th.domain.food.exception.code;
+package com.example.umc10th.domain.food_category.exception.code;
 
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum FoodSuccessCode implements BaseSuccessCode {
+public enum FoodCategorySuccessCode implements BaseSuccessCode {
     // 선호 음식 등록 성공
     PREFER_FOOD_CREATED(HttpStatus.CREATED, "FOOD201_1", "선호 음식이 성공적으로 등록되었습니다."),
 
