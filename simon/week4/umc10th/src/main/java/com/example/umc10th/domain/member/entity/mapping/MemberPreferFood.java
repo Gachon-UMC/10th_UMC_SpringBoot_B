@@ -1,6 +1,5 @@
 package com.example.umc10th.domain.member.entity.mapping;
 
-
 import com.example.umc10th.domain.food_category.entity.FoodCategory;
 import com.example.umc10th.domain.member.entity.Member;
 import jakarta.persistence.*;

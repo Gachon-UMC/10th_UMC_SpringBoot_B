@@ -34,4 +34,10 @@ public class MemberMission extends BaseEntity {
     @Column(name = "mission_status", nullable = false)
     @Builder.Default
     private MissionStatus missionStatus = MissionStatus.BASIC;
+
+    public String generateVerificationCode() {
+        String code = String.valueOf((int)(Math.random() * 89999999) + 10000000);
+        this.verificationCode = code;
+        return code;
+    }
 }

@@ -39,23 +39,25 @@ public class MissionService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
 
-    // 미션 도전하기
+    /**
+     * 미션 도전하기
+     */
     @Transactional
     public MissionResDTO.ChallengeMission challengeMission(Long missionId, MissionReqDTO.ChallengeMission dto) {
-        // 1. 존재하는 미션인지 확인
+        // 존재하는 미션인지 확인
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
-        // 2. 존재하는 사용자인지 확인
+        // 존재하는 사용자인지 확인
         Member member = memberRepository.findById(dto.memberId())
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        // 3. 이미 도전 중인 미션인지 중복 체크
+        // 이미 도전 중인 미션인지 중복 체크
         if (memberMissionRepository.existsByMemberAndMissionAndMissionStatus(member, mission, MissionStatus.ONGOING)) {
             throw new MissionException(MissionErrorCode.MISSION_ALREADY_CHALLENGING);
         }
 
-        // 4. MemberMission 데이터 생성 (도전 시작)
+        // MemberMission 데이터 생성 (도전 시작)
         MemberMission newMemberMission = MemberMission.builder()
                 .member(member)
                 .mission(mission)
@@ -64,66 +66,69 @@ public class MissionService {
 
         memberMissionRepository.save(newMemberMission);
 
-        // 5. 응답 DTO 반환
+        // 응답 DTO 반환
         return MissionResDTO.ChallengeMission.builder()
                 .missionId(mission.getId())
                 .message("미션 도전을 시작했습니다.")
                 .build();
     }
 
-    // // 미션 성공 누르기
+    /**
+     * 미션 성공 누르기
+     */
     @Transactional
-    public MissionResDTO.CompleteMission completeMission(Long userMissionId) {
-        // 1. 도전 중인 미션 기록 찾기
-        MemberMission memberMission = memberMissionRepository.findById(userMissionId)
+    public MissionResDTO.CompleteMission completeMission(Long memberMissionId) {
+        // 도전 중인 미션 기록 찾기
+        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
-        // 2. 이미 완료된 미션인지 체크
+        // 이미 완료된 미션인지 체크
         if (memberMission.getMissionStatus() == MissionStatus.DONE) {
             throw new MissionException(MissionErrorCode.MISSION_ALREADY_COMPLETED);
         }
 
-        // 3. 상태 업데이트
-        memberMission.setMissionStatus(MissionStatus.DONE);
+        // 8자리 인증 번호 생성 및 저장
+        String verificationCode = memberMission.generateVerificationCode();
 
-        // 4. 포인트 지급
-        Member member = memberMission.getMember();
-        member.setPoint(member.getPoint() + memberMission.getMission().getPoint());
-
-        // 5. 결과 반환
+        // 결과 반환
         return MissionResDTO.CompleteMission.builder()
-                .userMissionId(memberMission.getId())
+                .memberMissionId(memberMission.getId())
                 .missionStatus(memberMission.getMissionStatus())
+                .verificationCode(verificationCode)
                 .build();
     }
 
-    // 미션 성공 인증
+    /**
+     * 미션 성공 인증 (사장님 확인 후 최종 완료 및 포인트 지급)
+     */
     @Transactional
-    public MissionResDTO.VerifyMission verifyMission(Long userMissionId, MissionReqDTO.VerifyMission dto) {
-        // 1. 도전 기록 조회
-        MemberMission memberMission = memberMissionRepository.findById(userMissionId)
+    public MissionResDTO.VerifyMission verifyMission(Long memberMissionId, MissionReqDTO.VerifyMission dto) {
+        // 도전 기록 조회
+        MemberMission memberMission = memberMissionRepository.findById(memberMissionId)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
-        // 2. 상태 검증 (이미 완료된 미션이거나 도전 중이지 않은 경우 예외 처리)
+        // 상태 검증 (이미 완료된 미션이거나 도전 중이지 않은 경우 예외 처리)
         if (memberMission.getMissionStatus() != MissionStatus.ONGOING) {
             throw new MissionException(MissionErrorCode.MISSION_NOT_CHALLENGING);
         }
 
-        // 3. 사장님 확인용 랜덤 구분 번호 생성
-        String verificationCode = String.valueOf((int)(Math.random() * 89999999) + 10000000);
+        // 최종 완료 처리
+        memberMission.setMissionStatus(MissionStatus.DONE);
 
-        // 4. 엔티티에 번호 저장
-        memberMission.setVerificationCode(verificationCode);
+        // 포인트 지급
+        Integer rewardPoint = memberMission.getMission().getPoint();
+        memberMission.getMember().addPoint(rewardPoint);
 
-        // 5. 응답 반환 (화면에 사장님 구분 번호 전달)
         return MissionResDTO.VerifyMission.builder()
                 .proofId(memberMission.getId())
-                .message(verificationCode)
+                .message("인증이 완료되어 " + rewardPoint + "포인트가 적립되었습니다.")
                 .createdAt(LocalDateTime.now().toString())
                 .build();
     }
 
-    // 홈 화면 쿼리 (현재 선택된 지역에서 도전 가능한 미션 목록 조회)
+    /**
+     * 홈 화면 쿼리 (현재 선택된 지역에서 도전 가능한 미션 목록 조회)
+     */
     public MissionResDTO.HomeMissionResponse homeMissionList(
             Long memberId,
             RegionName regionName,
@@ -152,7 +157,9 @@ public class MissionService {
                 .build();
     }
 
-    // 미션 생성하기
+    /**
+     * 미션 생성하기
+     */
     @Transactional
     public Void createMission(
             Long storeId,
@@ -170,7 +177,9 @@ public class MissionService {
         return null;
     }
 
-    // 가게 내 미션들 조회
+    /**
+     * 가게 내 미션들 조회
+     */
     public MissionResDTO.Pagination<MissionResDTO.GetMission> getMissions(
             Long storeId,
             Integer pageSize,

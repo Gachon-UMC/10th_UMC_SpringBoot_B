@@ -14,6 +14,11 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Page<Store> findAllByRegionId(Long regionId, Pageable pageable);
 
     // 단일 가게 상세 정보 조회
-    @Query("SELECT s FROM Store s JOIN FETCH s.region JOIN FETCH s.foodCategory WHERE s.id = :storeId")
+    @Query("""
+    SELECT s
+    FROM Store s
+    JOIN FETCH s.region JOIN FETCH s.foodCategory
+    WHERE s.id = :storeId
+    """)
     Optional<Store> findByIdWithAll(@Param("storeId") Long storeId);
 }

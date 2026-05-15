@@ -29,7 +29,9 @@ public class ReviewService {
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
 
-    // 리뷰 작성, 사용자가 특정 가게에 대한 리뷰를 등록
+    /**
+     * 리뷰 작성, 사용자가 특정 가게에 대한 리뷰를 등록
+     */
     @Transactional
     public ReviewResDTO.CreateReview createReview(Long storeId, ReviewReqDTO.CreateReview dto) {
         // 가게 or 사용자 존재 여부 확인
@@ -61,7 +63,9 @@ public class ReviewService {
         return ReviewConverter.toCreateReviewResult(saved);
     }
 
-    // 특정 가게 리뷰 전체 조회, 특정 가게에 달린 모든 리뷰를 최신순으로 페이징 조회
+    /**
+     * 특정 가게 리뷰 전체 조회, 특정 가게에 달린 모든 리뷰를 최신순으로 페이징 조회
+     */
     public ReviewResDTO.ReviewList getStoreReviews(Long storeId, int page, int size) {
         // 가게 존재 여부 확인
         Store store = storeRepository.findById(storeId)
@@ -77,8 +81,10 @@ public class ReviewService {
         return ReviewConverter.toReviewListDTO(reviewPage);
     }
 
-    // 나의 리뷰 목록 조회, 커서 기반 페이지네이션
-    // 사용자가 특정 가게에 남긴 리뷰를 별점순 또는 최신순으로 조회
+    /**
+     * 나의 리뷰 목록 조회, 커서 기반 페이지네이션
+     * 사용자가 특정 가게에 남긴 리뷰를 별점순 또는 최신순으로 조회
+     */
     public ReviewResDTO.CursorPagination<ReviewResDTO.ReviewItem> getMyReviewList(Long memberId, Long storeId, String cursor, String sortType, int size) {
         // 사용자와 가게가 존재하는지 먼저 확인
         if (!memberRepository.existsById(memberId)) throw new MemberException(ReviewErrorCode.MEMBER_NOT_FOUND);

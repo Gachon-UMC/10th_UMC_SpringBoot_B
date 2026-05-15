@@ -4,11 +4,14 @@ import com.example.umc10th.domain.member_mission.converter.MemberMissionConverte
 import com.example.umc10th.domain.member_mission.dto.MemberMissionReqDTO;
 import com.example.umc10th.domain.member_mission.service.MemberMissionService;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
+import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.global.apiPayload.ApiResponse;
-import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +25,6 @@ public class MemberMissionController {
             @RequestBody @Valid MemberMissionReqDTO.MyMissionRequest dto
     ) {
         var result = memberMissionService.getMemberMissionList(dto);
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, MemberMissionConverter.toMemberMissionPagination(result));
+        return ApiResponse.onSuccess(MissionSuccessCode.OK, MemberMissionConverter.toMemberMissionPagination(result));
     }
 }

@@ -75,10 +75,6 @@ public class Member extends BaseEntity {
         if (profileUrl != null) this.profileUrl = profileUrl;
     }
 
-    public void withdraw() {
-        this.memberStatus = MemberStatus.INACTIVE;
-    }
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
@@ -86,4 +82,13 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<MemberPreferFood> memberPreferFoodList = new ArrayList<>();
+
+    public void addPoint(Integer point) {
+        if (this.point == null) this.point = 0;
+        this.point += point;
+    }
+
+    public void withdraw() {
+        this.memberStatus = MemberStatus.INACTIVE;
+    }
 }

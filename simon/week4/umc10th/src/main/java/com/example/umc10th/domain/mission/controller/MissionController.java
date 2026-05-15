@@ -6,7 +6,6 @@ import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.domain.store.enums.RegionName;
 import com.example.umc10th.global.apiPayload.ApiResponse;
-import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +26,22 @@ public class MissionController {
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.OK, missionService.getMissions(storeId, pageSize, pageNumber, sort));
     }
+
     // 미션 도전하기
     @PostMapping("/missions/{missionId}/challenges")
     public ApiResponse<MissionResDTO.ChallengeMission> challengeMission(
             @PathVariable Long missionId,
             @RequestBody @Valid MissionReqDTO.ChallengeMission dto
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, missionService.challengeMission(missionId, dto));
+        return ApiResponse.onSuccess(MissionSuccessCode.MISSION_STARTED, missionService.challengeMission(missionId, dto));
     }
 
     // 미션 성공 누르기
-    @PostMapping("/user-missions/{userMissionId}/complete")
+    @PostMapping("/member-missions/{memberMissionId}/complete")
     public ApiResponse<MissionResDTO.CompleteMission> completeMission(
-            @PathVariable Long userMissionId
+            @PathVariable Long memberMissionId
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.completeMission(userMissionId));
+        return ApiResponse.onSuccess(MissionSuccessCode.MISSION_VERIFIED, missionService.completeMission(memberMissionId));
     }
 
     // 미션 성공 인증
@@ -50,7 +50,7 @@ public class MissionController {
             @PathVariable Long missionId,
             @RequestBody @Valid MissionReqDTO.VerifyMission dto
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.verifyMission(missionId, dto));
+        return ApiResponse.onSuccess(MissionSuccessCode.MISSION_COMPLETED, missionService.verifyMission(missionId, dto));
     }
 
     // 가게 미션 생성
@@ -71,7 +71,7 @@ public class MissionController {
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(required = false) String sort
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK,
+        return ApiResponse.onSuccess(MissionSuccessCode.OK,
                 missionService.homeMissionList(memberId, regionName, page, size, sort));
     }
 }

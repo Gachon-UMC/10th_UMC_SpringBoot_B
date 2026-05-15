@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 public class TermService {
     private final MemberTermRepository memberTermRepository;
 
-    // 사용자별 약관 동의 내역 페이징 조회
+    /**
+     * 사용자별 약관 동의 내역 페이징 조회
+     */
     public Page<MemberTerm> getMemberTerms(Long memberId, int page, int size) {
         return memberTermRepository.findAllByMemberId(memberId, PageRequest.of(page, size));
     }

@@ -26,6 +26,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             )
             from Member m
             where m.id = :memberId
+            and m.memberStatus = 'ACTIVE'
             """)
     Optional<MemberResDTO.GetInfo> findGetInfoById(@Param("memberId") Long memberId);
 }

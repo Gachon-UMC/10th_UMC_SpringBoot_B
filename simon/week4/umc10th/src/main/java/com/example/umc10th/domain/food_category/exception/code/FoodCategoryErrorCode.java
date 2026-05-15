@@ -9,8 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum FoodCategoryErrorCode implements BaseErrorCode {
     // 이미 선호 음식으로 등록된 경우
-    PREFER_FOOD_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOOD400_1", "이미 선호 음식으로 등록된 카테고리입니다.")
-    ,
+    PREFER_FOOD_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOOD400_1", "이미 선호 음식으로 등록된 카테고리입니다."),
 
     // 음식 카테고리를 찾을 수 없을 때
     FOOD_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "FOOD404_1", "해당하는 음식 카테고리가 존재하지 않습니다.")

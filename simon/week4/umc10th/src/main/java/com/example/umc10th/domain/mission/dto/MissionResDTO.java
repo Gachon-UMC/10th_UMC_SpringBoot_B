@@ -50,8 +50,9 @@ public class MissionResDTO {
     // 미션 완료, 사장님 인증 후 미션이 최종 완료(DONE) 되었을 때의 응답
     @Builder
     public record CompleteMission(
-            Long userMissionId,
-            MissionStatus missionStatus
+            Long memberMissionId,
+            MissionStatus missionStatus,
+            String verificationCode
     ) {}
 
     // 사용자가 성공 요청 시 사장님께 보여드릴 8자리 번호 발급 결과

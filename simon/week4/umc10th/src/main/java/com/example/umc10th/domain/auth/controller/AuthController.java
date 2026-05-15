@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    // 회원가입
+    /**
+     * 회원가입
+     */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<AuthResDTO.Register> register(

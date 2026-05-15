@@ -4,9 +4,7 @@ import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.store.enums.RegionName;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,5 +36,5 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     );
 
     // 특정 가게의 미션 목록 조회
-    Page<Mission> findAllByStoreId(Long storeId, PageRequest pageRequest);
+    Page<Mission> findAllByStoreId(Long storeId, Pageable pageable);
 }

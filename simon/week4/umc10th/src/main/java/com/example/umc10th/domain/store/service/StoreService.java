@@ -19,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreService {
     private final StoreRepository storeRepository;
 
-    // 지역별 가게 목록 페이징 조회
+    /**
+     * 지역별 가게 목록 페이징 조회
+     */
     public StoreResDTO.StoreSummaryList getStoreListByRegion(Long regionId, Integer page) {
         PageRequest pageRequest = PageRequest.of(page - 1, 10);
 
@@ -29,7 +31,9 @@ public class StoreService {
         return StoreConverter.toStoreSummaryList(storePage);
     }
 
-    // 단일 가게 정보 조회
+    /**
+     * 단일 가게 정보 조회
+     */
     public StoreResDTO.GetStoreInfo getStoreInfo(Long storeId) {
         Store store = storeRepository.findByIdWithAll(storeId)
                 .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));

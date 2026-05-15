@@ -18,7 +18,7 @@ public class ReviewController {
     // 리뷰 작성
     @PostMapping("/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
-            @PathVariable(name = "storeId") Long storeId,
+            @PathVariable Long storeId,
             @RequestBody @Valid ReviewReqDTO.CreateReview dto
     ) {
         return ApiResponse.onSuccess(ReviewSuccessCode.CREATE_OK, reviewService.createReview(storeId, dto));
@@ -27,7 +27,7 @@ public class ReviewController {
     // 특정 가게 리뷰 조회
     @GetMapping("/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.ReviewList> getStoreReviews(
-            @PathVariable(name = "storeId") Long storeId,
+            @PathVariable Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
