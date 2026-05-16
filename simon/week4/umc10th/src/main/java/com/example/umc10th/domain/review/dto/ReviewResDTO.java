@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReviewResDTO {
+
     @Builder
     public record CreateReview(
             Long reviewId,
@@ -21,13 +22,5 @@ public class ReviewResDTO {
             String reviewerNickname,
             LocalDateTime createdAt,
             List<String> photoUrls
-    ) {}
-
-    @Builder
-    public record ReviewList(
-            List<ReviewItem> reviews,
-            Integer page,
-            Integer size,
-            Boolean hasNext
     ) {}
 }

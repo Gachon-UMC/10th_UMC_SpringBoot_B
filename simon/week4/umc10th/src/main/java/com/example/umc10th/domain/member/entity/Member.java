@@ -1,19 +1,16 @@
 package com.example.umc10th.domain.member.entity;
 
 import com.example.umc10th.domain.member.entity.mapping.MemberPreferFood;
-import com.example.umc10th.domain.member.entity.mapping.MemberTerm;
 import com.example.umc10th.domain.member.enums.Gender;
+import com.example.umc10th.domain.member.enums.MemberStatus;
 import com.example.umc10th.domain.member.enums.SocialType;
-import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
+import com.example.umc10th.domain.member_mission.entity.MemberMission;
+import com.example.umc10th.domain.review.entity.Review;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +18,17 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 128)
     private String password;
 
     @Column(name = "name", nullable = false)
@@ -43,17 +40,14 @@ public class Member extends BaseEntity {
     private Gender gender = Gender.NONE;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birth;
+    private LocalDate birthDate;
 
-    @Column(name = "social_uid", nullable = false)
+    @Column(name = "social_uid")
     private String socialUid;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type", nullable = false)
     private SocialType socialType;
-
-    @Column(name = "profile_url", nullable = false)
-    private String profileUrl;
 
     @Column(name = "point", nullable = false)
     @Builder.Default
@@ -62,15 +56,43 @@ public class Member extends BaseEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "detail_address")
+    private String detailAddress;
+
+    @Column(name = "profile_url")
+    private String profileUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_status", nullable = false)
+    @Builder.Default
+    private MemberStatus memberStatus = MemberStatus.ACTIVE;
+
+    public void updateProfile(String phoneNumber, String profileUrl) {
+        if (phoneNumber != null) this.phoneNumber = phoneNumber;
+        if (profileUrl != null) this.profileUrl = profileUrl;
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Review> reviewList = new ArrayList<>();
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberPreferFood> memberPreferFoodList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Builder.Default
-    private List<MemberTerm> memberTermList = new ArrayList<>();
+    public void addPoint(Integer point) {
+        if (this.point == null) this.point = 0;
+        this.point += point;
+    }
+
+    public void withdraw() {
+        this.memberStatus = MemberStatus.INACTIVE;
+    }
 }

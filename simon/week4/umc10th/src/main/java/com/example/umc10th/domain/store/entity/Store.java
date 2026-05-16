@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.store.entity;
 
+import com.example.umc10th.domain.food_category.entity.FoodCategory;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,13 +19,14 @@ public class Store extends BaseEntity {
     @Column(name = "store_name", nullable = false)
     private String storeName;
 
-    @Column(name = "manager_number", nullable = false)
-    private Long managerNumber;
-
-    @Column(name = "detailed_address", nullable = false)
-    private String detailedAddress;
+    @Column(name = "detail_address", nullable = false)
+    private String detailAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id", nullable = false)
+    @JoinColumn(name = "region_id")
     private Region region;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_category_id")
+    private FoodCategory foodCategory;
 }

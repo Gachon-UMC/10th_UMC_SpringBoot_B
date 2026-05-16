@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.review.entity;
 
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.review.dto.ReviewReqDTO;
 import com.example.umc10th.domain.store.entity.Store;
 import com.example.umc10th.global.BaseEntity;
 import jakarta.persistence.*;
@@ -28,17 +29,40 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @Column(name = "content", columnDefinition = "TEXT",  nullable = false)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "score", nullable = false)
     private Float score;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     @Builder.Default
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewPhoto> reviewPhotoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     @Builder.Default
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
+
+    public void setMember(Member member) {
+        this.member = member;
+        if (!member.getReviewList().contains(this)) {
+            member.getReviewList().add(this);
+        }
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public void addPhoto(ReviewPhoto photo) {
+        this.reviewPhotoList.add(photo);
+        photo.setReview(this);
+    }
+
+    public static Review of(ReviewReqDTO.CreateReview request) {
+        return Review.builder()
+                .content(request.content())
+                .score(request.score())
+                .build();
+    }
 }

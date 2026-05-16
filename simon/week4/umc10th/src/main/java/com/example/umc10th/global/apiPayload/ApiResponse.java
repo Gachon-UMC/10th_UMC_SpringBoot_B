@@ -2,7 +2,6 @@ package com.example.umc10th.global.apiPayload;
 
 import com.example.umc10th.global.apiPayload.code.BaseErrorCode;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
-import com.example.umc10th.global.apiPayload.code.GeneralSuccessCode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
