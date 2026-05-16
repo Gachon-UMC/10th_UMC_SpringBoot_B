@@ -1,5 +1,5 @@
 -- 1. 지역 데이터 (Region)
-INSERT INTO region (region_name, created_at, updated_at) VALUES ('SEONGNAM_SUJEONG', NOW(), NOW()), ('SEONGNAM_BUNDANG', NOW(), NOW()), ('SEOUL_GANGNAM', NOW(), NOW()), ('SEOUL_SONGPA', NOW(), NOW()), ('SEOUL_MAPO', NOW(), NOW());
+INSERT INTO region (region_name, created_at, updated_at) VALUES ('GYEONGGI_SEONGNAM_SUJEONG', NOW(), NOW()), ('SEONGNAM_BUNDANG', NOW(), NOW()), ('SEOUL_GANGNAM', NOW(), NOW()), ('SEOUL_SONGPA', NOW(), NOW()), ('SEOUL_MAPO', NOW(), NOW());
 
 -- 2. 음식 카테고리 데이터 (FoodCategory)
 INSERT INTO food_category (food_category_name) VALUES ('KOREAN'), ('JAPANESE'), ('CHINESE'), ('WESTERN'), ('CHICKEN'), ('BUNSIK'), ('MEAT'), ('DESSERT'), ('ASIAN_FOOD'), ('FASTFOOD');

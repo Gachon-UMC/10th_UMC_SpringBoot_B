@@ -16,8 +16,12 @@ public enum RegionName {
     SEOUL_YEONGDEUNGPO("서울특별시 영등포구"), SEOUL_DONGJAK("서울특별시 동작구"), SEOUL_GWANAK("서울특별시 관악구"),
     SEOUL_SEOCHO("서울특별시 서초구"), SEOUL_GANGNAM("서울특별시 강남구"), SEOUL_SONGPA("서울특별시 송파구"), SEOUL_GANGDONG("서울특별시 강동구"),
 
-    // 성남시
-    SEONGNAM_SUJEONG("성남시 수정구"), SEONGNAM_JUNGWON("성남시 중원구"), SEONGNAM_BUNDANG("성남시 분당구"),
+    // 경기도
+    GYEONGGI_SEONGNAM_SUJEONG("경기도 성남시 수정구"),
+    GYEONGGI_SEONGNAM_JUNGWON("경기도 성남시 중원구"),
+    GYEONGGI_SEONGNAM_BUNDANG("경기도 성남시 분당구"),
+    GYEONGGI_SUWON_PALDAL("경기도 수원시 팔달구"),
+    GYEONGGI_YONGIN_SUJI("경기도 용인시 수지구"),
 
     // 부산광역시
     BUSAN_JUNG("부산광역시 중구"), BUSAN_SEO("부산광역시 서구"), BUSAN_DONG("부산광역시 동구"),

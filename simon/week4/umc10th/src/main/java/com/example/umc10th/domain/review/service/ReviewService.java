@@ -90,6 +90,29 @@ public class ReviewService {
     }
 
     /**
+     * 사용자가 모든 가게에 작성한 리뷰 목록을 조회 (Offset 기반) (마이페이지용)
+     */
+    public PageResponse<ReviewResDTO.ReviewItem> getMyAllReviews(Long memberId, Pageable pageable) {
+        // 사용자 존재 여부 확인 (
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberException(ReviewErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        // 1-based index 보정
+        Pageable adjustedPageable = PageRequest.of(
+                Math.max(0, pageable.getPageNumber() - 1),
+                pageable.getPageSize(),
+                pageable.getSort()
+        );
+
+        // Repository 호출
+        Page<Review> reviewPage = reviewRepository.findAllByMemberIdOrderByCreatedAtDesc(memberId, adjustedPageable);
+
+        // Converter를 통해 공통 규격(PageResponse)으로 변환하여 반환
+        return ReviewConverter.toReviewPageDTO(reviewPage);
+    }
+
+    /**
      * 나의 리뷰 목록 조회, 커서 기반 페이지네이션
      * 사용자가 특정 가게에 남긴 리뷰를 별점순 또는 최신순으로 조회
      */

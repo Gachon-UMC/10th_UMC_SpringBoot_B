@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/stores")
+@RequestMapping("/api/v1")
 public class ReviewController {
     private final ReviewService reviewService;
 
     // 특정 가게 리뷰 조회 (Offset 기반)
-    @GetMapping("/{storeId}/reviews")
+    @GetMapping("/stores/{storeId}/reviews")
     public ApiResponse<PageResponse<ReviewResDTO.ReviewItem>> getStoreReviews(
             @PathVariable Long storeId,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -29,8 +29,17 @@ public class ReviewController {
         return ApiResponse.onSuccess(ReviewSuccessCode.GET_OK, reviewService.getStoreReviews(storeId, pageable));
     }
 
+    // 내가 작성한 모든 리뷰 조회 (Offset 기반)
+    @GetMapping("/members/{memberId}/reviews")
+    public ApiResponse<PageResponse<ReviewResDTO.ReviewItem>> getMyAllReviews(
+            @PathVariable Long memberId,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ApiResponse.onSuccess(ReviewSuccessCode.GET_OK, reviewService.getMyAllReviews(memberId, pageable));
+    }
+
     // 특정 가게 내 '나의 리뷰' 목록 조회 (Cursor 기반)
-    @GetMapping("/{storeId}/reviews/me")
+    @GetMapping("/stores/{storeId}/reviews/me")
     public ApiResponse<CursorResponse<ReviewResDTO.ReviewItem>> getMyReviews(
             @PathVariable Long storeId,
             @RequestParam Long memberId,
@@ -42,7 +51,7 @@ public class ReviewController {
     }
 
     // 리뷰 작성
-    @PostMapping("/{storeId}/reviews")
+    @PostMapping("/stores/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
             @PathVariable Long storeId,
             @RequestBody @Valid ReviewReqDTO.CreateReview dto

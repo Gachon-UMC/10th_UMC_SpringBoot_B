@@ -18,6 +18,6 @@ public class Region extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "region_name", nullable = false)
+    @Column(name = "region_name", nullable = false, length = 50)
     private RegionName regionName;
 }
