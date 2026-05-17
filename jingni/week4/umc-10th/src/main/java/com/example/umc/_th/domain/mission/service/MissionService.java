@@ -52,10 +52,6 @@ public class MissionService {
 
         Page<Mission> missions = missionRepository.findByRegion(regionId, pageable);
 
-        if(missions.isEmpty()){
-            throw new MissionException(MissionErrorCode.MISSION_NOT_FOUND);
-        }
-
         List<MissionDTO.Mission> result = missions.stream()
                 .map(MissionConverter::toMissionDTO)
                 .toList();
