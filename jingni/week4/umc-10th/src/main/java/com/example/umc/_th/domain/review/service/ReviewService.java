@@ -4,16 +4,13 @@ import com.example.umc._th.domain.member.entity.Member;
 import com.example.umc._th.domain.member.exception.MemberException;
 import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc._th.domain.member.repository.MemberRepository;
-import com.example.umc._th.domain.mission.entity.Mission;
 import com.example.umc._th.domain.review.converter.ReviewConverter;
 import com.example.umc._th.domain.review.dto.ReviewReqDTO;
 import com.example.umc._th.domain.review.dto.ReviewResDTO;
 import com.example.umc._th.domain.review.entity.Review;
-import com.example.umc._th.domain.review.exception.ReviewException;
 import com.example.umc._th.domain.review.repository.ReviewRepository;
 import com.example.umc._th.domain.store.entity.Store;
 import com.example.umc._th.domain.store.exception.StoreException;
-import com.example.umc._th.domain.store.exception.code.ReviewErrorCode;
 import com.example.umc._th.domain.store.exception.code.StoreErrorCode;
 import com.example.umc._th.domain.store.repository.StoreRepository;
 import com.example.umc._th.global.dto.PaginationDTO;
@@ -54,7 +51,7 @@ public class ReviewService {
         return ReviewConverter.toCreateReviewDTO(saved);
     }
 
-    @Transactional()
+    @Transactional
     public PaginationDTO.CursorPaginationDTO<ReviewResDTO.ReviewInfo> getMyReviews(
             Long memberId,
             Integer pageSize,
@@ -65,26 +62,23 @@ public class ReviewService {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        Pageable pageable = PageRequest.of(0, pageSize + 1);
+        Pageable pageable = PageRequest.of(0, pageSize);
+
         Slice<Review> reviews = reviewRepository.findMyReviews(
                 memberId,
                 cursor,
                 pageable
         );
 
+        List<Review> content = reviews.getContent();
+
         boolean hasNext = reviews.hasNext();
 
-        List<Review> review = reviews.getContent();
-
-        if (review.size() > pageSize) {
-            review = review.subList(0, pageSize);
-        }
-
-        Long nextCursor = hasNext
-                ? review.get(review.size() - 1).getId()
+        Long nextCursor = hasNext && !content.isEmpty()
+                ? content.get(content.size() - 1).getId()
                 : null;
 
-        List<ReviewResDTO.ReviewInfo> result = review.stream()
+        List<ReviewResDTO.ReviewInfo> result = content.stream()
                 .map(ReviewConverter::toReviewInfo)
                 .toList();
 
@@ -95,4 +89,4 @@ public class ReviewService {
                 pageSize
         );
     }
-    }
+}
