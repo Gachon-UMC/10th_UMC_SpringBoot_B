@@ -12,7 +12,6 @@ public class MissionDTO {
         Long id,
         LocalDate deadline,
         Integer point,
-        Status status,
         StoreDTO.StoreSummary store
     ){}
 }

@@ -27,10 +27,6 @@ public class MemberService {
     @Transactional
     public MemberResDTO.Signup signup(MemberReqDTO.Signup request) {
 
-        if(request.email() == null || request.email().isBlank()){
-            throw new MemberException(MemberErrorCode.INVALID_MEMBER_REQUEST);
-        }
-
         if(memberRepository.existsByEmail(request.email())){
             throw new MemberException(MemberErrorCode.MEMBER_ALREADY_EXISTS);
         }

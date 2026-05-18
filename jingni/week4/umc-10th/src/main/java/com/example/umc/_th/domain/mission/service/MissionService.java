@@ -17,8 +17,13 @@ import com.example.umc._th.domain.region.exception.RegionException;
 import com.example.umc._th.domain.region.exception.code.RegionErrorCode;
 import com.example.umc._th.domain.region.repository.RegionRepository;
 import com.example.umc._th.domain.store.dto.StoreDTO;
+import com.example.umc._th.global.dto.PaginationDTO;
 import com.example.umc._th.global.enums.SortType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,49 +38,60 @@ public class MissionService {
     private final MemberMissionRepository memberMissionRepository;
 
     public MissionResDTO.GetMissions getMissions(Long regionId, Integer page, Integer size, SortType sortType){
-        int offset = page * size;
 
         if (!regionRepository.existsById(regionId)) {
             throw new RegionException(RegionErrorCode.REGION_NOT_FOUND);
         }
 
-        List<Mission> missions = switch (sortType) {
-            case REWARD -> missionRepository.findByRegionOrderByPoint(regionId, size, offset);
-            case LATEST -> missionRepository.findByRegion(regionId, size, offset);
+        Sort sort = switch (sortType){
+            case REWARD -> Sort.by(Sort.Direction.DESC, "point");
+            case LATEST -> Sort.by(Sort.Direction.DESC, "deadline");
         };
 
-        if(missions.isEmpty()){
-            throw new MissionException(MissionErrorCode.MISSION_NOT_FOUND);
-        }
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Mission> missions = missionRepository.findByRegion(regionId, pageable);
 
         List<MissionDTO.Mission> result = missions.stream()
-                .map(m -> MissionConverter.toMissionDTO(m, null))
+                .map(MissionConverter::toMissionDTO)
                 .toList();
         return new MissionResDTO.GetMissions(result);
     }
 
-    public MissionResDTO.GetMissions getMyMissions(Long memberId, Status status, Integer page, Integer size, SortType sortType) {
-        int offset = page * size;
+    public PaginationDTO.OffsetPaginationDTO<MissionDTO.Mission> getMyMissions(
+            Long memberId,
+            Status status,
+            Integer page,
+            Integer size,
+            SortType sortType
+    ) {
 
-        if(!memberRepository.existsById(memberId)){
+        if (!memberRepository.existsById(memberId)) {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        List<Mission> missions = missionRepository.findMyMissions(
+        Sort sort = switch (sortType){
+            case REWARD -> Sort.by(Sort.Direction.DESC, "point");
+            case LATEST -> Sort.by(Sort.Direction.DESC, "deadline");
+        };
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Mission> missions = missionRepository.findMyMissions(
                 memberId,
                 status != null ? status.name() : null,
-                size,
-                offset
+                pageable
         );
 
-        if(missions.isEmpty()){
-            throw new MissionException(MissionErrorCode.MISSION_NOT_FOUND);
-        }
-
-        List<MissionDTO.Mission> result = missions.stream()
-                .map(m -> MissionConverter.toMissionDTO(m, status))
+        List<MissionDTO.Mission> result = missions.getContent().stream()
+                .map(MissionConverter::toMissionDTO)
                 .toList();
-        return new MissionResDTO.GetMissions(result);
+
+        return new PaginationDTO.OffsetPaginationDTO<>(
+                result,
+                missions.getNumber(),
+                missions.getSize()
+        );
     }
 
     public MissionResDTO.GetCompleteMissionsCnt getCompleteMissionsCnt(Long regionId, Long memberId) {
