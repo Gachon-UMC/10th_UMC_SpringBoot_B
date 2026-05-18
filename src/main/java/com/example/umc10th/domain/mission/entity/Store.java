@@ -4,30 +4,44 @@ import com.example.umc10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+// 해당 클래스를 JPA Entity로 등록합니다.
 @Entity
+// 필드 조회를 위한 Getter를 생성합니다.
 @Getter
+// Entity 생성 시 builder 패턴을 사용할 수 있게 합니다.
 @Builder
+// JPA 기본 생성자를 protected 범위로 생성합니다.
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+// 모든 필드를 받는 생성자를 생성합니다.
 @AllArgsConstructor
+// 매핑할 테이블 이름을 지정합니다.
 @Table(name = "store")
 public class Store extends BaseEntity {
 
+    // 기본키 컬럼입니다.
     @Id
+    // 기본키 값을 DB의 identity 전략으로 생성합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 가게 이름
+    // 가게 이름입니다.
+    @Column(nullable = false)
     private String name;
 
-    // 상세 주소
+    // 가게 주소입니다.
+    @Column(nullable = false)
     private String address;
 
-    // 사장 ID
+    // 가게 관리자 번호입니다.
+    @Column(nullable = false)
     private Long managerNumber;
 
-    // 상세 주소 정보 (선택)
+    // 상세 주소입니다.
     private String detailAddress;
 
-    // 지역 ID
-    private Long locationId;
+    // 가게가 속한 지역입니다.
+    @ManyToOne(fetch = FetchType.LAZY)
+    // 외래키 컬럼명을 지정합니다.
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 }

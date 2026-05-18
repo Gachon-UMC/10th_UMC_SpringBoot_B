@@ -9,14 +9,18 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+// Swagger 설정 클래스를 Spring 설정 Bean으로 등록합니다.
 @Configuration
 public class SwaggerConfig {
 
+    // OpenAPI 문서 설정 Bean을 등록합니다.
     @Bean
     public OpenAPI swagger() {
-        Info info = new Info().title("UMC10th").description("10기 Swagger").version("0.0.1");
+        Info info = new Info()
+                .title("UMC10th")
+                .description("10기 Swagger")
+                .version("0.0.1");
 
-        // JWT 토큰 헤더 방식
         String securityScheme = "JWT TOKEN";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityScheme);
 
