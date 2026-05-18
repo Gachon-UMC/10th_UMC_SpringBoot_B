@@ -11,6 +11,7 @@ import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AuthService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 신규 회원 가입
@@ -30,6 +32,10 @@ public class AuthService {
 
         // DTO 데이터를 기반으로 신규 회원 엔티티 생성 (Converter 활용)
         Member newMember = MemberConverter.toMember(dto);
+
+        // 저장하기 전에 비밀번호를 BCrypt로 암호화하여 세팅
+        String encodedPassword = passwordEncoder.encode(dto.password());
+        newMember.encodePassword(encodedPassword);
 
         // 생성된 엔티티를 DB에 영구 저장
         Member savedMember = memberRepository.save(newMember);
@@ -46,8 +52,8 @@ public class AuthService {
         Member member = memberRepository.findByEmail(dto.email())
                 .orElseThrow(() -> new MemberException(MemberErrorCode.LOGIN_FAILED));
 
-        // 비밀번호 검증
-        if (!member.getPassword().equals(dto.password())) {
+        // BCrypt 인코더의 matches 메서드로 암호화된 비밀번호 검증
+        if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
             throw new MemberException(MemberErrorCode.LOGIN_FAILED);
         }
 
