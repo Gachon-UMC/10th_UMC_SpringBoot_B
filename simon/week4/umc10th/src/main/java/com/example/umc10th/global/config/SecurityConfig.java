@@ -30,8 +30,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(allowUris).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(allowUris).permitAll()         // Public API: 인증 없이 전원 패스
+                        .anyRequest().authenticated()                     // Private API: 그 외 모든 요청은 락(Lock)
                 )
                 .formLogin(form -> form
                         .usernameParameter("email")
