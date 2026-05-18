@@ -6,10 +6,6 @@ import com.example.umc10th.domain.member.dto.UserJoinResponseDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.enums.Gender;
 import com.example.umc10th.domain.member.enums.SocialType;
-<<<<<<< Updated upstream
-import com.example.umc10th.domain.mission.enums.Address;
-=======
->>>>>>> Stashed changes
 
 // 회원 도메인의 Entity와 DTO 변환을 담당합니다.
 public class MemberConverter {
@@ -20,11 +16,7 @@ public class MemberConverter {
                 .name(request.getNickname())
                 .email(request.getEmail())
                 .gender(Gender.NONE)
-<<<<<<< Updated upstream
-                .address(Address.GANGNAM)
-=======
                 .address("GANGNAM")
->>>>>>> Stashed changes
                 .socialUid(request.getEmail())
                 .socialType(SocialType.GOOGLE)
                 .point(0)

@@ -12,11 +12,6 @@ import com.example.umc10th.global.apiPayload.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-<<<<<<< Updated upstream
-import org.springframework.web.bind.annotation.*;
-
-// 해당 클래스를 REST API 컨트롤러로 등록합니다.
-=======
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,11 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 // 회원 도메인의 REST API를 처리하는 컨트롤러입니다.
->>>>>>> Stashed changes
 @RestController
-// final 필드를 생성자 주입 방식으로 주입합니다.
 @RequiredArgsConstructor
-// 회원 도메인 API의 공통 URL 경로를 지정합니다.
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -43,11 +35,7 @@ public class UserController {
     // 회원가입 요청을 처리합니다.
     @PostMapping
     public ResponseEntity<ApiResponse<UserJoinResponseDTO>> joinUser(
-<<<<<<< Updated upstream
-            // 요청 본문 JSON을 회원가입 요청 DTO로 바인딩합니다.
-=======
             // 요청 본문 JSON을 회원가입 요청 DTO로 바인딩하고 검증합니다.
->>>>>>> Stashed changes
             @RequestBody @Valid UserJoinRequestDTO request
     ) {
         UserJoinResponseDTO response = memberService.join(request);
@@ -56,17 +44,10 @@ public class UserController {
     }
 
     // 홈 화면 회원 정보를 조회합니다.
-<<<<<<< Updated upstream
-    @GetMapping("/{userId}/home")
-    public ResponseEntity<ApiResponse<HomeResponseDTO>> home(
-            // URL 경로의 userId 값을 메서드 파라미터로 바인딩합니다.
-            @PathVariable Long userId
-=======
     @GetMapping("/home")
     public ResponseEntity<ApiResponse<HomeResponseDTO>> home(
             // URL에 노출하지 않고 요청 헤더의 userId 값으로 회원을 식별합니다.
             @RequestHeader("userId") Long userId
->>>>>>> Stashed changes
     ) {
         HomeResponseDTO response = memberService.getMyPage(userId);
 
@@ -74,17 +55,10 @@ public class UserController {
     }
 
     // 마이페이지 회원 정보를 조회합니다.
-<<<<<<< Updated upstream
-    @GetMapping("/{userId}/mypage")
-    public ResponseEntity<ApiResponse<HomeResponseDTO>> getMyPage(
-            // URL 경로의 userId 값을 메서드 파라미터로 바인딩합니다.
-            @PathVariable Long userId
-=======
     @GetMapping("/mypage")
     public ResponseEntity<ApiResponse<HomeResponseDTO>> getMyPage(
             // URL에 노출하지 않고 요청 헤더의 userId 값으로 회원을 식별합니다.
             @RequestHeader("userId") Long userId
->>>>>>> Stashed changes
     ) {
         HomeResponseDTO response = memberService.getMyPage(userId);
 
@@ -94,11 +68,7 @@ public class UserController {
     // 홈 화면에서 도전 가능한 미션 목록을 조회합니다.
     @GetMapping("/missions/home")
     public ResponseEntity<ApiResponse<MissionListResDTO>> getHomeMissions(
-<<<<<<< Updated upstream
-            // 요청 쿼리의 locationId 값을 메서드 파라미터로 바인딩합니다.
-=======
             // 요청 쿼리의 locationId 값을 바인딩합니다.
->>>>>>> Stashed changes
             @RequestParam Long locationId,
             // 요청 쿼리의 page 값을 바인딩하고 기본값을 지정합니다.
             @RequestParam(defaultValue = "0") int page,

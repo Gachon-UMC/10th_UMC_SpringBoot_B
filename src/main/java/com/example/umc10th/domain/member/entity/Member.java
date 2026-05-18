@@ -2,10 +2,6 @@ package com.example.umc10th.domain.member.entity;
 
 import com.example.umc10th.domain.member.enums.Gender;
 import com.example.umc10th.domain.member.enums.SocialType;
-<<<<<<< Updated upstream
-import com.example.umc10th.domain.mission.enums.Address;
-=======
->>>>>>> Stashed changes
 import com.example.umc10th.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,31 +19,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-<<<<<<< Updated upstream
-// 해당 클래스를 JPA Entity로 등록합니다.
-=======
 // 회원 정보를 저장하는 JPA Entity입니다.
->>>>>>> Stashed changes
 @Entity
-// 필드 조회를 위한 Getter를 생성합니다.
 @Getter
-// Entity 생성 시 builder 패턴을 사용할 수 있게 합니다.
 @Builder
-// JPA 기본 생성자를 protected 범위로 생성합니다.
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-// 모든 필드를 받는 생성자를 생성합니다.
 @AllArgsConstructor
-// 매핑할 테이블 이름을 지정합니다.
 @Table(name = "member")
 public class Member extends BaseEntity {
 
-<<<<<<< Updated upstream
-    // 기본키 컬럼입니다.
-=======
     // 회원 기본키입니다.
->>>>>>> Stashed changes
     @Id
-    // 기본키 값을 DB의 identity 전략으로 생성합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
@@ -64,16 +46,9 @@ public class Member extends BaseEntity {
     // 회원 생년월일입니다.
     private LocalDate birth;
 
-<<<<<<< Updated upstream
-    // 회원 주소 지역입니다.
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Address address;
-=======
     // 회원 주소입니다.
     @Column(nullable = false, length = 255)
     private String address;
->>>>>>> Stashed changes
 
     // 회원 상세 주소입니다.
     @Column(name = "detail_address")
