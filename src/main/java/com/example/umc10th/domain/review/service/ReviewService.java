@@ -58,6 +58,7 @@ public class ReviewService {
     private Slice<Review> getReviewSlice(Long userId, String cursor, String query, PageRequest pageRequest) {
         if ("id".equalsIgnoreCase(query)) {
             return getReviewSliceById(userId, cursor, pageRequest);
+<<<<<<< Updated upstream
         }
 
         if ("star".equalsIgnoreCase(query)) {
@@ -65,6 +66,13 @@ public class ReviewService {
         }
 
         throw new ReviewException(ReviewErrorCode.QUERY_NOT_VALID);
+=======
+        } else if ("star".equalsIgnoreCase(query)) {
+            return getReviewSliceByStar(userId, cursor, pageRequest);
+        } else {
+            throw new ReviewException(ReviewErrorCode.QUERY_NOT_VALID);
+        }
+>>>>>>> Stashed changes
     }
 
     // ID 내림차순 커서 조회를 처리합니다.
