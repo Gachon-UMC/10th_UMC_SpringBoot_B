@@ -1,5 +1,7 @@
 package org.example.umc10thyongjae.global.config;
 
+import org.example.umc10thyongjae.global.apiPayload.handler.CustomAccessDenied;
+import org.example.umc10thyongjae.global.apiPayload.handler.CustomEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
 @EnableWebSecurity
 @Configuration
@@ -16,7 +20,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**",
-            "/auth/**"
+            "/auth/signUp",
+            "/login"
     };
 
     @Bean
@@ -26,6 +31,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(allowUris).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .defaultAuthenticationEntryPointFor(
+                                customEntryPoint(),
+                                new MediaTypeRequestMatcher(
+                                        new HeaderContentNegotiationStrategy(),
+                                        org.springframework.http.MediaType.APPLICATION_JSON
+                                )
+                        )
+                        .accessDeniedHandler(customAccessDenied())
                 )
                 .formLogin(form -> form
                         .usernameParameter("id")
@@ -45,5 +60,15 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CustomAccessDenied customAccessDenied() {
+        return new CustomAccessDenied();
+    }
+
+    @Bean
+    public CustomEntryPoint customEntryPoint() {
+        return new CustomEntryPoint();
     }
 }
