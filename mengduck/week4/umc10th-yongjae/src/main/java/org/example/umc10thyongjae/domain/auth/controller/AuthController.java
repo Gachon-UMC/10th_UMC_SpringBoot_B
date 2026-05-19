@@ -17,11 +17,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ApiResponse<Void> signUp(
+    public ApiResponse<SignUpResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto dto
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
+        Long userId = authService.signUp(dto);
 
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, new SignUpResponseDto(userId));
     }
 
     @GetMapping("/users/me")
