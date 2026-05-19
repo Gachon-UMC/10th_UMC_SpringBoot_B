@@ -30,7 +30,10 @@ public class SecurityConfig {
                         .requestMatchers(allowUris).permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/swagger-ui/index.html", true)
+                        .permitAll()
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
@@ -38,7 +41,6 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(customAccessDenied())
-                        .authenticationEntryPoint(customEntryPoint())
                 );
 
         return http.build();
