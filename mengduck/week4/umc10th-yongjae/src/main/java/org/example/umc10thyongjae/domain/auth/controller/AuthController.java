@@ -1,5 +1,6 @@
 package org.example.umc10thyongjae.domain.auth.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
@@ -16,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/signUp")
     public ApiResponse<Void> signUp(
-            @RequestBody SignUpRequestDto dto
+            @RequestBody @Valid SignUpRequestDto dto
     ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
 

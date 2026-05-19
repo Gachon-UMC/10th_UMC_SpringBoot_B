@@ -15,14 +15,15 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "user_food_preference")
 public class UserFoodPreference extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_food_preference_id")
-    private Long userFoodPreferenceId;
+    private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_preference_id")
     private FoodPreference foodPreference;
 }

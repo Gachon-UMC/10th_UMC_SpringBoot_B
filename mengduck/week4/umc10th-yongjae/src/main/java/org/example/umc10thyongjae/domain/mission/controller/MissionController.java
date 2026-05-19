@@ -1,7 +1,7 @@
 package org.example.umc10thyongjae.domain.mission.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.domain.mission.dto.request.ReqMissionCompleteRequestDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.MissionResponseDto;
 import org.example.umc10thyongjae.domain.mission.dto.response.ReqMissionCompleteResponseDto;
@@ -9,9 +9,9 @@ import org.example.umc10thyongjae.domain.mission.dto.response.UserMissionRespons
 import org.example.umc10thyongjae.domain.mission.service.MissionService;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;
 import org.example.umc10thyongjae.global.apiPayload.code.GeneralSuccessCode;
+import org.example.umc10thyongjae.global.dto.OffsetPaginationDto;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,13 +35,13 @@ public class MissionController {
     }
 
     @GetMapping("/user-mission")
-    public ApiResponse<List<UserMissionResponseDto>> getUserMission(
+    public ApiResponse<OffsetPaginationDto<UserMissionResponseDto>> getUserMission(
             @RequestAttribute long userId,
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String status
     ) {
-        List<UserMissionResponseDto> result = missionService.getUserMission(userId, page, size, status);
+        OffsetPaginationDto<UserMissionResponseDto> result = missionService.getUserMission(userId, page, size, status);
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }
 
@@ -60,9 +60,9 @@ public class MissionController {
 
     @PostMapping("/{missionKey}/complete")
     public ApiResponse<Void> missionComplete(
-            @RequestAttribute int userKey,
+            @RequestAttribute long userId,
             @PathVariable long missionKey,
-            @RequestBody ReqMissionCompleteRequestDto dto
+            @RequestBody @Valid ReqMissionCompleteRequestDto dto
             ) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
     }

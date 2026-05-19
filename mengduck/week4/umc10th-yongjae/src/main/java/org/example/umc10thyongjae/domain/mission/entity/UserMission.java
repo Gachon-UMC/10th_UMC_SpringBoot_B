@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.umc10thyongjae.domain.auth.entity.User;
 import org.example.umc10thyongjae.domain.mission.enums.MissionStatus;
 import org.example.umc10thyongjae.global.entity.BaseEntity;
 
@@ -16,14 +17,15 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "user_mission")
 public class UserMission extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_mission_id")
-    private Long userMissionId;
+    private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
 

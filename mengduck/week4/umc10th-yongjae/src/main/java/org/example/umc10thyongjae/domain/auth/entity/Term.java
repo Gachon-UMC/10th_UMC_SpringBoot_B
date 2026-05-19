@@ -15,9 +15,9 @@ import org.example.umc10thyongjae.domain.auth.enums.TermName;
 @Table(name = "term")
 public class Term {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "term_id")
-    private Long termId;
+    private Long id;
 
     @Column(name = "term_name")
     @Enumerated(EnumType.STRING)

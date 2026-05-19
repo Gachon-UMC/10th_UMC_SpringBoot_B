@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.umc10thyongjae.domain.auth.entity.User;
 import org.example.umc10thyongjae.global.entity.BaseEntity;
 
 @Entity
@@ -15,12 +16,13 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "store_review")
 public class StoreReview extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_review_id")
-    private Long storeReviewId;
+    private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")

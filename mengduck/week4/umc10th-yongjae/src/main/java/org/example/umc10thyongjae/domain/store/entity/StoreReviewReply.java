@@ -15,15 +15,16 @@ import org.example.umc10thyongjae.global.entity.BaseEntity;
 @Table(name = "store_review_reply")
 public class StoreReviewReply extends BaseEntity {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_review_reply_id")
-    private Long storeReviewReplyId;
+    private Long id;
 
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "store_review_id")
-    private Long storeReviewId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_review_id")
+    private StoreReview storeReview;
 
     @Column(name = "content")
     private String content;

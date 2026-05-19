@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "food_preference")
 public class FoodPreference {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "food_preference_id")
-    private Long foodPreferenceId;
+    private Long id;
 
     @Column(name = "label")
     private String label;
