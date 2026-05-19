@@ -27,7 +27,7 @@ public class MissionResDTO {
             Boolean hasNext,
             String nextCusor,
             int size
-    ){}
+    ){}  // 맹덕 스터디 리뷰: 페이지네이션 전역변수로 뺴라
 
     @Builder
     public record GetMission(

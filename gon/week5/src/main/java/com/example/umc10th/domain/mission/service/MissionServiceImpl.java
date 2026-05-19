@@ -79,13 +79,7 @@ public class MissionServiceImpl implements MissionService {
             int size,
             String sort
     ){
-        Sort sortInfo;
-
-        if (sort!=null){
-            sortInfo = Sort.by(sort); //이러면 안되지 않나?
-        }else{
-            sortInfo = Sort.by("id").descending();
-        }
+        Sort sortInfo = getMissionSort(sort);
 
         PageRequest pageRequest = PageRequest.of(page, size, sortInfo);
 
@@ -110,6 +104,7 @@ public class MissionServiceImpl implements MissionService {
         String nextCursor;
 
         if (cursor != null && !cursor.equals("-1")){
+            //if ("-1".equals(cursor)){
 
             String[] cursorSplit = cursor.split(":");
             switch(query.toLowerCase()){
@@ -142,5 +137,19 @@ public class MissionServiceImpl implements MissionService {
     }
     public MissionResDTO.SuccessMission SeuccessMission(Long userMissionId) {
         return null;
+    }
+
+    private Sort getMissionSort(String sort) {
+
+        if (sort == null || sort.isBlank()) {
+            return Sort.by(Sort.Direction.DESC, "id");
+        }
+
+        return switch (sort) {
+            case "id" -> Sort.by(Sort.Direction.DESC, "id");
+            case "point" -> Sort.by(Sort.Direction.DESC, "point");
+            case "createdAt" -> Sort.by(Sort.Direction.DESC, "createdAt");
+            default -> throw new MissionException(MissionErrorCode.MISSION_INVALID_SORT_CONDITION);
+        };
     }
 }

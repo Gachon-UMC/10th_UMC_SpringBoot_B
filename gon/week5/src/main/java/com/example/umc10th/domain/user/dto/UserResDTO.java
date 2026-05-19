@@ -13,4 +13,5 @@ public class UserResDTO {
             String phoneNumber,
             Integer point
     ){}
+
 }

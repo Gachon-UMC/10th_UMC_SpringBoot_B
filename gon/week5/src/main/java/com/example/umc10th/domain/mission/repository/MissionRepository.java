@@ -41,7 +41,7 @@ public interface MissionRepository  extends JpaRepository<Mission,Long> {
                     from Mission m
                     join fetch m.store s
                     where s.id = :storeId
-                        and m.id< :idCursor
+                        and (:idCursor is null or m.id< :idCursor)
                     order by m.id desc
                     """)
     Slice<Mission> findMissionsByStoreIdAndLessThanOrderByIdDesc(
