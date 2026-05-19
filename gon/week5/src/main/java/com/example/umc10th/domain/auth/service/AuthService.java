@@ -31,17 +31,16 @@ public class AuthService {
 
     public AuthResDto.SignupResult signup(AuthReqDto.Signup signup) {
 
+        validateDuplicateEmail(signup.email());
+        validateRequiredTerms(signup.termIds());
+
         String encodedPassword = passwordEncoder.encode(signup.password());
 
         User user = AuthConveter.toUser(signup,encodedPassword);
 
         User savedUser = userRepository.save(user);
 
-        validateDuplicateEmail(signup.email());
-
         List<Term> terms = termRepository.findAllById(signup.termIds());
-
-        validateRequiredTerms(signup.termIds());
 
         usertermRepository.saveAll(AuthConveter.toUserTerms(savedUser,terms));
 
