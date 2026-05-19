@@ -4,6 +4,7 @@ import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.mapping.UserMission;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,6 +32,34 @@ public interface MissionRepository  extends JpaRepository<Mission,Long> {
     )
     Page<Mission> findAvailableMissionsByRegionId(
             @Param("regionId") Long regionId,
+            Pageable pageable
+    );
+
+    @Query(
+                    """
+                    select m
+                    from Mission m
+                    join fetch m.store s
+                    where s.id = :storeId
+                        and m.id< :idCursor
+                    order by m.id desc
+                    """)
+    Slice<Mission> findMissionsByStoreIdAndLessThanOrderByIdDesc(
+            @Param("storeId") Long storeId,
+            @Param("idCursor") Long idCursor,
+            Pageable pageable
+    );
+
+    @Query(
+            """
+            select m
+            from Mission m
+            join fetch m.store s
+            where s.id = :storeId
+            order by m.id desc
+            """)
+    Slice<Mission> findMissionByStoreIdOrderByIdDesc(
+            @Param("storeId") Long storeId,
             Pageable pageable
     );
 }

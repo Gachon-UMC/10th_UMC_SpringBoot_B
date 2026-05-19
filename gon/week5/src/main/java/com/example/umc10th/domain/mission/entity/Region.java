@@ -27,7 +27,4 @@ public class Region {
     @Column(name="region_name",nullable = false)
     private RegionName regionName;
 
-
-    @OneToMany(mappedBy = "region",cascade = CascadeType.REMOVE)
-    private List<Store>  storeList = new ArrayList<>();
 }

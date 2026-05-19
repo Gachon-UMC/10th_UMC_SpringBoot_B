@@ -4,13 +4,11 @@ import lombok.Builder;
 
 public class MissionReqDTO {
 
+
+
     @Builder
-    public record GetMission(
-            Long missionId,
-            String title,
-            String description,
-            Integer point,
-            Long storeId
+    public record GetInProgressMission(
+            Long userId
     ){
 
     }

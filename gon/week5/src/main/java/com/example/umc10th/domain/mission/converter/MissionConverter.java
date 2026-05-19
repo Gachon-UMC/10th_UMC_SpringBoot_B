@@ -3,12 +3,40 @@ package com.example.umc10th.domain.mission.converter;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.mapping.UserMission;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public class MissionConverter {
 
-    //유저미션 목록 페이지
+    //페이지네이션 틀
+    public static <T> MissionResDTO.OffsetPagination<T> toOffsetPagination(
+            List<T> data,
+            int page,
+            int size
+    ) {
+        return MissionResDTO.OffsetPagination.<T>builder()
+                .data(data)
+                .page(page)
+                .size(size)
+                .build();
+    }
+
+    public static <T> MissionResDTO.CursorPagination<T> toCursorPagination(
+            List<T> data,
+            Boolean hasNext,
+            String nextCursor,
+            int size
+    ){
+        return MissionResDTO.CursorPagination.<T>builder()
+                .data(data)
+                .hasNext(hasNext)
+                .nextCusor(nextCursor)
+                .size(size)
+                .build();
+    }
+
+    //유저미션
     public static MissionResDTO.GetMission toGetMission(UserMission userMission){
         Mission mission = userMission.getMission();
         return MissionResDTO.GetMission.builder()
@@ -24,22 +52,10 @@ public class MissionConverter {
 
     }
 
-    public static MissionResDTO.GetMissionList toGetMissionList(List<UserMission> userMissions) {
-        List<MissionResDTO.GetMission> missions = userMissions.stream()
-                .map(MissionConverter::toGetMission)
-                .toList();
 
-        return MissionResDTO.GetMissionList.builder()
-                .missions(missions)
-                .listSize(missions.size())
-                .build();
-    } //유저가 사용하고 있는 여러 미션들을 한번에 보여주려고 이렇게 list로 묶는
-    //방법을 써봤는데 이게 이렇게 하는게 맞는지 잘 모르겠어요
-    //아 페이징 쓰면 되는거였네
-
-    //홈 화면 미션 페이지
-    public static MissionResDTO.HomeMission toHomeMission(Mission mission) {
-        return MissionResDTO.HomeMission.builder()
+    //홈 화면 미션
+    public static MissionResDTO.GetHomeMission toGetHomeMission(Mission mission) {
+        return MissionResDTO.GetHomeMission.builder()
                 .missionId(mission.getId())
                 .storeId(mission.getStore().getId())
                 .storeName(mission.getStore().getStoreName())
