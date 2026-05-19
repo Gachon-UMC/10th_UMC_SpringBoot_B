@@ -11,10 +11,11 @@ import com.example.umc10th.domain.member.enums.SocialType;
 public class MemberConverter {
 
     // 회원가입 요청 DTO를 회원 Entity로 변환합니다.
-    public static Member toMember(UserJoinRequestDTO request) {
+    public static Member toMember(UserJoinRequestDTO request, String encodedPassword) {
         return Member.builder()
                 .name(request.getNickname())
                 .email(request.getEmail())
+                .password(encodedPassword)
                 .gender(Gender.NONE)
                 .address("GANGNAM")
                 .socialUid(request.getEmail())
