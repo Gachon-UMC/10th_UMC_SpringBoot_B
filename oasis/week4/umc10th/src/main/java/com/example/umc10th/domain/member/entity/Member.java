@@ -41,8 +41,11 @@ public class Member extends BaseEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "email", length = 20)
+    @Column(name = "email", length = 100, unique = true)
     private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "phone", length = 20)
     private String phone;

@@ -1,8 +1,11 @@
 package com.example.umc10th.domain.member.converter;
 
 import com.example.umc10th.domain.member.dto.HomeResDTO;
+import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
+import com.example.umc10th.domain.member.entity.Gender;
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.entity.Platform;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.MissionStatus;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,26 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class MemberConverter {
+
+    public static Member toMember(MemberReqDTO.SignupRequest request, String encodedPassword, Gender gender) {
+        return Member.builder()
+                .email(request.email())
+                .password(encodedPassword)
+                .name(request.nickname())
+                .gender(gender)
+                .birthDate(request.birth())
+                .platform(Platform.LOCAL)
+                .isEnabled(true)
+                .build();
+    }
+
+    public static MemberResDTO.SignupResponse toSignupResponse(Member member) {
+        return MemberResDTO.SignupResponse.builder()
+                .userId(member.getId())
+                .email(member.getEmail())
+                .nickname(member.getName())
+                .build();
+    }
 
     public static MemberResDTO.MypageResponse toMypageResponse(Member member) {
         int balance = member.getPoint() != null ? member.getPoint().getBalance().intValue() : 0;
