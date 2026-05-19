@@ -28,6 +28,13 @@ public class GeneralExceptionAdvice {
                 .body(ApiResponse.onFailure(errorCode, null));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException e) {
+        BaseErrorCode errorCode = GeneralErrorCode.BAD_REQUEST;
+        return ResponseEntity.status(errorCode.getStatus())
+                .body(ApiResponse.onFailure(errorCode, e.getMessage()));
+    }
+
     /**
      * Catch @RequestBody invalid error
      * */

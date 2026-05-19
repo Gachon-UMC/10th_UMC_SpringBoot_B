@@ -13,7 +13,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new HeaderAuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/auth/signup"
+                        "/auth/signUp",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**"
                 );
     }
 }

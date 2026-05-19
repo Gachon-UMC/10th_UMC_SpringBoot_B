@@ -3,6 +3,7 @@ package org.example.umc10thyongjae.domain.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
+import org.example.umc10thyongjae.domain.auth.dto.response.SignUpResponseDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
 import org.example.umc10thyongjae.domain.auth.service.AuthService;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;

@@ -22,6 +22,12 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "login_id")
+    private String loginId;
+
+    @Column(name = "pwd")
+    private String pwd;
+
     @Column(name = "oauth_uid")
     private String oauthUid;
 
