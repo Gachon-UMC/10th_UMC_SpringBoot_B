@@ -92,6 +92,10 @@ public class Member extends BaseEntity {
         this.point += point;
     }
 
+    public void encodePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
     public void withdraw() {
         this.memberStatus = MemberStatus.INACTIVE;
     }

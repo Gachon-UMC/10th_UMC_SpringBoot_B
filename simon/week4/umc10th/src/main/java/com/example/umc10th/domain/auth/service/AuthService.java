@@ -3,14 +3,21 @@ package com.example.umc10th.domain.auth.service;
 import com.example.umc10th.domain.auth.converter.AuthConverter;
 import com.example.umc10th.domain.auth.dto.AuthReqDTO;
 import com.example.umc10th.domain.auth.dto.AuthResDTO;
+import com.example.umc10th.domain.auth.exception.AuthException;
+import com.example.umc10th.domain.auth.exception.code.AuthErrorCode;
 import com.example.umc10th.domain.member.converter.MemberConverter;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.enums.MemberStatus;
 import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
+import com.example.umc10th.global.security.entity.AuthMember;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +25,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AuthService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 신규 회원 가입
@@ -30,6 +38,10 @@ public class AuthService {
 
         // DTO 데이터를 기반으로 신규 회원 엔티티 생성 (Converter 활용)
         Member newMember = MemberConverter.toMember(dto);
+
+        // 저장하기 전에 비밀번호를 BCrypt로 암호화
+        String encodedPassword = passwordEncoder.encode(dto.password());
+        newMember.encodePassword(encodedPassword);
 
         // 생성된 엔티티를 DB에 영구 저장
         Member savedMember = memberRepository.save(newMember);
@@ -44,17 +56,24 @@ public class AuthService {
     public AuthResDTO.Login login(AuthReqDTO.Login dto) {
         // 이메일로 사용자 조회
         Member member = memberRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new MemberException(MemberErrorCode.LOGIN_FAILED));
+                .orElseThrow(() -> new AuthException(AuthErrorCode.LOGIN_FAILED));
 
-        // 비밀번호 검증
-        if (!member.getPassword().equals(dto.password())) {
-            throw new MemberException(MemberErrorCode.LOGIN_FAILED);
+        // BCrypt 인코더의 matches 메서드로 암호화된 비밀번호 검증
+        if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
+            throw new AuthException(AuthErrorCode.LOGIN_FAILED);
         }
 
         // 계정 유효성 체크 (활성화 상태 확인)
         if (member.getMemberStatus() == MemberStatus.INACTIVE) {
             throw new MemberException(MemberErrorCode.MEMBER_STATUS_INACTIVE);
         }
+
+        // 로그인 성공 시 스프링 시큐리티 컨텍스트에 인증 정보 박아주기 (Private API 연동용)
+        AuthMember authMember = new AuthMember(member);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                authMember, null, authMember.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 성공 시 DTO 반환
         return AuthConverter.toLoginResDTO(member);
@@ -70,6 +89,9 @@ public class AuthService {
 
         // DB에 저장된 해당 사용자의 RefreshToken 삭제
         // refreshTokenRepository.deleteByMemberId(memberId);
+
+        // 로그아웃 시 시큐리티 인증 컨텍스트를 비워주기
+        SecurityContextHolder.clearContext();
 
         // 결과 반환
         return MemberConverter.toLogoutResultDTO(memberId);
