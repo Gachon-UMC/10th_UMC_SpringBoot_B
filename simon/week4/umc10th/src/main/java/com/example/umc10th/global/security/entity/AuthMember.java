@@ -1,6 +1,7 @@
 package com.example.umc10th.global.security.entity;
 
 import com.example.umc10th.domain.member.entity.Member;
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,8 +21,8 @@ public class AuthMember implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return this.member.getPassword();
+    public @Nullable String getPassword() {
+        return null;
     }
 
     @Override

@@ -19,12 +19,13 @@ public class MemberService {
     /**
      * 마이페이지
      */
-    public MemberResDTO.GetInfo getInfo(Long memberId) {
-        // 엔티티 조회
-        Member member = memberRepository.findActiveMemberById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+    public MemberResDTO.GetInfo getInfo(Member member) {
+        // 필터가 이미 긁어온 객체의 탈퇴 여부(INACTIVE)를 안전하게 1차 검증
+        if (member == null || member.getMemberStatus() == com.example.umc10th.domain.member.enums.MemberStatus.INACTIVE) {
+            throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
 
-        // Converter를 통해 DTO로 변환
+        // 컨버터를 이용해서 DTO로 변환 후 리턴
         return MemberConverter.toGetInfo(member);
     }
 
@@ -32,24 +33,24 @@ public class MemberService {
      * 회원정보 수정
      */
     @Transactional
-    public MemberResDTO.UpdateInfo updateInfo(Long memberId, MemberReqDTO.UpdateInfo dto) {
-        Member member = memberRepository.findById(memberId)
+    public MemberResDTO.UpdateInfo updateInfo(Member member, MemberReqDTO.UpdateInfo dto) {
+        Member activeMember = memberRepository.findById(member.getId())
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // 더티 체킹을 통한 수정
-        member.updateProfile(dto.phoneNumber(), dto.profileUrl());
+        activeMember.updateProfile(dto.phoneNumber(), dto.profileUrl());
 
-        return MemberConverter.toUpdateInfoResDTO(member);
+        return MemberConverter.toUpdateInfoResDTO(activeMember);
     }
 
     /**
      * 회원 탈퇴
      */
     @Transactional
-    public void deleteMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public void deleteMember(Member member) {
+        Member activeMember = memberRepository.findById(member.getId())
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        member.withdraw();
+        activeMember.withdraw();
     }
 }

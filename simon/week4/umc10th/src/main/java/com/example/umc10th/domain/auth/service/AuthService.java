@@ -12,6 +12,7 @@ import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.global.security.entity.AuthMember;
+import com.example.umc10th.global.security.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     /**
      * 신규 회원 가입
@@ -68,32 +70,53 @@ public class AuthService {
             throw new MemberException(MemberErrorCode.MEMBER_STATUS_INACTIVE);
         }
 
-        // 로그인 성공 시 스프링 시큐리티 컨텍스트에 인증 정보 박아주기 (Private API 연동용)
+        // 인증에 성공한 유저 정보를 기반으로 시큐리티 전용 어댑터(통행증)인 AuthMember 객체 생성
         AuthMember authMember = new AuthMember(member);
+
+        // 시큐리티 컨텍스트 등록용 Authentication 인증 토큰 발행
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 authMember, null, authMember.getAuthorities()
         );
+
+        // 암호화 알고리즘을 거쳐 클라이언트에게 발급할 리얼 국경 통과용 AccessToken 생성
+        String realAccessToken = jwtUtil.createAccessToken(authMember);
+
+        // 현재 스레드의 SecurityContextHolder에 인증 객체를 영구 바인딩 (이후 수행되는 Private API 권한 패스용)
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 성공 시 DTO 반환
-        return AuthConverter.toLoginResDTO(member);
+        // 최종 성공 응답 규격 매핑: 조회된 유저 데이터와 리얼 JWT 토큰을 실어서 리턴
+        return AuthConverter.toLoginResDTO(member, realAccessToken, "temp-refresh");
     }
 
     /**
      * 로그아웃 처리 수행, RefreshToken을 무효화
      */
-    public AuthResDTO.LogoutResult logout(String accessToken) {
-        // TODO: 추후 JWT 라이브러리 연동 시 실제 memberId 추출 로직 구현 필요
-        // Long memberId = jwtTokenProvider.getMemberId(accessToken);
-        Long memberId = 1L; // 테스트용 임시 ID
+    public AuthResDTO.LogoutResult logout(String authHeader) {
+        String token = authHeader;
 
-        // DB에 저장된 해당 사용자의 RefreshToken 삭제
-        // refreshTokenRepository.deleteByMemberId(memberId);
+        // 헤더에 Bearer 접두사가 붙어있을 경우 순수 토큰 문자열만 싹 발라내는 방어 코드
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
 
-        // 로그아웃 시 시큐리티 인증 컨텍스트를 비워주기
+        // jwtUtil을 활용하여 토큰 내부의 Subject 추출
+        String email = jwtUtil.getUid(token);
+
+        if (email == null || !jwtUtil.isValid(token)) {
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
+        }
+
+        // 소셜/일반 구분 없이 바로 이메일로 찌르기
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Long realMemberId = member.getId();
         SecurityContextHolder.clearContext();
 
-        // 결과 반환
-        return MemberConverter.toLogoutResultDTO(memberId);
+        // 만약 DB에 RefreshToken을 저장 중이라면 여기서 삭제 처리
+        // refreshTokenRepository.deleteByMemberId(realMemberId);
+
+        // 유저의 ID를 컨버터에 태워서 리턴
+        return MemberConverter.toLogoutResultDTO(realMemberId);
     }
 }
