@@ -46,7 +46,7 @@ public class Member extends BaseEntity {
     private String socialUid;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "social_type", nullable = false)
+    @Column(name = "social_type", nullable = false, length = 20)
     private SocialType socialType;
 
     @Column(name = "point", nullable = false)
