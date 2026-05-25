@@ -9,6 +9,7 @@ import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc._th.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public MemberResDTO.GetInfo getInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -31,7 +34,11 @@ public class MemberService {
             throw new MemberException(MemberErrorCode.MEMBER_ALREADY_EXISTS);
         }
 
-        Member member = MemberConverter.toEntity(request);
+        String encodedPassword = passwordEncoder.encode(request.password());
+        Member member = MemberConverter.toEntity(
+                request,
+                encodedPassword
+        );
 
         Member savedMember = memberRepository.save(member);
 

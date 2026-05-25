@@ -17,7 +17,10 @@ public class MemberConverter {
                 .build();
     }
 
-    public static Member toEntity(MemberReqDTO.Signup request) {
+    public static Member toEntity(
+            MemberReqDTO.Signup request,
+            String encodedPassword
+    ) {
         return Member.builder()
                 .name(request.name())
                 .email(request.email())
@@ -26,6 +29,7 @@ public class MemberConverter {
                 .birth(request.birth())
                 .address(request.address())
                 .socialType(request.socialType())
+                .password(encodedPassword)
                 .build();
     }
 
