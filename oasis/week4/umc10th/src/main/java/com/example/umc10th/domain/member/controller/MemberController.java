@@ -27,4 +27,14 @@ public class MemberController implements MemberApiSpecification {
                 .status(MemberSuccessCode.MEMBER_SIGNUP_SUCCESS.getStatus())
                 .body(ApiResponse.onSuccess(MemberSuccessCode.MEMBER_SIGNUP_SUCCESS, response));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<MemberResDTO.LoginResponse>> login(
+            @Valid @RequestBody MemberReqDTO.LoginRequest request
+    ) {
+        MemberResDTO.LoginResponse response = memberService.login(request);
+        return ResponseEntity
+                .status(MemberSuccessCode.MEMBER_LOGIN_SUCCESS.getStatus())
+                .body(ApiResponse.onSuccess(MemberSuccessCode.MEMBER_LOGIN_SUCCESS, response));
+    }
 }

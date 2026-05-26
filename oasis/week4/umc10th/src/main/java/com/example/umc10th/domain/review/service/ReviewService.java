@@ -70,6 +70,7 @@ public class ReviewService {
                 memberId, cursorReview.getRating(), cursorReview.getId(), pageRequest);
     }
 
+
     @Transactional
     public ReviewResDTO.CreateReviewResponse createReview(ReviewReqDTO.CreateReviewRequest request) {
 
