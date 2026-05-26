@@ -15,8 +15,8 @@ public enum MissionErrorCode implements BaseErrorCode {
     MISSION_NOT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "MISSION400_1", "진행 중인 미션이 아닙니다. "),
     MISSION_DEADLINE_EXPIRED(HttpStatus.BAD_REQUEST, "MISSION400_2", "미션 수행 기한이 지났습니다. "),
     MISSION_CONDITION_NOT_MET(HttpStatus.BAD_REQUEST, "MISSION400_3", "미션 수행 조건을 만족하지 않습니다. "),
-    MISSION_FULL(HttpStatus.CONFLICT, "MISSION409_3", "미션 정원이 가득 찼습니다. ");
-
+    MISSION_FULL(HttpStatus.CONFLICT, "MISSION409_3", "미션 정원이 가득 찼습니다. "),
+    MISSION_INVALID_SORT_CONDITION(HttpStatus.BAD_REQUEST,"MISSION404_1","지원하지 않는 정렬 조건입니다.");
     private final HttpStatus status;
     private final String code;
     private final String message;

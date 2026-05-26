@@ -1,6 +1,5 @@
 package com.example.umc10th.domain.user.entity;
 
-import com.example.umc10th.domain.user.enums.FoodName;
 import com.example.umc10th.domain.user.enums.TermName;
 import com.example.umc10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -23,5 +22,9 @@ public class Term extends BaseEntity {
 
     @Column(name="term_name",nullable=false)
     @Enumerated(EnumType.STRING)
-    private TermName name;
+    private TermName termName;
+
+    @Column(name="required",nullable = false)
+    private boolean required;
+
 }

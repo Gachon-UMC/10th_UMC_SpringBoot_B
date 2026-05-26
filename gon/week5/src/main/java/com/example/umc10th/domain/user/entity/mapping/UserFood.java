@@ -3,12 +3,11 @@ package com.example.umc10th.domain.user.entity.mapping;
 import com.example.umc10th.domain.user.entity.Food;
 import com.example.umc10th.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="user_food")
@@ -25,4 +24,6 @@ public class UserFood {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="food_id")
     private Food food;
+
+
 }

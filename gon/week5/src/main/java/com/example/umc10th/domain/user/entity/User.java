@@ -2,6 +2,8 @@ package com.example.umc10th.domain.user.entity;
 
 import com.example.umc10th.domain.mission.entity.mapping.UserMission;
 import com.example.umc10th.domain.mission.enums.Address;
+import com.example.umc10th.domain.user.entity.mapping.UserFood;
+import com.example.umc10th.domain.user.entity.mapping.UserTerm;
 import com.example.umc10th.domain.user.enums.Gender;
 import com.example.umc10th.domain.user.enums.SocialType;
 import com.example.umc10th.global.entity.BaseEntity;
@@ -40,7 +42,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Column(name="point",nullable=false)
-    private Integer point;
+    private int point;
 
     @Column(name="phoneNumber",nullable=false)
     private String phoneNumber;
@@ -70,5 +72,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy="user",cascade=CascadeType.REMOVE)
     private List<UserMission> userMisisonList = new ArrayList<>();
+
 
 }
