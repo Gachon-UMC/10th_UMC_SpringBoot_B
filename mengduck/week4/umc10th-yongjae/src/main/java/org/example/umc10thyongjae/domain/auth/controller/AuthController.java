@@ -3,6 +3,7 @@ package org.example.umc10thyongjae.domain.auth.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
+import org.example.umc10thyongjae.domain.auth.dto.response.SignUpResponseDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
 import org.example.umc10thyongjae.domain.auth.service.AuthService;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;
@@ -16,11 +17,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ApiResponse<Void> signUp(
+    public ApiResponse<SignUpResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto dto
     ) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, null);
+        Long userId = authService.signUp(dto);
 
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, new SignUpResponseDto(userId));
     }
 
     @GetMapping("/users/me")
