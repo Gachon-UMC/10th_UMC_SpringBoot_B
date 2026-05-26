@@ -3,6 +3,7 @@ package com.example.umc10th.domain.member.converter;
 import com.example.umc10th.domain.member.dto.HomeResponseDTO;
 import com.example.umc10th.domain.member.dto.UserJoinRequestDTO;
 import com.example.umc10th.domain.member.dto.UserJoinResponseDTO;
+import com.example.umc10th.domain.member.dto.UserLoginResponseDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.enums.SocialType;
 
@@ -33,6 +34,12 @@ public class MemberConverter {
     public static UserJoinResponseDTO toUserJoinResponseDTO(Member member) {
         return UserJoinResponseDTO.builder()
                 .userId(member.getId())
+                .build();
+    }
+
+    public static UserLoginResponseDTO toUserLoginResponseDTO(String accessToken) {
+        return UserLoginResponseDTO.builder()
+                .accessToken(accessToken)
                 .build();
     }
 
