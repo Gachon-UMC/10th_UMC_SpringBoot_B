@@ -24,4 +24,10 @@ public class MemberResDTO {
         Long id
     ){}
 
+    @Builder
+    @Schema(name = "MemberLoginResponse")
+    public record Login(
+        String accessToken
+    ){}
+
 }

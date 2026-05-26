@@ -7,6 +7,8 @@ import com.example.umc._th.domain.member.entity.Member;
 import com.example.umc._th.domain.member.exception.MemberException;
 import com.example.umc._th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc._th.domain.member.repository.MemberRepository;
+import com.example.umc._th.global.security.entity.AuthMember;
+import com.example.umc._th.global.security.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public MemberResDTO.GetInfo getInfo(Long memberId) {
@@ -43,5 +46,24 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
 
         return MemberConverter.toSignup(savedMember);
+    }
+
+    @Transactional
+    public MemberResDTO.Login login(MemberReqDTO.Login request){
+
+        Member member = memberRepository.findByEmail(request.email())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        if(!passwordEncoder.matches(request.password(), member.getPassword())){
+            throw new MemberException(MemberErrorCode.PASSWORD_NOT_MATCH);
+        }
+
+        AuthMember authMember = new AuthMember(member);
+
+        String accessToken = jwtUtil.createAccessToken(authMember);
+
+        return MemberResDTO.Login.builder()
+                .accessToken(accessToken)
+                .build();
     }
 }

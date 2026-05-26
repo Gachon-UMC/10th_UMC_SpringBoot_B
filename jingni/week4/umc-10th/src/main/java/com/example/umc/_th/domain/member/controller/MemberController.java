@@ -33,4 +33,12 @@ public class MemberController {
         Long memberId = 100L;
         return ApiResponse.onSuccess(code, memberService.getInfo(memberId));
     }
+
+    @PostMapping("v1/members/login")
+    public ApiResponse<MemberResDTO.Login> login(
+            @RequestBody @Valid MemberReqDTO.Login dto
+    ) {
+        BaseSuccessCode code = MemberSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberService.login(dto));
+    }
 }
