@@ -20,4 +20,14 @@ public interface MemberApiSpecification {
     ResponseEntity<com.example.umc10th.global.apiPayload.ApiResponse<MemberResDTO.SignupResponse>> signup(
             @RequestBody MemberReqDTO.SignupRequest request
     );
+
+    @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인하여 JWT 토큰을 발급합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @ApiResponse(responseCode = "401", description = "비밀번호 불일치"),
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음")
+    })
+    ResponseEntity<com.example.umc10th.global.apiPayload.ApiResponse<MemberResDTO.LoginResponse>> login(
+            @RequestBody MemberReqDTO.LoginRequest request
+    );
 }

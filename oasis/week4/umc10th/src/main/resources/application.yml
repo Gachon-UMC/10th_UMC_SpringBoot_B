@@ -1,19 +1,28 @@
 spring:
   application:
-    name: "umc10th" # "umc10th"
+    name: "umc10th"
+
+  config:
+    import: optional:file:.env[.properties]
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL JDBC ???? ??? ??
-    url: jdbc:mysql://localhost:3306/umc10th
-    username: root
-    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PW}
 
   jpa:
-    database: mysql # ??? ?????? ?? ?? (MySQL)
-    database-platform: org.hibernate.dialect.MySQLDialect # Hibernate?? ??? MySQL ??(dialect) ??
-    show-sql: true # ??? SQL ??? ??? ???? ?? ??
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
     hibernate:
-      ddl-auto: update # ?????? ?? ? ?????? ???? ??? ??
+      ddl-auto: update
     properties:
       hibernate:
-        format_sql: true # ???? SQL ??? ?? ?? ???
+        format_sql: true
+
+jwt:
+  token:
+    secretKey: ${JWT_SECRET_KEY}
+    expiration:
+      access: 1800000 # 30분
