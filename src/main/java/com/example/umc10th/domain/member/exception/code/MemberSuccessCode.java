@@ -12,7 +12,8 @@ import org.springframework.http.HttpStatus;
 public enum MemberSuccessCode implements BaseSuccessCode {
 
     JOIN_SUCCESS(HttpStatus.OK, "MEMBER2001", "회원가입에 성공했습니다."),
-    GET_MEMBER_SUCCESS(HttpStatus.OK, "MEMBER2002", "회원 정보 조회에 성공했습니다.");
+    GET_MEMBER_SUCCESS(HttpStatus.OK, "MEMBER2002", "회원 정보 조회에 성공했습니다."),
+    LOGIN_SUCCESS(HttpStatus.OK, "MEMBER2003", "로그인에 성공했습니다.");
 
     // HTTP 응답 상태입니다.
     private final HttpStatus status;
