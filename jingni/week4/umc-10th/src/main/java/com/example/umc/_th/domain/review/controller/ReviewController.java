@@ -8,8 +8,10 @@ import com.example.umc._th.domain.review.service.ReviewService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc._th.global.dto.PaginationDTO;
+import com.example.umc._th.global.security.entity.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,20 +24,20 @@ public class ReviewController {
     @PostMapping("/v1/stores/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReview> createReview(
             @PathVariable("storeId")  Long storeId,
-            @RequestBody @Valid ReviewReqDTO.CreateReview dto
+            @RequestBody @Valid ReviewReqDTO.CreateReview dto,
+            @AuthenticationPrincipal AuthMember member
             ){
-        Long memberId = 1L;
         BaseSuccessCode code = ReviewSuccessCode.CREATED;
-        return ApiResponse.onSuccess(code, reviewService.createReview(storeId, memberId, dto));
+        return ApiResponse.onSuccess(code, reviewService.createReview(storeId, member.getMember().getId(), dto));
     }
 
     @PostMapping("/v1/reviews/my")
     public ApiResponse<PaginationDTO.CursorPaginationDTO<ReviewResDTO.ReviewInfo>> getMyReviews(
             @RequestParam("size") Integer pageSize,
             @RequestParam(value = "cursor", required = false) Long cursor,
-            @RequestBody @Valid MemberReqDTO.TestMemberIdRequest dto
+            @AuthenticationPrincipal AuthMember member
             ){
         BaseSuccessCode code = ReviewSuccessCode.OK;
-        return ApiResponse.onSuccess(code, reviewService.getMyReviews(dto.id(), pageSize, cursor));
+        return ApiResponse.onSuccess(code, reviewService.getMyReviews(member.getMember().getId(), pageSize, cursor));
     }
 }

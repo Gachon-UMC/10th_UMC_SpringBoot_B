@@ -10,9 +10,11 @@ import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
 import com.example.umc._th.global.dto.PaginationDTO;
 import com.example.umc._th.global.enums.SortType;
+import com.example.umc._th.global.security.entity.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,20 +41,19 @@ public class MissionController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sortType", defaultValue = "LATEST") SortType sortType,
-            @RequestBody @Valid MemberReqDTO.TestMemberIdRequest request
+            @AuthenticationPrincipal AuthMember member
             ){
 
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMyMissions(request.id(), status, page, size, sortType));
+        return ApiResponse.onSuccess(code, missionService.getMyMissions(member.getMember().getId(), status, page, size, sortType));
     }
 
     @GetMapping("/v1/missions/complete/count")
     public ApiResponse<MissionResDTO.GetCompleteMissionsCnt> getCompleteMissionsCnt(
+            @AuthenticationPrincipal AuthMember member,
             @RequestParam("regionId") Long regionId
             ){
-
-        Long memberId = 1L;
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt(regionId, memberId));
+        return ApiResponse.onSuccess(code, missionService.getCompleteMissionsCnt(regionId, member.getMember().getId()));
     }
 }

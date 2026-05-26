@@ -50,10 +50,5 @@ public class MemberReqDTO {
             String password
     ){}
 
-    @Schema(name="TestMemberIdRequest")
-    public record TestMemberIdRequest(
-        @NotNull(message = "사용자 아이디는 필수 입력 값입니다.")
-        Long id
-    ){}
 }
 

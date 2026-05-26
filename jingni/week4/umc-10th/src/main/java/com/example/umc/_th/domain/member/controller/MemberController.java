@@ -6,8 +6,10 @@ import com.example.umc._th.domain.member.exception.code.MemberSuccessCode;
 import com.example.umc._th.domain.member.service.MemberService;
 import com.example.umc._th.global.apiPayload.ApiResponse;
 import com.example.umc._th.global.apiPayload.code.BaseSuccessCode;
+import com.example.umc._th.global.security.entity.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,11 +29,11 @@ public class MemberController {
     }
 
     @GetMapping("/v1/members/me")
-    public ApiResponse<MemberResDTO.GetInfo> getInfo (){
+    public ApiResponse<MemberResDTO.GetInfo> getInfo (
+            @AuthenticationPrincipal AuthMember member
+            ){
         BaseSuccessCode code = MemberSuccessCode.OK;
-        // 일단은 userId를 1로 고정 (추후 JWT 토큰에서 꺼내도록 구현)
-        Long memberId = 100L;
-        return ApiResponse.onSuccess(code, memberService.getInfo(memberId));
+        return ApiResponse.onSuccess(code, memberService.getInfo(member.getMember().getId()));
     }
 
     @PostMapping("v1/members/login")
