@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+//TODO- @AuthenticationPrincipal AuthUser authUser로 전체 대체 후 제거
+@Deprecated
 public class HeaderAuthInterceptor implements HandlerInterceptor {
 
     @Override

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum GeneralErrorCode implements BaseErrorCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "잘못된 요청입니다. "),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "인증되지 않았습니다."),
+    LOGIN_UNAVAILABLE(HttpStatus.UNAUTHORIZED, "LOGIN_UNAVAILABLE", "아이디 또는 비밀번호가 일치하지 않습니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "FORBIDDEN", "접근이 금지되었습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "NOT_FOUND", "해당 리소스를 찾을 수 없습니다."),
     ALREADY_REGISTER_USER(HttpStatus.CONFLICT, "ALREADY_REGISTER_USER", "이미 가입된 사용자입니다."),
