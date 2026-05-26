@@ -14,6 +14,7 @@ import org.example.umc10thyongjae.domain.auth.repository.TermRepository;
 import org.example.umc10thyongjae.domain.auth.repository.UserFoodPreferenceRepository;
 import org.example.umc10thyongjae.domain.auth.repository.UserRepository;
 import org.example.umc10thyongjae.domain.auth.repository.UserTermRepository;
+import org.example.umc10thyongjae.global.apiPayload.exception.AlreadyRegisterUserException;
 import org.example.umc10thyongjae.global.apiPayload.exception.NotDataFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpRequestDto dto) {
         if (authRepository.existsByLoginId(dto.id())) {
-            throw new IllegalArgumentException("이미 가입된 아이디입니다.");
+            throw new AlreadyRegisterUserException();
         }
 
         User user = authRepository.save(User.builder()
@@ -85,6 +86,7 @@ public class AuthService {
             return;
         }
 
+        //TODO- 약관 검증 로직 추가
         List<UserTerm> userTerms = dto.terms().stream()
                 .filter(term -> Boolean.TRUE.equals(term.value()))
                 .map(term -> UserTerm.builder()
@@ -118,6 +120,7 @@ public class AuthService {
         userFoodPreferenceRepository.saveAll(userFoodPreferences);
     }
 
+    //TODO- 존재하지 않는 약관의 경우 에러를 반환 (현재는 DB에 생성)
     private Term getOrCreateTerm(TermName termName) {
         return termRepository.findByTermName(termName)
                 .orElseGet(() -> termRepository.save(Term.builder()

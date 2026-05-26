@@ -3,6 +3,7 @@ package org.example.umc10thyongjae.global.apiPayload.handler;
 import org.example.umc10thyongjae.global.apiPayload.ApiResponse;
 import org.example.umc10thyongjae.global.apiPayload.code.BaseErrorCode;
 import org.example.umc10thyongjae.global.apiPayload.code.GeneralErrorCode;
+import org.example.umc10thyongjae.global.apiPayload.exception.CommonException;
 import org.example.umc10thyongjae.global.apiPayload.exception.NotDataFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +20,13 @@ public class GeneralExceptionAdvice {
         BaseErrorCode code = GeneralErrorCode.INTERNAL_SERVER_ERROR;
         return ResponseEntity.status(code.getStatus())
                 .body(ApiResponse.onFailure(code, ex.getMessage()));
+    }
+
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCommonException(CommonException e) {
+        BaseErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity.status(errorCode.getStatus())
+                .body(ApiResponse.onFailure(errorCode, null));
     }
 
     @ExceptionHandler(NotDataFoundException.class)

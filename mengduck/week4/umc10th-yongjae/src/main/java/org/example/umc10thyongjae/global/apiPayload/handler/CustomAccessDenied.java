@@ -18,7 +18,7 @@ public class CustomAccessDenied implements AccessDeniedHandler {
             AccessDeniedException accessDeniedException
     ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        BaseErrorCode code = GeneralErrorCode.UNAUTHORIZED;
+        BaseErrorCode code = GeneralErrorCode.FORBIDDEN;
 
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(code.getStatus().value());
