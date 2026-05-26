@@ -10,6 +10,7 @@ import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // 해당 클래스를 Service 계층 Bean으로 등록합니다.
@@ -20,11 +21,17 @@ public class MemberService {
 
     // 회원 Entity의 DB 접근을 담당하는 Repository입니다.
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 회원가입 비즈니스 로직을 처리합니다.
     @Transactional
     public UserJoinResponseDTO join(UserJoinRequestDTO request) {
-        Member member = MemberConverter.toMember(request);
+        if (memberRepository.existsByEmail(request.getEmail())) {
+            throw new MemberException(MemberErrorCode.MEMBER_EMAIL_ALREADY_EXISTS);
+        }
+
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        Member member = MemberConverter.toMember(request, encodedPassword);
         Member savedMember = memberRepository.save(member);
 
         return MemberConverter.toUserJoinResponseDTO(savedMember);
