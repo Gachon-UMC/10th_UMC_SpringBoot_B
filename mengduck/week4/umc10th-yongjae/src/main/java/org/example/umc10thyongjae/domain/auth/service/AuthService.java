@@ -1,7 +1,9 @@
 package org.example.umc10thyongjae.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.umc10thyongjae.domain.auth.dto.request.LoginRequestDto;
 import org.example.umc10thyongjae.domain.auth.dto.request.SignUpRequestDto;
+import org.example.umc10thyongjae.domain.auth.dto.response.LoginResponseDto;
 import org.example.umc10thyongjae.domain.auth.dto.response.UserInfoResponseDto;
 import org.example.umc10thyongjae.domain.auth.entity.FoodPreference;
 import org.example.umc10thyongjae.domain.auth.entity.Term;
@@ -15,7 +17,10 @@ import org.example.umc10thyongjae.domain.auth.repository.UserFoodPreferenceRepos
 import org.example.umc10thyongjae.domain.auth.repository.UserRepository;
 import org.example.umc10thyongjae.domain.auth.repository.UserTermRepository;
 import org.example.umc10thyongjae.global.apiPayload.exception.AlreadyRegisterUserException;
+import org.example.umc10thyongjae.global.apiPayload.exception.LoginUnavailableException;
 import org.example.umc10thyongjae.global.apiPayload.exception.NotDataFoundException;
+import org.example.umc10thyongjae.global.security.entity.AuthUser;
+import org.example.umc10thyongjae.global.security.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +40,7 @@ public class AuthService {
     private final FoodPreferenceRepository foodPreferenceRepository;
     private final UserFoodPreferenceRepository userFoodPreferenceRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public Long signUp(SignUpRequestDto dto) {
@@ -61,6 +67,20 @@ public class AuthService {
         saveUserFoodPreferences(user, dto);
 
         return user.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponseDto login(LoginRequestDto dto) {
+        User user = authRepository.findByLoginId(dto.id())
+                .orElseThrow(LoginUnavailableException::new);
+
+        if (!passwordEncoder.matches(dto.pwd(), user.getPwd())) {
+            throw new LoginUnavailableException();
+        }
+
+        String accessToken = jwtUtil.createAccessToken(new AuthUser(user));
+
+        return new LoginResponseDto(accessToken);
     }
 
     @Transactional(readOnly = true)
