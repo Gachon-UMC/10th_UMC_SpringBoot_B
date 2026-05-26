@@ -4,11 +4,12 @@ import com.example.umc10th.domain.member.dto.HomeResponseDTO;
 import com.example.umc10th.domain.member.dto.UserJoinRequestDTO;
 import com.example.umc10th.domain.member.dto.UserJoinResponseDTO;
 import com.example.umc10th.domain.member.entity.Member;
-import com.example.umc10th.domain.member.enums.Gender;
 import com.example.umc10th.domain.member.enums.SocialType;
 
 // 회원 도메인의 Entity와 DTO 변환을 담당합니다.
 public class MemberConverter {
+
+    private static final int INITIAL_POINT = 0;
 
     // 회원가입 요청 DTO를 회원 Entity로 변환합니다.
     public static Member toMember(UserJoinRequestDTO request, String encodedPassword) {
@@ -16,11 +17,15 @@ public class MemberConverter {
                 .name(request.getNickname())
                 .email(request.getEmail())
                 .password(encodedPassword)
-                .gender(Gender.NONE)
-                .address("GANGNAM")
+                .gender(request.getGender())
+                .birth(request.getBirth())
+                .address(request.getAddress())
+                .detailAddress(request.getDetailAddress())
                 .socialUid(request.getEmail())
-                .socialType(SocialType.GOOGLE)
-                .point(0)
+                .socialType(SocialType.LOCAL)
+                .point(INITIAL_POINT)
+                .phoneNumber(request.getPhoneNumber())
+                .profileUrl(request.getProfileUrl())
                 .build();
     }
 

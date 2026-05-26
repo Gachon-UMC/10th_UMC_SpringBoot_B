@@ -26,6 +26,10 @@ public class MemberService {
     // 회원가입 비즈니스 로직을 처리합니다.
     @Transactional
     public UserJoinResponseDTO join(UserJoinRequestDTO request) {
+        if (memberRepository.existsByEmail(request.getEmail())) {
+            throw new MemberException(MemberErrorCode.MEMBER_EMAIL_ALREADY_EXISTS);
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         Member member = MemberConverter.toMember(request, encodedPassword);
         Member savedMember = memberRepository.save(member);
