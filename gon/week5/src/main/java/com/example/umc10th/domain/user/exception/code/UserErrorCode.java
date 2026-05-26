@@ -15,6 +15,7 @@ public enum UserErrorCode implements BaseErrorCode {
     USER_NICKNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER409_3", "이미 사용 중인 닉네임입니다."),
     USER_PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "USER401_1", "비밀번호가 일치하지 않습니다."),
     USER_DELETED(HttpStatus.GONE, "USER410_1", "탈퇴한 사용자입니다."),
+    USER_NOT_SUPPORT_SOCIAL_PROVIDER(HttpStatus.BAD_REQUEST,"USER400_1","지원하지 않는 소셜 로그인 제공자입니다.")
     ;
 
     private final HttpStatus Status;
