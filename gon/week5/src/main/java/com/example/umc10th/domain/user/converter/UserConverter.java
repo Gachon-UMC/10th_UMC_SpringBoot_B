@@ -3,7 +3,6 @@ package com.example.umc10th.domain.user.converter;
 import com.example.umc10th.domain.user.dto.UserReqDTO;
 import com.example.umc10th.domain.user.dto.UserResDTO;
 import com.example.umc10th.domain.user.entity.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserConverter {
 
@@ -17,6 +16,8 @@ public class UserConverter {
                 .profileUrl(user.getProfileUrl())
                 .build();
     }
+
+
 
 
 

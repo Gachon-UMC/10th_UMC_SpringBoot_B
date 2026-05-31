@@ -9,6 +9,7 @@ import com.example.umc10th.domain.user.entity.mapping.UserFood;
 import com.example.umc10th.domain.user.entity.mapping.UserTerm;
 import com.example.umc10th.domain.user.enums.SocialType;
 
+
 import java.util.List;
 
 public class AuthConveter {
@@ -55,5 +56,9 @@ public class AuthConveter {
                         .food(food)
                         .build())
                 .toList();
+    }
+
+    public static AuthResDto.LoginResult toLogin(Long userId,String accessToken,String refreshToken){
+        return new AuthResDto.LoginResult(userId, accessToken,refreshToken);
     }
 }

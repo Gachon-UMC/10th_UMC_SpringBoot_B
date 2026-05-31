@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum AuthErrorCode implements BaseErrorCode {
-    REQUIRED_TERMS_AGREED(HttpStatus.BAD_REQUEST, "AUTH400_1","필수 약관에 동의해야합니다");
+    REQUIRED_TERMS_AGREED(HttpStatus.BAD_REQUEST, "AUTH400_1","필수 약관에 동의해야합니다"),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"AUTH401_2","비밀번호가 일치하지 않습니다" ),
+    INVALID_TERM_ID(HttpStatus.BAD_REQUEST,"AUTH4000_2","존재하지 않는 약관 ID가 포함되어 있습니다.");
 
     private final HttpStatus status;
     private final String code;
