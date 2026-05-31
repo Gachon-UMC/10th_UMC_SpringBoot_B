@@ -53,7 +53,9 @@ public class AuthReqDto {
             @Email(message="이메일 형식을 다시 확인해주세요")
             @NotBlank(message="이메일 입력을 해주세요")
             String Email,
+
             @NotBlank(message="비밀번호 입력을 해주세요")
             String password
     ){}
+
 }

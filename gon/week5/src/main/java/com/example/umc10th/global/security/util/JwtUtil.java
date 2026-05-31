@@ -14,6 +14,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -22,19 +23,33 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
     private final Duration accessExpiration;
+    private final Duration refreshExpiration;
 
     public JwtUtil(
             @Value("${jwt.token.secretKey}") String secret,
-            @Value("${jwt.token.expiration.access}") Long accessExpiration
+            @Value("${jwt.token.expiration.access}") Long accessExpiration,
+            @Value("${jwt.token.expiration.refresh}") Long refreshExpiration
     ) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.accessExpiration = Duration.ofMillis(accessExpiration);
+        this.refreshExpiration = Duration.ofMillis(refreshExpiration);
     }
 
     // AccessToken 생성
     public String createAccessToken(AuthMember member) {
 
         return createToken(member, accessExpiration);
+    }
+
+    // RefreshToken 생성
+    public String createRefreshToken(AuthMember member) {
+
+        return createToken(member, refreshExpiration);
+    }
+
+    //RefreshToken
+    public LocalDateTime getRefreshTokenExpiresAt() {
+        return LocalDateTime.now().plus(refreshExpiration);
     }
 
     // 토큰에서 이메일 가져오기
@@ -55,6 +70,8 @@ public class JwtUtil {
             return false;
         }
     }
+
+
 
     // 토큰 생성
     private String createToken(AuthMember member, Duration expiration) {
@@ -83,4 +100,5 @@ public class JwtUtil {
                 .build()
                 .parseSignedClaims(token);
     }
+
 }

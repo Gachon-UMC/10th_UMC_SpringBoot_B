@@ -1,6 +1,5 @@
 package com.example.umc10th.domain.auth.dto;
 
-import lombok.Builder;
 
 public class AuthResDto {
 
@@ -10,9 +9,11 @@ public class AuthResDto {
             String name
     ){}
 
-    @Builder
+
     public record LoginResult(
             Long userId,
-            String accessToken
+            String accessToken,
+            String refreshToken
     ){}
+
 }

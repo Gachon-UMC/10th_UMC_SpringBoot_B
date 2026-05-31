@@ -58,7 +58,7 @@ public class AuthConveter {
                 .toList();
     }
 
-    public static AuthResDto.LoginResult toLogin(Long userId,String accessToken){
-        return new AuthResDto.LoginResult(userId, accessToken);
+    public static AuthResDto.LoginResult toLogin(Long userId,String accessToken,String refreshToken){
+        return new AuthResDto.LoginResult(userId, accessToken,refreshToken);
     }
 }

@@ -42,7 +42,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
             // Bearer이면 추출
-            token = token.replace("Bearer ", "");
+            //token = token.replace("Bearer ", "");
+            token=token.substring(7, token.length()); /**위의 워크북 방식을 사용하면 문자열 안에 있는 Bearer도 삭제 될 수 있기에
+                                                        앞의 7글자만 제거하는 방식을 사용**/
             // AccessToken 검증하기: 올바른 토큰이면
             if (jwtUtil.isValid(token)) {
                 // 토큰에서 이메일 추출

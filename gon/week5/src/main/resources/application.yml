@@ -24,6 +24,7 @@ jwt:
     secretKey: ${JWT_SECRET_KEY}
     expiration:
       access: 1800000
+      refresh : 1209600000
 
   security:
     oauth2:

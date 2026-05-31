@@ -3,8 +3,10 @@ package com.example.umc10th.domain.auth.service;
 import com.example.umc10th.domain.auth.converter.AuthConveter;
 import com.example.umc10th.domain.auth.dto.AuthReqDto;
 import com.example.umc10th.domain.auth.dto.AuthResDto;
+import com.example.umc10th.domain.auth.entity.RefreshToken;
 import com.example.umc10th.domain.auth.exception.AuthException;
 import com.example.umc10th.domain.auth.exception.code.AuthErrorCode;
+import com.example.umc10th.domain.auth.repository.RefreshTokenRepository;
 import com.example.umc10th.domain.user.entity.Food;
 import com.example.umc10th.domain.user.entity.Term;
 import com.example.umc10th.domain.user.entity.User;
@@ -35,6 +37,7 @@ public class AuthService {
     private final TermReposioty termRepository;
     private final FoodRepository foodRepository;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public AuthResDto.SignupResult signup(AuthReqDto.Signup signup) {
 
@@ -72,10 +75,28 @@ public class AuthService {
         AuthMember authMember = new AuthMember(user);
 
         String accessToken = jwtUtil.createAccessToken(authMember);
+        String refreshToken = jwtUtil.createRefreshToken(authMember);
 
-        return new AuthResDto.LoginResult(
+        RefreshToken savedRefreshToken = refreshTokenRepository.findByUserId(user.getId()).orElse(null);
+
+        if(savedRefreshToken == null){
+            refreshTokenRepository.save(
+                    RefreshToken.builder()
+                            .userId(user.getId())
+                            .refreshToken(refreshToken)
+                            .expiresAt(jwtUtil.getRefreshTokenExpiresAt())
+                            .build()
+            );
+        }else{
+            savedRefreshToken.updateToken(
+                    refreshToken,jwtUtil.getRefreshTokenExpiresAt()
+            );
+        }
+
+        return AuthConveter.toLogin(
                 user.getId(),
-                accessToken
+                accessToken,
+                refreshToken
         );
     }
 
